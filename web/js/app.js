@@ -34,7 +34,7 @@ Object.assign(Example1.AppLayout,
 {
 	css: function(ctx, vars)
 	{
-		return "\n*{box-sizing: border-box;}body{margin:0;padding:0;}\na { text-decoration: inherit; color: #0000d0; cursor: pointer; }\na:hover, a:visited:hover { text-decoration: underline; color: red; }\na:visited { text-decoration: inherit; color: #0000d0; }\na.link { text-decoration: none; color: #0000d0; cursor: pointer; }\na.link:hover, a.link:visited:hover { text-decoration: underline; color: red; }\na.link:visited { text-decoration: none; color: #0000d0; }\nbody, html{\n\tbackground-color: #F2F2F2;\n\tfont-family: 'Ubuntu', sans-serif;\n\tfont-size: 14px;\n\twidth: 100%;\n\theight: 100vh;\n\tpadding: 0;\n\tmargin: 0;\n}\n.container-e311{\n\tmax-width: 1200px;\n\tmargin-left: auto;\n\tmargin-right: auto;\n}\n";
+		return "\n*{box-sizing: border-box;}body{margin:0;padding:0;}\na { text-decoration: inherit; color: #0000d0; cursor: pointer; }\na:hover, a:visited:hover { text-decoration: underline; color: red; }\na:visited { text-decoration: inherit; color: #0000d0; }\na.link { text-decoration: none; color: #0000d0; cursor: pointer; }\na.link:hover, a.link:visited:hover { text-decoration: underline; color: red; }\na.link:visited { text-decoration: none; color: #0000d0; }\nbody, html{\n\tbackground-color: #F2F2F2;\n\tfont-family: 'Ubuntu', sans-serif;\n\tfont-size: 14px;\n\twidth: 100%;\n\theight: 100vh;\n\tpadding: 0;\n\tmargin: 0;\n}\n.section-4042{\n\theight: 100vh;\n}\n.container-4042{\n\tdisplay: table;\n\tmax-width: 1200px;\n\tmargin-left: auto;\n\tmargin-right: auto;\n}\n.container-in-4042{\n\tdisplay: table-cell;\n\tvertical-align: middle;\n\ttext-align: center;\n\twidth: 100%;\n\theight: 100vh;\n}\n";
 	},
 	render: function(ctx, layout, model, params, content)
 	{
@@ -51,7 +51,12 @@ Object.assign(Example1.AppLayout,
 			/* Element 'div' */
 			var __v1; var __v1_childs = [];
 			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":this.getCssName(ctx, "container"),"@key":"container-0"}}, 0);
-			[__vnull, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "component", {"name": class_name,"attrs": {"@bind":["Example1.AppLayout","page_model"],"@key":"page"}, "layout": layout}, 0);
+			
+			/* Element 'div' */
+			var __v2; var __v2_childs = [];
+			[__v2, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "element", {"name": "div","attrs": {"class":this.getCssName(ctx, "container-in"),"@key":"container-in-0"}}, 0);
+			[__vnull, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "component", {"name": class_name,"attrs": {"@bind":["Example1.AppLayout","page_model"],"@key":"page"}, "layout": layout}, 0);
+			RenderDriver.p(__v2, __v2_childs);
 			RenderDriver.p(__v1, __v1_childs);
 			RenderDriver.p(__v0, __v0_childs);
 			RenderDriver.p(__control, __control_childs);
@@ -156,7 +161,7 @@ Object.assign(Example1.IndexPage,
 {
 	css: function(ctx, vars)
 	{
-		return "\n.content-e311{\n\ttext-align: center;\n\tpadding-top: 50px;\n}\n.label-e311{\n\tpadding-bottom: 5px;\n}\n.input-e311{\n\tpadding: 5px 10px;\n}\n.button-e311{\n\tcursor: pointer;\n}\n";
+		return "\n.content-4445{\n\ttext-align: center;\n}\n.label-4445{\n\tpadding-bottom: 5px;\n}\n.input-4445{\n\tpadding: 5px 10px;\n}\n.button-4445{\n\tcursor: pointer;\n}\n";
 	},
 	render: function(ctx, layout, model, params, content)
 	{

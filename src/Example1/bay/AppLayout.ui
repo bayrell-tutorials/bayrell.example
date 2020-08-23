@@ -20,19 +20,30 @@ body, html{
 	padding: 0;
 	margin: 0;
 }
+%section{
+	height: 100vh;
+}
 %container{
+	display: table;
 	max-width: 1200px;
 	margin-left: auto;
 	margin-right: auto;
+}
+%container-in{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	width: 100%;
+	height: 100vh;
 }
 </style>
 
 <template name="render">
 	%var string class_name = model.page_class;
 	<section @class='section'>
-		<div @class='container'>
+		<div @class='container'><div @class='container-in'>
 			<{class_name} @bind="page_model" @key="page"></{class_name}>
-		</div>
+		</div></div>
 	</section>
 </template>
 

@@ -22,9 +22,8 @@ function runApp()
 		"start_time": Date.now(),
 	});
 
-	/* Set entry */
+	/* Set entry point */
 	context = context.constructor.setMainModule(context, context, "Example1");
-	context = context.constructor.setEntryPoint(context, context, "Example1.ModuleDescription");
 	
 	/* Set global context */
 	Runtime.RuntimeUtils.setContext(context);

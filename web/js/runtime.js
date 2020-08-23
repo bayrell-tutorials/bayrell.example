@@ -8140,6 +8140,8 @@ Object.assign(Runtime.Core.Context,
 		/* Set main module */
 		c = Runtime.rtl.setAttr(ctx, c, Runtime.Collection.from(["main_module"]), main_module);
 		c = Runtime.rtl.setAttr(ctx, c, Runtime.Collection.from(["main_class"]), main_module_class_name);
+		/* Set entry point */
+		c = Runtime.rtl.setAttr(ctx, c, Runtime.Collection.from(["entry_point"]), main_module_class_name);
 		/* Set new settings */
 		c = Runtime.rtl.setAttr(ctx, c, Runtime.Collection.from(["settings"]), settings);
 		return c;

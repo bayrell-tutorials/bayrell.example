@@ -2,4 +2,7 @@
 /var
 /node_modules
 /vendor
+/src/*/es6/
+/src/*/nodejs/
+/src/*/php/
 /web/assets

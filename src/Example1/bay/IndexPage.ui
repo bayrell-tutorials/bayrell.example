@@ -11,7 +11,6 @@
 <style>
 %content{
 	text-align: center;
-	padding-top: 50px;
 }
 %label{
 	padding-bottom: 5px;
