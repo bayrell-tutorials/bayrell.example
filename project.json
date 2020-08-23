@@ -19,7 +19,7 @@
 			"lang": "es6",
 			"modules":
 			[
-				"App1"
+				"Example1"
 			],
 			"websocket": true
 		}
@@ -54,7 +54,7 @@
 			}
 		}
 	},
-	"languages": ["php", "es6", "nodejs"],
+	"languages": ["es6"],
 	"watch":
 	{
 		"dir":

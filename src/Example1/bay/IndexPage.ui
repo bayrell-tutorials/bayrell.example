@@ -1,0 +1,50 @@
+<class version="1.0"
+	name="Example1.IndexPage" extends="Runtime.Web.Component" 
+	module="Example1" model="Example1.IndexPageModel"
+>
+
+<use name="Runtime.Core.Message" />
+<use name="Runtime.Web.LayoutModel" />
+<use name="Runtime.Web.Events.MouseClickEvent" />
+<use name="Example1.IndexPageModel" />
+
+<style>
+%content{
+	text-align: center;
+	padding-top: 50px;
+}
+%label{
+	padding-bottom: 5px;
+}
+%input{
+	padding: 5px 10px;
+}
+%button{
+	cursor: pointer;
+}
+</style>
+
+
+<template name="render">
+	<div @class='content' @key='content'>
+		<div @class='label'>@{ model["item", "content"] }</div>
+		<input @class='input' @bind=["item", "content"] /><br/>
+		<button @class='button' @event:MouseClickEvent='onMouseClick'>Click Me!</button>
+	</div>
+</template>
+
+
+<script type="frontend">
+
+/**
+ * Mouse click event
+ */
+async void onMouseClick(Message<MouseClickEvent> msg)
+{
+	IndexPageModel model = this.model();
+	this.commit("update", ["item", "content"], model["item", "content"] ~ "!");
+}
+
+</script>
+
+</class>
