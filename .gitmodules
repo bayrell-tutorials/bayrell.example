@@ -7,3 +7,12 @@
 [submodule "lib/Runtime.Core"]
 	path = lib/Runtime.Core
 	url = https://github.com/bayrell/Runtime.Core
+[submodule "lib/Runtime.Web.Dialog"]
+	path = lib/Runtime.Web.Dialog
+	url = https://github.com/bayrell/Runtime.Web.Dialog
+[submodule "lib/Runtime.Web.Input"]
+	path = lib/Runtime.Web.Input
+	url = https://github.com/bayrell/Runtime.Web.Input
+[submodule "lib/Runtime.Web.Button"]
+	path = lib/Runtime.Web.Button
+	url = https://github.com/bayrell/Runtime.Web.Button
