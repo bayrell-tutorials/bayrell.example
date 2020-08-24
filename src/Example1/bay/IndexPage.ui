@@ -25,10 +25,10 @@
 
 
 <template name="render">
-	<div @class='content' @key='content'>
-		<div @class='label'>@{ model["item", "content"] }</div>
-		<input @class='input' @bind=["item", "content"] /><br/>
-		<button @class='button' @event:MouseClickEvent='onMouseClick'>Click Me!</button>
+	<div class='content' @key='content'>
+		<div class='label'>@{ model["item", "content"] }</div>
+		<input class='input' @bind=["item", "content"] /><br/>
+		<button class='button' @event:MouseClickEvent='onMouseClick'>Click Me!</button>
 	</div>
 </template>
 

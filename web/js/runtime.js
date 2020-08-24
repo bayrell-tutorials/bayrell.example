@@ -311,8 +311,16 @@ Object.assign(Runtime.rtl,
 	 * Call await method
 	 * @return fn
 	 */
-	applyAwait: function(ctx, f, args)
+	applyAsync: async function(ctx, f, args)
 	{
+		await f.apply(null, args);
+	},
+	/**
+	 * Run thread
+	 */
+	runThread: function(ctx, f)
+	{
+		/*
 		args.unshift(ctx);
 		var t = new Runtime.AsyncThread(ctx, {
 			"tasks": Runtime.Collection.from([
@@ -323,12 +331,7 @@ Object.assign(Runtime.rtl,
 			])
 		});
 		Runtime.AsyncThread.run(ctx, t);
-	},
-	/**
-	 * Run thread
-	 */
-	runThread: function(ctx, f)
-	{
+		*/
 	},
 	/**
 	 * Returns value
@@ -3968,7 +3971,7 @@ Object.assign(Runtime.Monad.prototype,
 	/**
 	 * Call method on value
 	 */
-	callMethod: function(ctx, method_name, args)
+	callMethod: function(ctx, f, args)
 	{
 		if (args == undefined) args = null;
 		if (this.val === null || this.err != null)
@@ -3979,12 +3982,7 @@ Object.assign(Runtime.Monad.prototype,
 		var err = null;
 		try
 		{
-			var f = Runtime.rtl.method(ctx, this.val.getClassName(ctx), method_name);
-			if (args != null)
-			{
-				f = Runtime.rtl.apply(ctx, f, args);
-			}
-			res = f(ctx, this.val);
+			res = Runtime.rtl.apply(ctx, f, args);
 		}
 		catch (_ex)
 		{
@@ -4005,7 +4003,7 @@ Object.assign(Runtime.Monad.prototype,
 	/**
 	 * Call async method on value
 	 */
-	callMethodAsync: async function(ctx, method_name, args)
+	callMethodAsync: async function(ctx, f, args)
 	{
 		if (args == undefined) args = null;
 		if (this.val === null || this.err != null)
@@ -4016,12 +4014,7 @@ Object.assign(Runtime.Monad.prototype,
 		var err = null;
 		try
 		{
-			var f = Runtime.rtl.method(ctx, this.val.getClassName(ctx), method_name);
-			if (args != null)
-			{
-				f = Runtime.rtl.apply(ctx, f, args);
-			}
-			res = await f(ctx, this.val);
+			res = await Runtime.rtl.applyAsync(ctx, f, args);
 		}
 		catch (_ex)
 		{
@@ -10474,6 +10467,14 @@ Object.assign(Runtime.Web.Component,
 		return Runtime.Web.RenderDriver.getCssName(ctx, class_name, css_name);
 	},
 	/**
+	 * Returns css name
+	 */
+	getCssHash: function(ctx)
+	{
+		var class_name = this.getCurrentClassName(ctx);
+		return Runtime.Web.RenderDriver.getCssHashes(ctx, class_name);
+	},
+	/**
 	 * Escape attr
 	 */
 	escapeAttr: function(ctx, s)
@@ -12053,6 +12054,26 @@ Object.assign(Runtime.Web.RenderDriver,
 		var name = Runtime.rs.join(ctx, " ", arr);
 		var __memorize_value = name;
 		Runtime.rtl._memorizeSave("Runtime.Web.RenderDriver.getCssName", arguments, __memorize_value);
+		return __memorize_value;
+	},
+	/**
+	 * Returns css hash
+	 */
+	getCssHashes: function(ctx, class_name)
+	{
+		var __memorize_value = Runtime.rtl._memorizeValue("Runtime.Web.RenderDriver.getCssHashes", arguments);
+		if (__memorize_value != Runtime.rtl._memorize_not_found) return __memorize_value;
+		var class_names = Runtime.RuntimeUtils.getParents(ctx, class_name);
+		class_names = class_names.filter(ctx, (ctx, class_name) => 
+		{
+			return class_name != "Runtime.BaseObject" && class_name != "Runtime.Core.CoreObject" && class_name != "Runtime.Web.Component";
+		});
+		class_names = class_names.map(ctx, (ctx, class_name) => 
+		{
+			return "h-" + Runtime.rtl.toStr(this.getCssHash(ctx, class_name));
+		});
+		var __memorize_value = Runtime.rs.join(ctx, " ", class_names);
+		Runtime.rtl._memorizeSave("Runtime.Web.RenderDriver.getCssHashes", arguments, __memorize_value);
 		return __memorize_value;
 	},
 	/**

@@ -34,7 +34,7 @@ Object.assign(Example1.AppLayout,
 {
 	css: function(ctx, vars)
 	{
-		return "\n*{box-sizing: border-box;}body{margin:0;padding:0;}\na { text-decoration: inherit; color: #0000d0; cursor: pointer; }\na:hover, a:visited:hover { text-decoration: underline; color: red; }\na:visited { text-decoration: inherit; color: #0000d0; }\na.link { text-decoration: none; color: #0000d0; cursor: pointer; }\na.link:hover, a.link:visited:hover { text-decoration: underline; color: red; }\na.link:visited { text-decoration: none; color: #0000d0; }\nbody, html{\n\tbackground-color: #F2F2F2;\n\tfont-family: 'Ubuntu', sans-serif;\n\tfont-size: 14px;\n\twidth: 100%;\n\theight: 100vh;\n\tpadding: 0;\n\tmargin: 0;\n}\n.section-4042{\n\theight: 100vh;\n}\n.container-4042{\n\tdisplay: table;\n\tmax-width: 1200px;\n\tmargin-left: auto;\n\tmargin-right: auto;\n}\n.container-in-4042{\n\tdisplay: table-cell;\n\tvertical-align: middle;\n\ttext-align: center;\n\twidth: 100%;\n\theight: 100vh;\n}\n";
+		return "\n*{box-sizing: border-box;}body{margin:0;padding:0;}\na { text-decoration: inherit; color: #0000d0; cursor: pointer; }\na:hover, a:visited:hover { text-decoration: underline; color: red; }\na:visited { text-decoration: inherit; color: #0000d0; }\na.link { text-decoration: none; color: #0000d0; cursor: pointer; }\na.link:hover, a.link:visited:hover { text-decoration: underline; color: red; }\na.link:visited { text-decoration: none; color: #0000d0; }\nbody, html{\n\tbackground-color: #F2F2F2;\n\tfont-family: 'Ubuntu', sans-serif;\n\tfont-size: 14px;\n\twidth: 100%;\n\theight: 100vh;\n\tpadding: 0;\n\tmargin: 0;\n}\n.section.h-4042{\n\theight: 100vh;\n}\n.container.h-4042{\n\tdisplay: table;\n\tmax-width: 1200px;\n\tmargin-left: auto;\n\tmargin-right: auto;\n}\n.container-in.h-4042{\n\tdisplay: table-cell;\n\tvertical-align: middle;\n\ttext-align: center;\n\twidth: 100%;\n\theight: 100vh;\n}\n";
 	},
 	render: function(ctx, layout, model, params, content)
 	{
@@ -46,15 +46,15 @@ Object.assign(Example1.AppLayout,
 			
 			/* Element 'section' */
 			var __v0; var __v0_childs = [];
-			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "section","attrs": {"class":this.getCssName(ctx, "section"),"@key":"section-1"}}, 1);
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "section","attrs": {"class":["section", this.getCssHash()].join(" "),"@key":"section-1"}}, 1);
 			
 			/* Element 'div' */
 			var __v1; var __v1_childs = [];
-			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":this.getCssName(ctx, "container"),"@key":"container-0"}}, 0);
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["container", this.getCssHash()].join(" "),"@key":"container-0"}}, 0);
 			
 			/* Element 'div' */
 			var __v2; var __v2_childs = [];
-			[__v2, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "element", {"name": "div","attrs": {"class":this.getCssName(ctx, "container-in"),"@key":"container-in-0"}}, 0);
+			[__v2, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "element", {"name": "div","attrs": {"class":["container-in", this.getCssHash()].join(" "),"@key":"container-in-0"}}, 0);
 			[__vnull, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "component", {"name": class_name,"attrs": {"@bind":["Example1.AppLayout","page_model"],"@key":"page"}, "layout": layout}, 0);
 			RenderDriver.p(__v2, __v2_childs);
 			RenderDriver.p(__v1, __v1_childs);
@@ -161,7 +161,7 @@ Object.assign(Example1.IndexPage,
 {
 	css: function(ctx, vars)
 	{
-		return "\n.content-4445{\n\ttext-align: center;\n}\n.label-4445{\n\tpadding-bottom: 5px;\n}\n.input-4445{\n\tpadding: 5px 10px;\n}\n.button-4445{\n\tcursor: pointer;\n}\n";
+		return "\n.content.h-4445{\n\ttext-align: center;\n}\n.label.h-4445{\n\tpadding-bottom: 5px;\n}\n.input.h-4445{\n\tpadding: 5px 10px;\n}\n.button.h-4445{\n\tcursor: pointer;\n}\n";
 	},
 	render: function(ctx, layout, model, params, content)
 	{
@@ -172,19 +172,19 @@ Object.assign(Example1.IndexPage,
 			
 			/* Element 'div' */
 			var __v0; var __v0_childs = [];
-			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":this.getCssName(ctx, "content"),"@key":"content"}}, 0);
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["content", this.getCssHash()].join(" "),"@key":"content"}}, 0);
 			
 			/* Element 'div' */
 			var __v1; var __v1_childs = [];
-			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":this.getCssName(ctx, "label"),"@key":"label-0"}}, 0);
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["label", this.getCssHash()].join(" "),"@key":"label-0"}}, 0);
 			[__vnull, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "text", {"content": Runtime.rtl.attr(ctx, model, ["item", "content"])}, 0);
 			RenderDriver.p(__v1, __v1_childs);
-			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "input","attrs": {"@bind":["Example1.IndexPage",Runtime.Collection.from(["item","content"])],"class":this.getCssName(ctx, "input"),"@key":"input-1"}}, 1, false);
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "input","attrs": {"@bind":["Example1.IndexPage",Runtime.Collection.from(["item","content"])],"class":["input", this.getCssHash()].join(" "),"@key":"input-1"}}, 1, false);
 			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null}, 2, false);
 			
 			/* Element 'button' */
 			var __v2; var __v2_childs = [];
-			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["Example1.IndexPage","onMouseClick"],"class":this.getCssName(ctx, "button"),"@key":"button-3"}}, 3);
+			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["Example1.IndexPage","onMouseClick"],"class":["button", this.getCssHash()].join(" "),"@key":"button-3"}}, 3);
 			[__vnull, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "text", {"content": "Click Me!"}, 0);
 			RenderDriver.p(__v2, __v2_childs);
 			RenderDriver.p(__v0, __v0_childs);
@@ -469,7 +469,6 @@ Object.assign(Example1.ModuleDescription,
 		var page_model = new Example1.IndexPageModel(ctx, Runtime.Dict.from({"item":Runtime.Dict.from({"content":"Hello world"})}));
 		var layout = new Runtime.Web.LayoutModel(ctx, Runtime.Dict.from({"title":"Example1","page_class":"Example1.IndexPage","page_model":page_model}));
 		render.renderLayout(ctx, layout);
-		/* RenderDriver.renderPage("/"); */
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()

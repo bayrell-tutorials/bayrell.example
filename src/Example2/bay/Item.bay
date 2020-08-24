@@ -1,0 +1,9 @@
+namespace App.Model;
+
+use Runtime.CoreStruct;
+use App.Model.Item;
+
+struct Item extends CoreStruct
+{
+	string name = "";
+}

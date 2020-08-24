@@ -11,9 +11,9 @@ use Runtime.Web.LayoutModel;
 use Runtime.Web.RenderController;
 use Runtime.Web.RenderDriver;
 use Runtime.Web.RouteController;
-use Example1.AppLayout;
-use Example1.IndexPage;
-use Example1.IndexPageModel;
+use Example2.AppLayout;
+use Example2.IndexPage;
+use Example2.IndexPageModel;
 
 
 class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
@@ -23,7 +23,7 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 	 * Returns module name
 	 * @return string
 	 */
-	pure string getModuleName() => "Example1";
+	pure string getModuleName() => "Example2";
 	
 	
 	
@@ -162,10 +162,12 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 		
 		IndexPageModel page_model = new IndexPageModel
 		{
-			"item":
-			{
-				"content": "Hello world",
-			}
+			"items": 
+			[
+				new Item { "name": "Item1" },
+				new Item { "name": "Item2" },
+				new Item { "name": "Item3" },
+			],
 		};
 		
 		LayoutModel layout = new LayoutModel

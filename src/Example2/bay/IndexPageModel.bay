@@ -1,0 +1,22 @@
+namespace App.Model;
+
+use Runtime.CoreStruct;
+use Runtime.Web.Dialog.DialogModel;
+use App.Model.Item;
+
+struct IndexPageModel extends CoreStruct
+{
+	string content = "";
+	Collection<Item> items = new Collection<Item>();
+	int selected_index = -1;
+	DialogModel dialog = new DialogModel();
+	
+	Item edit_item = null;
+	
+	
+	/**
+	 * Return selected item
+	 */
+	pure Item getSelectedItem(IndexPageModel model) => model.items.get(model.selected_index, null);
+	
+}
