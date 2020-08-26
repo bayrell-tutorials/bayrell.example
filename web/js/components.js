@@ -321,7 +321,7 @@ Object.assign(Runtime.Web.Dialog.Dialog.prototype,
 		{
 			if (this.model.input == "")
 			{
-				this.commit(ctx, "setError", ctx.constructor.translate(ctx, ctx, "Runtime.Web.Dialog", "Type input"));
+				this.updateModel(ctx, "setError", ctx.constructor.translate(ctx, ctx, "Runtime.Web.Dialog", "Type input"));
 				return false;
 			}
 		}
@@ -335,8 +335,8 @@ Object.assign(Runtime.Web.Dialog.Dialog.prototype,
 		var e = msg.data;
 		if (e.keyCode == 13)
 		{
-			this.commit(ctx, "setInput", e.value);
-			this.commit(ctx, "setError", "");
+			this.updateModel(ctx, "setInput", e.value);
+			this.updateModel(ctx, "setError", "");
 			this.pressButton(ctx, Runtime.Web.Dialog.DialogModel.BUTTON_RESULT_OK);
 		}
 	},
