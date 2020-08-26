@@ -1,11 +1,11 @@
 {
-	"name": "App",
+	"name": "Example2",
 	"files":
 	[
 		"AppLayout",
 		"IndexPage",
 		"IndexPageModel",
-		"Routes",
+		"Item",
 		"ModuleDescription"
 	]
 }

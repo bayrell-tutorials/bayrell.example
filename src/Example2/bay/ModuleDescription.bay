@@ -1,4 +1,4 @@
-namespace Example1;
+namespace Example2;
 
 use Runtime.Interfaces.AssetsInterface;
 use Runtime.Interfaces.ModuleDescriptionInterface;
@@ -14,6 +14,7 @@ use Runtime.Web.RouteController;
 use Example2.AppLayout;
 use Example2.IndexPage;
 use Example2.IndexPageModel;
+use Example2.Item;
 
 
 class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
@@ -84,7 +85,7 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 		{
 			"name": RenderDriver::LAYOUT_CHAIN,
 			"pos": 10,
-			"value": "Example1.ModuleDescription::chainLayoutModel",
+			"value": "Example2.ModuleDescription::chainLayoutModel",
 		},
 		
 		/* Register RouteController */
@@ -164,15 +165,16 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 		{
 			"items": 
 			[
-				new Item { "name": "Item1" },
-				new Item { "name": "Item2" },
-				new Item { "name": "Item3" },
+				new Item { "id": 1, "name": "Item1" },
+				new Item { "id": 2, "name": "Item2" },
+				new Item { "id": 3, "name": "Item3" },
 			],
+			"next_id": 3,
 		};
 		
 		LayoutModel layout = new LayoutModel
 		{
-			"title": "Example1",
+			"title": "Example2",
 			"page_class": classof IndexPage,
 			"page_model": page_model,
 		};

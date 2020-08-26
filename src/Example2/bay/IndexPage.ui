@@ -8,14 +8,17 @@
 <use name="Runtime.Web.Button.Button" component="true" />
 <use name="Runtime.Web.Dialog.Dialog" component="true" />
 <use name="Runtime.Web.Dialog.DialogEvent" />
+<use name="Runtime.Web.Events.ChangeEvent" />
 <use name="Runtime.Web.Events.MouseClickEvent" />
 <use name="Runtime.Web.Input.Input" component="true" />
 <use name="Example2.IndexPageModel" />
+<use name="Example2.Item" />
 
 <style>
 %content{
 	text-align: center;
 	padding-top: 20px;
+	width: 500px;
 }
 %menu{
 	padding-bottom: 10px;
@@ -48,7 +51,6 @@
 %item{
 	padding: 10px;
 	cursor: pointer;
-	
 }
 %item.active{
 	background-color: blue;
@@ -80,42 +82,44 @@
 		</div>
 		
 		<div class='list'>
-		%for (int i=0; i<model.items.count(); i++)
-		{
-			%var Item item = model.items[i];
-			<div class={ model.selected_index == i ? 'active' : '' ~ " item" } 
-				@key={ i } data-index={ i }
-				@event:MouseClickEvent='onItemClick'
-			>
-				<div class='item-content'>{ item.name }</div>
-				<div class='rm-button'>
-					<button @event:MouseClickEvent='onRemoveClick' data-index={ index }>
-						Remove
-					</button>
+			%for (int i=0; i<model.items.count(); i++)
+			{
+				%var Item item = model.items[i];
+				<div class="item" class={ model.selected_id == item.id ? 'active' : '' } data-index={ i }
+					@event:MouseClickEvent='onItemClick'
+				>
+					<div class='item-content'>{ item.name }</div>
+					<div class='rm-button'>
+						<Button @event:MouseClickEvent='onRemoveClick' @tag={ i }>
+							Remove
+						</Button>
+					</div>
 				</div>
-			</div>
-		}
+			}
 		</div>
 		
 		<div class='info'>
-			<div class='field'>
-				<div class='field_label'>Name</div>
-				<div class='field_edit'>
-					<input field_name='name' @event:ChangeEvent='onInputChange' 
-						@model={ edit_item != null ? edit_item.name : "" }
-						attrs=@json{  {"field_name": "name"}  } class='input'
-					/>
+			%if (model.edit_item != null)
+			{
+				<div class='field'>
+					<div class='field_label'>Name</div>
+					<div class='field_edit'>
+						<input field_name='name' @event:ChangeEvent='onInputChange' 
+							value={ model["edit_item", "name"] }
+							attrs=@json{  {"field_name": "name"}  } class='input'
+						/>
+					</div>
 				</div>
-			</div>
-			<div class='info_buttons'>
-				<Button @event:MouseClickEvent='onSaveClick'>Save</Button>
-			</div>
+				<div class='info_buttons'>
+					<Button @event:MouseClickEvent='onSaveClick'>Save</Button>
+				</div>
+			}
 		</div>
-		
+	</div>
+	<div class='dialogs'>
 		<Dialog @bind="dialog" @ref="dialog" style="promt" 
 			@event:DialogEvent="onDialogEvent"
 		/>
-		
 	</div>
 </template>
 
@@ -131,7 +135,7 @@ Dialog dialog = null;
  */
 async void onAddClick(Message<MouseClickEvent> msg)
 {
-	this.dialog.commit
+	this.dialog.updateModel
 	(
 		"show",
 		{
@@ -147,16 +151,16 @@ async void onAddClick(Message<MouseClickEvent> msg)
  */
 async void onInputChange(Message<ChangeEvent> msg)
 {
-	if (this.model.edit_item == null) return;
+	IndexPageModel model = this.model();
+	if (model.edit_item == null) return;
 	
-	string field_name = e.target.@getAttribute("field_name");
-	string value = e.value;
+	string field_name = msg.data.target.@getAttribute("field_name");
+	string value = msg.data.value;
 	
-	Item edit_item = this.model.edit_item;
+	Item edit_item = model.edit_item;
 	edit_item = edit_item.copy( (new Map()).set(field_name, value) );
 	
-	this.commit("update", "edit_item", edit_item);
-	/* log(this.model.selected_index); */
+	this.updateModel("setAttr", "edit_item", edit_item);
 }
 
 
@@ -166,7 +170,11 @@ async void onInputChange(Message<ChangeEvent> msg)
  */
 async void onDialogEvent(Message<DialogEvent> msg)
 {
-	this.commit("update", "items", this.model.items.pushIm( new Item { "name": e.input } ));
+	if (msg.data.button_result == "ok")
+	{
+		this.updateModel("addItem", new Item { "name": msg.data.input, "id": this.model().next_id + 1 });
+		this.updateModel("incNextId");
+	}
 }
 
 
@@ -176,15 +184,15 @@ async void onDialogEvent(Message<DialogEvent> msg)
  */
 async void onItemClick(Message<MouseClickEvent> msg)
 {
-	string index = e.target.@getAttribute("data-index");
+	IndexPageModel model = this.model();
+	string index = msg.data.target.@getAttribute("data-index");
 	
-	/* log(this.model.items[0]); */
-	
-	this.commit("change", {
-		"selected_index": (int) index,
-		"edit_item": this.model.items.get(index, null),
+	this.updateModel("update", {
+		"selected_id": model.items[index].id,
+		"edit_item": model.items.get(index, null),
 	});
 }
+
 
 
 /**
@@ -192,15 +200,17 @@ async void onItemClick(Message<MouseClickEvent> msg)
  */
 async void onSaveClick(Message<MouseClickEvent> msg)
 {
-	int index = this.model.selected_index;
-	if (index < 0 or index >= this.model.items.count())
+	IndexPageModel model = this.model();
+	
+	int index = model.getSelectedIndex();
+	if (index == -1)
 	{
 		return;
 	}
 	
 	/* Edit item */
-	Item edit_item = this.model.edit_item;
-	this.commit("update", "items", this.model.items.setIm(index, edit_item));
+	Item edit_item = model.edit_item;
+	this.updateModel("setItemByIndex", index, edit_item);
 }
 
 
@@ -210,13 +220,20 @@ async void onSaveClick(Message<MouseClickEvent> msg)
  */
 async void onRemoveClick(Message<MouseClickEvent> msg)
 {
+	IndexPageModel model = this.model();
 	msg.cancel();
 	
-	int index = (int) e.target.@getAttribute("data-index");
-	if (index == -1) return;
+	int index = (int) msg.data.target.params.get("@tag", -1);
+	if (index == -1 and index >= model.items.count()) return;
+	
+	Item item = model.items[index];
 	
 	/* Remove item */
-	this.commit("update", "items", this.model.items.removeIm(index));
+	this.updateModel("removeItemByIndex", index);
+	if (item == model.edit_item)
+	{
+		this.updateModel("copy", { "edit_item": null });
+	}
 }
 </script>
 

@@ -1,6 +1,6 @@
 <class version="1.0"
-	name="Example1.AppLayout" extends="Runtime.Web.Component" 
-	module="Example1" model="Runtime.Web.LayoutModel"
+	name="Example2.AppLayout" extends="Runtime.Web.Component" 
+	module="Example2" model="Runtime.Web.LayoutModel"
 >
 
 <style>

@@ -15,11 +15,31 @@
 			"websocket": true
 		},
 		{
-			"dest": "web/js/app.js",
+			"dest": "web/js/components.js",
+			"lang": "es6",
+			"modules":
+			[
+				"Runtime.Web.Button",
+				"Runtime.Web.Dialog",
+				"Runtime.Web.Input"
+			],
+			"websocket": true
+		},
+		{
+			"dest": "web/js/example1.js",
 			"lang": "es6",
 			"modules":
 			[
 				"Example1"
+			],
+			"websocket": true
+		},
+		{
+			"dest": "web/js/example2.js",
+			"lang": "es6",
+			"modules":
+			[
+				"Example2"
 			],
 			"websocket": true
 		}

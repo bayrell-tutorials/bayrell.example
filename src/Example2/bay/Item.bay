@@ -1,9 +1,10 @@
-namespace App.Model;
+namespace Example2;
 
-use Runtime.CoreStruct;
-use App.Model.Item;
+use Runtime.BaseStruct;
 
-struct Item extends CoreStruct
+
+struct Item extends BaseStruct
 {
+	int id = 0;
 	string name = "";
 }

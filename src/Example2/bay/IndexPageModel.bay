@@ -1,22 +1,71 @@
-namespace App.Model;
+namespace Example2;
 
-use Runtime.CoreStruct;
+use Runtime.lib;
+use Runtime.BaseStruct;
 use Runtime.Web.Dialog.DialogModel;
-use App.Model.Item;
+use Example2.Item;
 
-struct IndexPageModel extends CoreStruct
+
+struct IndexPageModel extends BaseStruct
 {
-	string content = "";
 	Collection<Item> items = new Collection<Item>();
-	int selected_index = -1;
 	DialogModel dialog = new DialogModel();
-	
 	Item edit_item = null;
+	int selected_id = -1;
+	int next_id = 0;
 	
 	
 	/**
 	 * Return selected item
 	 */
-	pure Item getSelectedItem(IndexPageModel model) => model.items.get(model.selected_index, null);
+	Item getSelectedItem() =>
+		(this.items != null) ?
+			this.items.findItem( lib::equalAttr("id", this.selected_id) )
+		: null
+	;
+	
+	
+	
+	/**
+	 * Return selected index
+	 */
+	int getSelectedIndex() =>
+		(this.items != null) ?
+			this.items.find( lib::equalAttr("id", this.selected_id) )
+		: -1
+	;
+	
+	
+	
+	/**
+	 * Increment next id
+	 */
+	IndexPageModel incNextId() => this.copy{ "next_id": this.next_id + 1 };
+	
+	
+	
+	/**
+	 * Add new item
+	 */
+	pure IndexPageModel addItem(IndexPageModel model, Item item) =>
+		(model.items != null) ? rtl::setAttr(model, "items", model.items.pushIm(item)) : model
+	;
+	
+	
+	/**
+	 * Set new item
+	 */
+	pure IndexPageModel setItemByIndex(IndexPageModel model, int index, Item item) =>
+		(model.items != null) ? rtl::setAttr(model, "items", model.items.setIm(index, item)) : model
+	;
+	
+	
+	
+	/**
+	 * Remove item
+	 */
+	pure IndexPageModel removeItemByIndex(IndexPageModel model, int index) =>
+		(model.items != null) ? rtl::setAttr(model, "items", model.items.removeIm(index)) : model
+	;
 	
 }
