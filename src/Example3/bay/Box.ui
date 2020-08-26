@@ -1,0 +1,104 @@
+<class version="1.0"
+	name="Example3.Box" extends="Runtime.Web.Component" 
+	module="Example3" model="Example3.BoxModel"
+>
+
+<use name="Runtime.Core.Message" />
+<use name="Runtime.Web.LayoutModel" />
+<use name="Runtime.Web.RenderDriver" />
+<use name="Runtime.Web.Events.ChangeEvent" />
+<use name="Runtime.Web.Events.MouseClickEvent" />
+<use name="Runtime.Web.Events.MouseDownEvent" />
+<use name="Runtime.Web.Events.MouseMoveEvent" />
+<use name="Runtime.Web.Events.MouseUpEvent" />
+<use name="Example3.BoxModel" />
+
+
+<style>
+%box{
+	position: absolute;
+	width: 100px;
+	height: 100px;
+}
+</style>
+
+
+<template name="render">
+	<div class='box' style={{
+			"top": model.y ~ "px",
+			"left": model.x ~ "px",
+			"background-color": model.color,
+			"cursor": model.move ? "grabbing" : "default",
+		}}
+		@ref='box' @event:MouseDownEvent="onMouseDown"></div>
+</template>
+
+
+<script type="frontend">
+
+var box;
+
+
+/**
+ * Created component
+ */
+public void onCreated()
+{
+	this.driver.registerGlobalListener(classof MouseMoveEvent, this.getObjectName(), "onMouseMove");
+	this.driver.registerGlobalListener(classof MouseUpEvent, this.getObjectName(), "onMouseUp");
+}
+
+
+
+/**
+ * On mouse move
+ */
+public void onMouseDown(Message<MouseDownEvent> msg)
+{
+	MouseDownEvent e = msg.data;
+	msg.cancel();
+	
+	int shift_x = e.offsetX;
+	int shift_y = e.offsetY;
+	Dict rect = RenderDriver::getRect(e.target);
+	
+	this.updateModel("copy", {
+		"move": true,
+		"shift_x": shift_x,
+		"shift_y": shift_y,
+	});
+}
+
+
+
+/**
+ * On mouse move
+ */
+public void onMouseUp(Message<MouseUpEvent> msg)
+{
+	this.updateModel("copy", {
+		"move": false,
+	});
+}
+
+
+/**
+ * On mouse move
+ */
+public void onMouseMove(Message<MouseMoveEvent> msg)
+{
+	MouseDownEvent e = msg.data;
+	BoxModel model = this.model();
+	if (model.move)
+	{
+		this.updateModel("copy", {
+			"x": e.pageX - model.shift_x,
+			"y": e.pageY - model.shift_y,
+		});
+	}
+}
+ 
+ 
+</script>
+
+</class>

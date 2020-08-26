@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Example 3</title>
+
+<style>
+*{box-sizing: border-box;}body{margin:0;padding:0;}
+a { text-decoration: inherit; color: #0000d0; cursor: pointer; }
+a:hover, a:visited:hover { text-decoration: underline; color: red; }
+a:visited { text-decoration: inherit; color: #0000d0; }
+a.link { text-decoration: none; color: #0000d0; cursor: pointer; }
+a.link:hover, a.link:visited:hover { text-decoration: underline; color: red; }
+a.link:visited { text-decoration: none; color: #0000d0; }
+body, html{
+	background-color: #F2F2F2;
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 14px;
+	width: 100%;
+	height: 100vh;
+	padding: 0;
+	margin: 0;
+}
+.section.h-4b42{
+	height: 100vh;
+}
+.container.h-4b42{
+	display: table;
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.container-in.h-4b42{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	width: 100%;
+	height: 100vh;
+}
+
+.box.h-0a4b{
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	cursor: pointer;
+}
+
+.app.h-4645{
+	position: relative;
+	width: 100%;
+	height: 100hv;
+}
+</style>
+
+</head>
+<body>
+
+<div class="root">
+	<div class="app h-4645">
+		<div style="top: 10px;left: 50px;background-color: rebeccapurple" class="box box1 h-0a4b"></div>
+		<div style="top: 10px;left: 250px;background-color: darkviolet" class="box box2 h-0a4b"></div>
+	</div>
+</div>
+
+
+<script type='text/javascript'>
+
+var elem = null;
+var is_move = false;
+var shift_x = 0;
+var shift_y = 0;
+var animation_id = null;
+var new_x = 0;
+var new_y = 0;
+
+function render()
+{
+	if (elem)
+	{
+		elem.style.left = new_x + "px";
+		elem.style.top = new_y + "px";
+	}
+	animation_id = null;
+	console.log("animate");
+}
+
+function js_event(e)
+{
+	if (e.type == "mousedown")
+	{
+		elem = e.target;
+		shift_x = e.offsetX;
+		shift_y = e.offsetY;
+		is_move = true;
+		console.log("down");
+	}
+	else if (e.type == "mousemove" && is_move)
+	{
+		console.log("move");
+		new_x = e.pageX - shift_x;
+		new_y = e.pageY - shift_y;
+		if (animation_id == null)
+		{
+			animation_id = requestAnimationFrame(render);
+		}
+	}
+	else if (e.type == "mouseup")
+	{
+		is_move = false;
+		console.log("up");
+	}
+}
+
+
+var body = document.getElementsByTagName("body")[0];
+
+var box1 = document.querySelector(".box1");
+box1.addEventListener("mousedown", js_event);
+
+var box2 = document.querySelector(".box2");
+box2.addEventListener("mousedown", js_event);
+
+body.addEventListener("mouseup", js_event);
+body.addEventListener("mousemove", js_event);
+
+</script>
+
+
+</body>
+</html>

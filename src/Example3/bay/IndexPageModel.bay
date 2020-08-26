@@ -1,0 +1,13 @@
+namespace Example3;
+
+use Runtime.lib;
+use Runtime.BaseStruct;
+use Runtime.Web.Dialog.DialogModel;
+use Example3.BoxModel;
+
+
+struct IndexPageModel extends BaseStruct
+{
+	BoxModel box1 = new BoxModel{ "x": 50, "y": 10, "color": "rebeccapurple" };
+	BoxModel box2 = new BoxModel{ "x": 250, "y": 10, "color": "darkviolet" };
+}

@@ -1,0 +1,13 @@
+{
+	"name": "Example3",
+	"files":
+	[
+		"AppLayout",
+		"Box",
+		"BoxModel",
+		"IndexPage",
+		"IndexPageModel",
+		"Item",
+		"ModuleDescription"
+	]
+}

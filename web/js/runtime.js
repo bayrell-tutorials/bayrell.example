@@ -1606,6 +1606,20 @@ Object.assign(Runtime.lib,
 		};
 	},
 	/**
+	 * Sort asc
+	 */
+	sortAsc: function(ctx, a, b)
+	{
+		return (a > b) ? (1) : ((a < b) ? (-1) : (0));
+	},
+	/**
+	 * Sort desc
+	 */
+	sortDesc: function(ctx, a, b)
+	{
+		return (a > b) ? (-1) : ((a < b) ? (1) : (0));
+	},
+	/**
 	 * Convert monad by type
 	 */
 	to: function(ctx, type_value, def_value)
@@ -9861,7 +9875,39 @@ Object.assign(Runtime.Core.ObjectManager.prototype,
 	{
 		if (!this.drivers.has(ctx, object_name))
 		{
+			var obj = this.objects.get(ctx, object_name, null);
+			if (obj != null && obj.parent != null)
+			{
+				obj.parent.childs.remove(ctx, obj);
+				obj.parent = null;
+			}
 			this.objects.remove(ctx, object_name);
+		}
+	},
+	/**
+	 * Remove object
+	 */
+	removeObjectRecursive: function(ctx, object_name)
+	{
+		var keys = null;
+		keys = this.objects.keys(ctx);
+		keys = keys.filter(ctx, (ctx, item_name) => 
+		{
+			return Runtime.rs.strpos(ctx, item_name, object_name) == 0;
+		}).sortIm(ctx, Runtime.lib.sortDesc);
+		for (var i = 0;i < keys.count(ctx);i++)
+		{
+			var name = Runtime.rtl.get(ctx, keys, i);
+			this.removeObject(ctx, name);
+		}
+		/* Remove listeners */
+		for (var i = this.listeners.count(ctx) - 1;i >= 0;i--)
+		{
+			var item = Runtime.rtl.get(ctx, this.listeners, i);
+			if (Runtime.rs.strpos(ctx, Runtime.rtl.get(ctx, item, "from"), object_name) == 0 || Runtime.rs.strpos(ctx, Runtime.rtl.get(ctx, item, "object_name"), object_name) == 0)
+			{
+				this.listeners.remove(ctx, i);
+			}
 		}
 	},
 	/**
@@ -10516,9 +10562,36 @@ Object.assign(Runtime.Web.Component.prototype,
 	{
 		return Runtime.Collection.from([]);
 	},
+	/**
+	 * Update component
+	 */
+	update: function(ctx, created)
+	{
+		if (created)
+		{
+			this.onCreated(ctx);
+		}
+		else
+		{
+			this.onUpdated(ctx);
+		}
+	},
+	/**
+	 * On component created
+	 */
+	onCreated: function(ctx)
+	{
+	},
+	/**
+	 * On component updated
+	 */
+	onUpdated: function(ctx)
+	{
+	},
 	_init: function(ctx)
 	{
 		this.path_id = "";
+		this.driver = null;
 		this.controller = null;
 		this.params = null;
 		this.model_path = Runtime.Collection.from([]);
@@ -10529,6 +10602,7 @@ Object.assign(Runtime.Web.Component.prototype,
 		if (o instanceof Runtime.Web.Component)
 		{
 			this.path_id = o.path_id;
+			this.driver = o.driver;
 			this.controller = o.controller;
 			this.params = o.params;
 			this.model_path = o.model_path;
@@ -10538,6 +10612,7 @@ Object.assign(Runtime.Web.Component.prototype,
 	assignValue: function(ctx,k,v)
 	{
 		if (k == "path_id")this.path_id = v;
+		else if (k == "driver")this.driver = v;
 		else if (k == "controller")this.controller = v;
 		else if (k == "params")this.params = v;
 		else if (k == "model_path")this.model_path = v;
@@ -10547,6 +10622,7 @@ Object.assign(Runtime.Web.Component.prototype,
 	{
 		if (d == undefined) d = null;
 		if (k == "path_id")return this.path_id;
+		else if (k == "driver")return this.driver;
 		else if (k == "controller")return this.controller;
 		else if (k == "params")return this.params;
 		else if (k == "model_path")return this.model_path;
@@ -10667,6 +10743,7 @@ Object.assign(Runtime.Web.Component,
 		if ((f|2)==2)
 		{
 			a.push("path_id");
+			a.push("driver");
 			a.push("controller");
 			a.push("params");
 			a.push("model_path");
@@ -10679,6 +10756,13 @@ Object.assign(Runtime.Web.Component,
 		var Dict = Runtime.Dict;
 		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
 		if (field_name == "path_id") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.Component",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "driver") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Component",
 			"name": field_name,
@@ -11282,7 +11366,7 @@ Object.assign(Runtime.Web.RenderController.prototype,
 	 */
 	getPath: function(ctx)
 	{
-		return "";
+		return this.object_name;
 	},
 	/**
 	 * Returns model path
@@ -11333,16 +11417,20 @@ Object.assign(Runtime.Web.RenderController.prototype,
 	 */
 	getComponent: function(ctx, path_id, class_name)
 	{
+		if (class_name == undefined) class_name = "";
 		if (!this.components.has(ctx, path_id))
 		{
 			return null;
 		}
 		var component = this.components.item(ctx, path_id);
-		var component_class_name = component.getClassName(ctx);
-		var component_parents = Runtime.RuntimeUtils.getParents(ctx, component_class_name);
-		if (component_class_name != class_name && component_parents.indexOf(ctx, class_name) == -1)
+		if (class_name != "")
 		{
-			return null;
+			var component_class_name = component.getClassName(ctx);
+			var component_parents = Runtime.RuntimeUtils.getParents(ctx, component_class_name);
+			if (component_class_name != class_name && component_parents.indexOf(ctx, class_name) == -1)
+			{
+				return null;
+			}
 		}
 		return component;
 	},
@@ -11383,6 +11471,21 @@ Object.assign(Runtime.Web.RenderController.prototype,
 	{
 		if (created == undefined) created = false;
 		this.updated_components.push(ctx, Runtime.Dict.from({"component":component,"created":created}));
+	},
+	/**
+	 * Remove component recursive
+	 */
+	removeComponentsRecursive: function(ctx, path_id)
+	{
+		var keys = this.components.keys(ctx);
+		for (var i = 0;i < keys.count(ctx);i++)
+		{
+			var item_name = Runtime.rtl.get(ctx, keys, i);
+			if (Runtime.rs.strpos(ctx, item_name, path_id) == 0)
+			{
+				this.components.remove(ctx, item_name);
+			}
+		}
 	},
 	/**
 	 * Returns model path from @bind value
@@ -11432,18 +11535,6 @@ Object.assign(Runtime.Web.RenderController.prototype,
 	{
 		var msg = new Runtime.Core.Message(ctx, event, path_id);
 		await ctx.object_manager.handleMessage(ctx, msg);
-	},
-	/**
-	 * Update elem params
-	 */
-	js_event: function(e)
-	{
-		var ctx = Runtime.RuntimeUtils.getContext();
-		var path_id = e.currentTarget._path_id;
-		var event = Runtime.Web.Events.WebEvent.fromEvent(ctx, e);
-		
-		/* Send signal */
-		(async () => { await this.signal(ctx, path_id, event); })();
 	},
 	/**
 	 * Start driver
@@ -11502,7 +11593,7 @@ Object.assign(Runtime.Web.RenderController.prototype,
 		this.animation_id = null;
 		this.updated_components = new Runtime.Vector(ctx);
 		this.remove_keys = new Runtime.Vector(ctx);
-		var root_control = new Runtime.Web.RenderDriverControl(ctx, Runtime.Dict.from({"ctx":ctx,"controller":this,"component":this,"parent_elem":this.root_elem,"path_id":""}));
+		var root_control = new Runtime.Web.RenderDriverControl(ctx, Runtime.Dict.from({"ctx":ctx,"controller":this,"component":this,"parent_elem":this.root_elem,"path_id":this.getPath(ctx),"driver":this.parent}));
 		var res = RenderDriver.e
 		(
 			root_control, [],
@@ -11511,12 +11602,20 @@ Object.assign(Runtime.Web.RenderController.prototype,
 				"name": this.layout.layout_class,
 				"attrs": {
 					"@bind": ["Runtime.Web.RenderController", []],
-					"@key":""
+					"@key": ""
 				},
 			},
 			0
 		);
 		RenderDriver.p(root_control, res[1]);
+		
+		/* Remove objects */
+		for (var i=0; i<this.remove_keys.count(); i++)
+		{
+			var path_id = this.remove_keys[i];
+			this.removeComponentsRecursive(ctx, path_id);
+			this.manager.removeObjectRecursive(ctx, path_id);
+		}
 		
 		/* Add new css */
 		if (this.new_css != this.old_css)
@@ -11557,6 +11656,11 @@ Object.assign(Runtime.Web.RenderController.prototype,
 				{
 					value = this.getBindModelValue(ctx, path_id, value);
 				}
+				if (key == "@ref")
+				{
+					this.setReference(ctx, path_id, value, elem);
+					continue;
+				}
 				if (key == "value" || key == "@bind")
 				{
 					if (elem.tagName == "INPUT" || elem.tagName == "SELECT" || elem.tagName == "TEXTAREA")
@@ -11566,6 +11670,11 @@ Object.assign(Runtime.Web.RenderController.prototype,
 					}
 				}
 				if (key[0] == "@") continue;
+				if (key == "style" && value instanceof Runtime.Dict)
+				{
+					value = value.transition(ctx, (ctx, v, k)=>{ return k + ": " + v; });
+					value = Runtime.rs.join(ctx, ";", value);
+				}
 				if (elem.getAttribute(key) != value)
 				{
 					elem.setAttribute(key, Runtime.rs.trim(ctx, value));
@@ -11672,7 +11781,7 @@ Object.assign(Runtime.Web.RenderController.prototype,
 						ctx.registerListener(ctx, path_id, event_class_name, component.getObjectName(), callback);
 						
 						/* Register event listener */
-						elem.addEventListener(es6_name, this.js_event.bind(this));
+						elem.addEventListener(es6_name, Runtime.Web.RenderDriver.js_event);
 					}
 				}
 			}
@@ -11737,7 +11846,7 @@ Object.assign(Runtime.Web.RenderController.prototype,
 			if (new_childs.indexOf(e) == -1)
 			{
 				parent_elem.removeChild(e);
-				this.remove_keys.push(e._key);
+				this.remove_keys.push(null, e._path_id);
 				/* console.log('Remove child ', i); */
 			}
 			i--;
@@ -11799,9 +11908,9 @@ Object.assign(Runtime.Web.RenderController.prototype,
 			
 			if (flag)
 			{
-				var index = this.remove_keys.indexOf(new_e._key);
+				var index = this.remove_keys.indexOf(null, new_e._path_id);
 				if (index != -1)
-					this.remove_keys.splice(index, 1);
+					this.remove_keys.remove(null, index, 1);
 			}
 			
 			prevElem = new_e;
@@ -12081,20 +12190,59 @@ Object.assign(Runtime.Web.RenderDriver.prototype,
 	startDriver: async function(ctx)
 	{
 	},
+	/**
+	 * Bind es6 event
+	 */
+	bindGlobalEvent: function(ctx, event_class_name)
+	{
+		if (!this.listen_events.has(ctx, event_class_name))
+		{
+			var body = document.getElementsByTagName("body")[0];
+			body._path_id = this.getObjectName();
+			var event_class = use(event_class_name);
+			if (event_class == undefined) return false;
+			
+			var es6_name = event_class.ES6_EVENT_NAME;
+			if (es6_name == undefined) return false;
+			
+			body.addEventListener(es6_name, Runtime.Web.RenderDriver.js_event);
+			this.listen_events.set(ctx, event_class_name, true);
+		}
+		return true;
+	},
+	/**
+	 * Start listen event
+	 */
+	registerGlobalListener: function(ctx, event_class_name, object_name, method_name)
+	{
+		if (method_name == undefined) method_name = "";
+		if (this.bindGlobalEvent(ctx, event_class_name))
+		{
+			ctx.registerListener(ctx, this.getObjectName(ctx), event_class_name, object_name, method_name);
+		}
+	},
+	_init: function(ctx)
+	{
+		this.listen_events = new Runtime.Map(ctx);
+		Runtime.Core.CoreDriver.prototype._init.call(this,ctx);
+	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof Runtime.Web.RenderDriver)
 		{
+			this.listen_events = o.listen_events;
 		}
 		Runtime.Core.CoreDriver.prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		Runtime.Core.CoreDriver.prototype.assignValue.call(this,ctx,k,v);
+		if (k == "listen_events")this.listen_events = v;
+		else Runtime.Core.CoreDriver.prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
+		if (k == "listen_events")return this.listen_events;
 		return Runtime.Core.CoreDriver.prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -12106,6 +12254,21 @@ Object.assign(Runtime.Web.RenderDriver, Runtime.Core.CoreDriver);
 Object.assign(Runtime.Web.RenderDriver,
 {
 	LAYOUT_CHAIN: "Runtime.Web.RenderDriver::LAYOUT_CHAIN",
+	/**
+	 * JS Event
+	 */
+	js_event: function(e)
+	{
+		var ctx = Runtime.RuntimeUtils.getContext();
+		var path_id = e.currentTarget._path_id;
+		var event = Runtime.Web.Events.WebEvent.fromEvent(ctx, e);
+		
+		/* Send signal */
+		(async () => {
+			var msg = new Runtime.Core.Message(ctx, event, path_id);
+			await ctx.object_manager.handleMessage(ctx, msg);
+		})();
+	},
 	/**
 	 * Retuns css hash
 	 * @param string component class name
@@ -12286,6 +12449,21 @@ Object.assign(Runtime.Web.RenderDriver,
 		layout = __v0.value(ctx);
 		return layout;
 	},
+	/**
+	 * Returns rect of elem
+	 */
+	getRect: function(ctx, elem)
+	{
+		var x = 0;
+		var y = 0;
+		var w = 0;
+		var h = 0;
+		x = elem.offsetLeft;
+		y = elem.offsetTop;
+		w = elem.clientWidth;
+		h = elem.clientHeight;
+		return Runtime.Dict.from({"x":x,"y":y,"w":w,"h":h});
+	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -12316,6 +12494,10 @@ Object.assign(Runtime.Web.RenderDriver,
 	{
 		var a = [];
 		if (f==undefined) f=0;
+		if ((f|2)==2)
+		{
+			a.push("listen_events");
+		}
 		return Runtime.Collection.from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -12324,6 +12506,13 @@ Object.assign(Runtime.Web.RenderDriver,
 		var Dict = Runtime.Dict;
 		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
 		if (field_name == "LAYOUT_CHAIN") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RenderDriver",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "listen_events") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriver",
 			"name": field_name,
@@ -12532,7 +12721,7 @@ Object.assign(Runtime.Web.RenderDriver,
 			for (var i=0; i<content.length; i++)
 			{
 				var item = this.normalizeContent(content[i], control);
-				new_content.push(item);
+				if (item != null) new_content.push(item);
 			}
 			
 			var res = [];
@@ -12580,6 +12769,7 @@ Object.assign(Runtime.Web.RenderDriver,
 			{
 				/* Create component */
 				component = new class_obj(ctx, path_id, controller);
+				component.driver = control.driver;
 				controller.saveComponent(ctx, component);
 				created = true;
 			}
@@ -12636,10 +12826,7 @@ Object.assign(Runtime.Web.RenderDriver,
 				
 				/* Add childs */
 				childs = childs.slice();
-				childs.push(res);
-				
-				controller.updateComponent(ctx, component, created);
-				controller.bindEvents(ctx, new_control, component, attrs, created);
+				if (res != null) childs.push(res);
 			}
 			else
 			{
@@ -12648,8 +12835,12 @@ Object.assign(Runtime.Web.RenderDriver,
 				
 				/* Add childs */
 				childs = childs.slice();
-				childs.push(res);
+				if (res != null) childs.push(res);
 			}
+			
+			controller.updateComponent(ctx, component, created);
+			controller.bindEvents(ctx, new_control, component, attrs, created);
+			component.update(ctx, created);
 		}
 		
 		else if (type == 'element')
@@ -12835,6 +13026,7 @@ Object.assign(Runtime.Web.RenderDriverControl.prototype,
 		this.path_id = "";
 		this.index = 0;
 		this.is_new_elem = false;
+		this.driver = null;
 		Runtime.BaseStruct.prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
@@ -12849,6 +13041,7 @@ Object.assign(Runtime.Web.RenderDriverControl.prototype,
 			this.path_id = o.path_id;
 			this.index = o.index;
 			this.is_new_elem = o.is_new_elem;
+			this.driver = o.driver;
 		}
 		Runtime.BaseStruct.prototype.assignObject.call(this,ctx,o);
 	},
@@ -12862,6 +13055,7 @@ Object.assign(Runtime.Web.RenderDriverControl.prototype,
 		else if (k == "path_id")this.path_id = v;
 		else if (k == "index")this.index = v;
 		else if (k == "is_new_elem")this.is_new_elem = v;
+		else if (k == "driver")this.driver = v;
 		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
@@ -12875,6 +13069,7 @@ Object.assign(Runtime.Web.RenderDriverControl.prototype,
 		else if (k == "path_id")return this.path_id;
 		else if (k == "index")return this.index;
 		else if (k == "is_new_elem")return this.is_new_elem;
+		else if (k == "driver")return this.driver;
 		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -12925,6 +13120,7 @@ Object.assign(Runtime.Web.RenderDriverControl,
 			a.push("path_id");
 			a.push("index");
 			a.push("is_new_elem");
+			a.push("driver");
 		}
 		return Runtime.Collection.from(a);
 	},
@@ -12983,6 +13179,13 @@ Object.assign(Runtime.Web.RenderDriverControl,
 			]),
 		});
 		if (field_name == "is_new_elem") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RenderDriverControl",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "driver") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriverControl",
 			"name": field_name,

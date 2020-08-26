@@ -1,0 +1,16 @@
+namespace Example3;
+
+use Runtime.lib;
+use Runtime.BaseStruct;
+use Runtime.Web.Dialog.DialogModel;
+
+
+struct BoxModel extends BaseStruct
+{
+	bool move = false;
+	string color = "white";
+	int x = 0;
+	int y = 0;
+	int shift_x = 0;
+	int shift_y = 0;
+}

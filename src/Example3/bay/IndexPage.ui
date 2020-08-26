@@ -1,0 +1,33 @@
+<class version="1.0"
+	name="Example3.IndexPage" extends="Runtime.Web.Component" 
+	module="Example3" model="Example3.IndexPageModel"
+>
+
+<use name="Runtime.Core.Message" />
+<use name="Runtime.Web.LayoutModel" />
+<use name="Runtime.Web.RenderDriver" />
+<use name="Example3.IndexPageModel" />
+<use name="Example3.Box" component="true" />
+
+<style>
+%app{
+	position: relative;
+	width: 100%;
+	height: 100hv;
+}
+</style>
+
+
+<template name="render">
+	<div class='app'>
+		<Box @bind="box1" />
+		<Box @bind="box2" />
+	</div>
+</template>
+
+
+<script type="frontend">
+ 
+</script>
+
+</class>

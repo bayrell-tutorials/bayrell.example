@@ -42,6 +42,15 @@
 				"Example2"
 			],
 			"websocket": true
+		},
+		{
+			"dest": "web/js/example3.js",
+			"lang": "es6",
+			"modules":
+			[
+				"Example3"
+			],
+			"websocket": true
 		}
 	],
 	"modules":
