@@ -1,7 +1,7 @@
 {
 	"name": "Example Project",
 	"cache": "var/bundler",
-	"build":
+	"bundles":
 	[
 		{
 			"dest": "web/js/runtime.js",
@@ -11,8 +11,7 @@
 				"Runtime",
 				"Runtime.Core",
 				"Runtime.Web"
-			],
-			"websocket": true
+			]
 		},
 		{
 			"dest": "web/js/components.js",
@@ -22,6 +21,14 @@
 				"Runtime.Web.Button",
 				"Runtime.Web.Dialog",
 				"Runtime.Web.Input"
+			]
+		},
+		{
+			"dest": "web/js/app.js",
+			"lang": "es6",
+			"modules":
+			[
+				"App"
 			],
 			"websocket": true
 		},
@@ -63,7 +70,7 @@
 		"Bayrell.Bundler.Plugins.BayLang",
 		"Bayrell.Bundler.Plugins.Bundle"
 	],
-	"plugins_opts":
+	"options":
 	{
 		"Bayrell.Bundler.Plugins.BayLang":
 		{

@@ -1,0 +1,138 @@
+<class version="1.0"
+	name="App.AppLayout" extends="Runtime.Web.Component" 
+	module="App" model="Runtime.Web.LayoutModel"
+>
+
+
+<style>
+*{box-sizing: border-box;}body{margin:0;padding:0;}
+a { text-decoration: inherit; color: #0000d0; cursor: pointer; }
+a:hover, a:visited:hover { text-decoration: underline; color: red; }
+a:visited { text-decoration: inherit; color: #0000d0; }
+a.link { text-decoration: none; color: #0000d0; cursor: pointer; }
+a.link:hover, a.link:visited:hover { text-decoration: underline; color: red; }
+a.link:visited { text-decoration: none; color: #0000d0; }
+body, html{
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 14px;
+	width: 100%;
+	height: 100vh;
+	padding: 0;
+	margin: 0;
+}
+.root{
+	display: flex;
+	flex-direction: row;
+}
+%menu{
+	width: 100px;
+}
+%content{
+	width: calc(100% - 100px);
+}
+%menu, %content{
+	padding: 10px;
+}
+%menu_title{
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+%menu_items{
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+%menu_item{
+	padding-bottom: 10px;
+}
+%menu_item:last-child{
+	padding-bottom: 0px;
+}
+</style>
+
+
+<template name="render">
+	%var string class_name = model.page_class;
+	
+	%var Collection<Dict> routes =
+	[
+		{
+			"url": "/",
+			"content": "Index",
+		},
+		{
+			"url": "/route1/",
+			"content": "Route 1",
+		},
+		{
+			"url": "/route2/",
+			"content": "Route 2",
+		},
+		{
+			"url": "/route3/",
+			"content": "Route 3",
+		},
+		{
+			"url": "/test/1/",
+			"content": "Test 1",
+		},
+		{
+			"url": "/test/2/",
+			"content": "Test 2",
+		},
+		{
+			"url": "/test/3/",
+			"content": "Test 3",
+		},
+	];
+	
+	%var Collection<Dict> urls =
+	[
+		{
+			"url": "example1.html",
+			"content": "Example 1",
+		},
+		{
+			"url": "example2.html",
+			"content": "Example 2",
+		},
+		{
+			"url": "example3.html",
+			"content": "Example 3",
+		},
+	];
+	
+	<div class='menu'>
+		<div class='menu_title'>Routes:</div>
+		<div class='menu_items'>
+		%for (int i=0; i<routes.count(); i++)
+		{
+			%var Dict item = routes[i];
+			<div class='menu_item'>
+				<a class='link' href={ item["url"] }>{ item["content"] }</a>
+			</div>
+		}
+		</div>
+		
+		<div class='menu_title'>Projects:</div>
+		<div class='menu_items'>
+		%for (int i=0; i<urls.count(); i++)
+		{
+			%var Dict item = urls[i];
+			<div class='menu_item'>
+				<a class='link' href={ item["url"] }>{ item["content"] }</a>
+			</div>
+		}
+		</div>
+	</div>
+	
+	<div class='content'>
+		%if (class_name != "")
+		{
+			<{class_name} @bind="page_model" @key="page"></{class_name}>
+		}
+	</div>
+	
+</template>
+
+
+</class>

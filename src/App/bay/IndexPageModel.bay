@@ -1,0 +1,8 @@
+namespace App;
+
+use Runtime.BaseStruct;
+
+
+struct IndexPageModel extends BaseStruct
+{
+}

@@ -1,9 +1,73 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<meta name='Content-Type' content='text/html; charset=utf-8' />
-	<meta name='viewport' content='width=device-width, initial-scale=1.0' />
+<title>Index</title>
 </head>
 <body>
-	<a href='example1.html'>Example 1</a><br/>
+
+<div class='root'></div>
+
+<script src="/js/runtime.js"></script>
+<script src="/js/app.js"></script>
+
+<script>
+
+function runApp()
+{
+	/* Create context */
+	var context = Runtime.Core.Context.create(null, Runtime.Dict.from({}));
+
+	/* Set context params */
+	context = context.copy(context, {
+		"start_time": Date.now(),
+	});
+
+	/* Set entry point */
+	context = context.constructor.setMainModule(context, context, "App");
+	
+	/* Set global context */
+	Runtime.RuntimeUtils.setContext(context);
+
+	/* Run app */
+	(async () => {
+		try
+		{
+			/* Run entry */
+			context = await context.constructor.run
+			(
+				context,
+				context,
+				
+				/* Before start */
+				async (ctx, c) =>
+				{
+					/* Set global route prefix */
+					c = Runtime.rtl.setAttr(c, c, ["settings", "config", "Runtime.Web", "route_prefix"], "");
+					return c;
+				},
+				
+				/* Before run */
+				async (ctx, c) =>
+				{
+					/* Set global context */
+					window["globalContext"] = c;
+					Runtime.RuntimeUtils.setContext(c);
+					return c;
+				}
+			);
+		}
+		catch (e)
+		{
+			console.log( e.stack );
+		}
+	})();
+	
+	return context;
+}
+
+runApp();
+
+</script>
+
 </body>
 </html>
