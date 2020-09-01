@@ -47,7 +47,7 @@ Object.assign(App.AppLayout,
 			
 			var routes = Runtime.Collection.from([Runtime.Dict.from({"url":"/","content":"Index"}),Runtime.Dict.from({"url":"/route1/","content":"Route 1"}),Runtime.Dict.from({"url":"/route2/","content":"Route 2"}),Runtime.Dict.from({"url":"/route3/","content":"Route 3"}),Runtime.Dict.from({"url":"/test/1/","content":"Test 1"}),Runtime.Dict.from({"url":"/test/2/","content":"Test 2"}),Runtime.Dict.from({"url":"/test/3/","content":"Test 3"})]);
 			
-			var urls = Runtime.Collection.from([Runtime.Dict.from({"url":"example1.html","content":"Example 1"}),Runtime.Dict.from({"url":"example2.html","content":"Example 2"}),Runtime.Dict.from({"url":"example3.html","content":"Example 3"})]);
+			var urls = Runtime.Collection.from([Runtime.Dict.from({"url":"/example1.html","content":"Example 1"}),Runtime.Dict.from({"url":"/example2.html","content":"Example 2"}),Runtime.Dict.from({"url":"/example3.html","content":"Example 3"})]);
 			
 			/* Element 'div.menu' */
 			var __v0; var __v0_childs = [];
@@ -106,7 +106,7 @@ Object.assign(App.AppLayout,
 				
 				/* Element 'a.link' */
 				var __v8; var __v8_childs = [];
-				[__v8, __v7_childs] = RenderDriver.e(__v7, __v7_childs, "element", {"name": "a","attrs": {"href":Runtime.rtl.get(ctx, item, "url"),"class":["link", this.getCssHash()].join(" "),"@elem_name":"link"}});
+				[__v8, __v7_childs] = RenderDriver.e(__v7, __v7_childs, "element", {"name": "a","attrs": {"href":Runtime.rtl.get(ctx, item, "url"),"target":"_self","class":["link", this.getCssHash()].join(" "),"@elem_name":"link"}});
 				
 				/* Text */
 				[__vnull, __v8_childs] = RenderDriver.e(__v8, __v8_childs, "text", {"content": Runtime.rtl.get(ctx, item, "content")});
@@ -834,6 +834,17 @@ Object.assign(App.Routes.prototype,
 Object.assign(App.Routes,
 {
 	/**
+	 * Layout chain
+	 */
+	chainLayoutModel: function(ctx, layout)
+	{
+		if (layout.layout_name == "default")
+		{
+			layout = Runtime.rtl.setAttr(ctx, layout, Runtime.Collection.from(["layout_class"]), "App.AppLayout");
+		}
+		return Runtime.Collection.from([layout]);
+	},
+	/**
 	 * Route Action
 	 * @return RenderContainer
 	 */
@@ -1228,7 +1239,7 @@ Object.assign(App.ModuleDescription,
 	 */
 	entities: function(ctx)
 	{
-		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"root-controller","value":"Runtime.Web.RenderController","params":Runtime.Dict.from({"selector":".root","main_controller":true,"window":"RootController"})})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10,"value":"App.ModuleDescription::chainLayoutModel"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"App.Routes::Page404","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_PAGE_NOT_FOUND,"is_async":true})),new Runtime.Core.Entity(ctx, Runtime.Dict.from({"value":"App.Routes"}))]);
+		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"root-controller","value":"Runtime.Web.RenderController","params":Runtime.Dict.from({"selector":".root","main_controller":true,"window":"RootController"})})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10,"value":"App.Routes::chainLayoutModel"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"App.Routes::Page404","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_PAGE_NOT_FOUND,"is_async":true})),new Runtime.Core.Entity(ctx, Runtime.Dict.from({"value":"App.Routes"}))]);
 	},
 	/**
 	 * Returns sync loaded files
@@ -1236,17 +1247,6 @@ Object.assign(App.ModuleDescription,
 	resources: function(ctx)
 	{
 		return null;
-	},
-	/**
-	 * Layout chain
-	 */
-	chainLayoutModel: function(ctx, layout)
-	{
-		if (layout.layout_name == "default")
-		{
-			layout = Runtime.rtl.setAttr(ctx, layout, Runtime.Collection.from(["layout_class"]), "App.AppLayout");
-		}
-		return Runtime.Collection.from([layout]);
 	},
 	/**
 	 * Returns context settings
@@ -1275,8 +1275,8 @@ Object.assign(App.ModuleDescription,
 	 */
 	appRun: async function(ctx)
 	{
-		var routes = ctx.getDriver(ctx, "Runtime.Web.RouteController");
-		await routes.renderCurrentPage(ctx);
+		var controller = ctx.getDriver(ctx, "Runtime.Web.RouteController");
+		await controller.renderCurrentPage(ctx);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()

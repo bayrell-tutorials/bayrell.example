@@ -85,7 +85,7 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 		{
 			"name": RenderDriver::LAYOUT_CHAIN,
 			"pos": 10,
-			"value": "App.ModuleDescription::chainLayoutModel",
+			"value": "App.Routes::chainLayoutModel",
 		},
 		
 		/* Render Chain. Page not found */
@@ -107,17 +107,6 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 	 * Returns sync loaded files
 	 */		
 	public static Collection<string> resources() => null;	
-	
-	
-	
-	/**
-	 * Layout chain
-	 */
-	pure LayoutModel chainLayoutModel(LayoutModel layout)
-	{
-		if (layout.layout_name == "default") layout <= layout_class <= classof AppLayout;
-		return [ layout ];
-	}
 	
 	
 	
@@ -173,8 +162,8 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 	 */
 	static async void appRun()
 	{
-		RenderController routes = @.getDriver(classof RouteController);
-		await routes.renderCurrentPage();
+		RenderController controller = @.getDriver(classof RouteController);
+		await controller.renderCurrentPage();
 	}
 	
 	

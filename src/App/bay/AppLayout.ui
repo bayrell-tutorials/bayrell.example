@@ -88,15 +88,15 @@ body, html{
 	%var Collection<Dict> urls =
 	[
 		{
-			"url": "example1.html",
+			"url": "/example1.html",
 			"content": "Example 1",
 		},
 		{
-			"url": "example2.html",
+			"url": "/example2.html",
 			"content": "Example 2",
 		},
 		{
-			"url": "example3.html",
+			"url": "/example3.html",
 			"content": "Example 3",
 		},
 	];
@@ -119,7 +119,7 @@ body, html{
 		{
 			%var Dict item = urls[i];
 			<div class='menu_item'>
-				<a class='link' href={ item["url"] }>{ item["content"] }</a>
+				<a class='link' href={ item["url"] } target='_self'>{ item["content"] }</a>
 			</div>
 		}
 		</div>

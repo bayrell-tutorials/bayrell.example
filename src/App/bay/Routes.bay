@@ -18,9 +18,12 @@
 
 namespace App;
 
+use Runtime.Web.Layout;
+use Runtime.Web.LayoutModel;
 use Runtime.Web.RenderContainer;
 use Runtime.Web.Route;
 use Runtime.Web.RouteList;
+use App.AppLayout;
 use App.IndexPage;
 use App.IndexPageModel;
 use App.Page404;
@@ -33,6 +36,17 @@ use App.TestPage;
 @RouteList{}
 static class Routes
 {
+	
+	/**
+	 * Layout chain
+	 */
+	pure LayoutModel chainLayoutModel(LayoutModel layout)
+	{
+		if (layout.layout_name == "default") layout <= layout_class <= classof AppLayout;
+		return [ layout ];
+	}
+	
+	
 	
 	/**
 	 * Route Action
@@ -177,4 +191,5 @@ static class Routes
 		
 		return [ container ];
 	}
+	
 }

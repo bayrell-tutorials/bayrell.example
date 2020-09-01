@@ -14694,8 +14694,26 @@ Object.assign(Runtime.Web.RouteController.prototype,
 	 */
 	startDriver: async function(ctx)
 	{
+		this.history = new Runtime.Vector(ctx);
 		this.routes = this.constructor.getRoutesByEntities(ctx, ctx.entities);
 		this.route_prefix = ctx.config(ctx, Runtime.Collection.from(["Runtime.Web","route_prefix"]), "");
+		/* Add mouse listener */
+		var body = document.getElementsByTagName("body")[0];
+		body.addEventListener("click", Runtime.Web.RouteController.js_click);
+		
+		/* Add history listener */
+		window.onpopstate = Runtime.Web.RouteController.js_onpopstate;
+	},
+	/**
+	 * Open url
+	 */
+	openUrl: function(ctx, href)
+	{
+		if (href == undefined) href = "/";
+		var obj = { "href": href, };
+		history.pushState(obj, "", href);
+		this.history.push(ctx, href);
+		this.renderPage(ctx, href);
 	},
 	/**
 	 * Render
@@ -14785,6 +14803,7 @@ Object.assign(Runtime.Web.RouteController.prototype,
 	},
 	_init: function(ctx)
 	{
+		this.history = null;
 		this.routes = null;
 		this.route_prefix = "";
 		Runtime.Core.CoreDriver.prototype._init.call(this,ctx);
@@ -14793,6 +14812,7 @@ Object.assign(Runtime.Web.RouteController.prototype,
 	{
 		if (o instanceof Runtime.Web.RouteController)
 		{
+			this.history = o.history;
 			this.routes = o.routes;
 			this.route_prefix = o.route_prefix;
 		}
@@ -14800,14 +14820,16 @@ Object.assign(Runtime.Web.RouteController.prototype,
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "routes")this.routes = v;
+		if (k == "history")this.history = v;
+		else if (k == "routes")this.routes = v;
 		else if (k == "route_prefix")this.route_prefix = v;
 		else Runtime.Core.CoreDriver.prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "routes")return this.routes;
+		if (k == "history")return this.history;
+		else if (k == "routes")return this.routes;
 		else if (k == "route_prefix")return this.route_prefix;
 		return Runtime.Core.CoreDriver.prototype.takeValue.call(this,ctx,k,d);
 	},
@@ -14819,6 +14841,48 @@ Object.assign(Runtime.Web.RouteController.prototype,
 Object.assign(Runtime.Web.RouteController, Runtime.Core.CoreDriver);
 Object.assign(Runtime.Web.RouteController,
 {
+	/**
+	 * JS Click Event
+	 */
+	js_click: function(e)
+	{
+		ctx = Runtime.RuntimeUtils.getContext();
+		var controller = ctx.getDriver(ctx, "Runtime.Web.RouteController");
+		var elem = e.target;
+		
+		if (elem.tagName == "A")
+		{
+			var target = elem.getAttribute("target");
+			var href = elem.getAttribute("href");
+			if (target == null)
+			{
+				e.preventDefault();
+				controller.openUrl(ctx, href);
+			}
+		}
+	},
+	/**
+	 * JS onpopstate event
+	 */
+	js_onpopstate: function(e)
+	{
+		ctx = Runtime.RuntimeUtils.getContext();
+		var controller = ctx.getDriver(ctx, "Runtime.Web.RouteController");
+		if (controller.history.count() == 0)
+		{
+			document.location = document.location;
+		}
+		else if (e.state != null && typeof e.state.href == "string")
+		{
+			controller.history.pop(ctx);
+			controller.renderPage(ctx, e.state.href);
+		}
+		else
+		{
+			controller.history.pop(ctx);
+			controller.renderCurrentPage(ctx);
+		}
+	},
 	/**
 	 * Returns routes
 	 */
@@ -14895,6 +14959,7 @@ Object.assign(Runtime.Web.RouteController,
 		if (f==undefined) f=0;
 		if ((f|2)==2)
 		{
+			a.push("history");
 			a.push("routes");
 			a.push("route_prefix");
 		}
@@ -14905,6 +14970,13 @@ Object.assign(Runtime.Web.RouteController,
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
 		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		if (field_name == "history") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RouteController",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		if (field_name == "routes") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RouteController",
