@@ -97,7 +97,7 @@ Object.assign(Runtime.Web.Button.Button,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Button.Button",
@@ -116,7 +116,7 @@ Object.assign(Runtime.Web.Button.Button,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -204,24 +204,9 @@ Object.assign(Runtime.Web.Button.ModuleDescription,
 		return Runtime.Dict.from({"Runtime.Web":">=0.3"});
 	},
 	/**
-	 * Returns module files load order
-	 * @return Collection<string>
-	 */
-	assets: function(ctx)
-	{
-		return Runtime.Collection.from(["Runtime.Web.Button/Button","Runtime.Web.Button/ModuleDescription"]);
-	},
-	/**
 	 * Returns enities
 	 */
 	entities: function(ctx)
-	{
-		return null;
-	},
-	/**
-	 * Returns sync loaded files
-	 */
-	resources: function(ctx)
 	{
 		return null;
 	},
@@ -242,7 +227,7 @@ Object.assign(Runtime.Web.Button.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Button.ModuleDescription",
@@ -261,7 +246,7 @@ Object.assign(Runtime.Web.Button.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -274,11 +259,6 @@ Object.assign(Runtime.Web.Button.ModuleDescription,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.ModuleDescriptionInterface,
-		Runtime.Interfaces.AssetsInterface,
-	],
 });
 Runtime.rtl.defClass(Runtime.Web.Button.ModuleDescription);
 window["Runtime.Web.Button.ModuleDescription"] = Runtime.Web.Button.ModuleDescription;
@@ -642,7 +622,7 @@ Object.assign(Runtime.Web.Dialog.Dialog,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Dialog.Dialog",
@@ -661,7 +641,7 @@ Object.assign(Runtime.Web.Dialog.Dialog,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -770,7 +750,7 @@ Object.assign(Runtime.Web.Dialog.DialogEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Dialog.DialogEvent",
@@ -796,7 +776,7 @@ Object.assign(Runtime.Web.Dialog.DialogEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "input") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Dialog.DialogEvent",
@@ -999,7 +979,7 @@ Object.assign(Runtime.Web.Dialog.DialogModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Dialog.DialogModel",
@@ -1031,7 +1011,7 @@ Object.assign(Runtime.Web.Dialog.DialogModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "STYLE_PROMT") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Dialog.DialogModel",
@@ -1238,24 +1218,9 @@ Object.assign(Runtime.Web.Dialog.ModuleDescription,
 		return Runtime.Dict.from({"Runtime.Web":"*","Runtime.Web.Button":"*"});
 	},
 	/**
-	 * Returns module files load order
-	 * @return Collection<string>
-	 */
-	assets: function(ctx)
-	{
-		return Runtime.Collection.from(["Runtime.Web.Dialog/Dialog","Runtime.Web.Dialog/DialogModel","Runtime.Web.Dialog/DialogEvent","Runtime.Web.Dialog/ModuleDescription"]);
-	},
-	/**
 	 * Returns enities
 	 */
 	entities: function(ctx)
-	{
-		return null;
-	},
-	/**
-	 * Returns sync loaded files
-	 */
-	resources: function(ctx)
 	{
 		return null;
 	},
@@ -1276,7 +1241,7 @@ Object.assign(Runtime.Web.Dialog.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Dialog.ModuleDescription",
@@ -1295,7 +1260,7 @@ Object.assign(Runtime.Web.Dialog.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -1308,11 +1273,6 @@ Object.assign(Runtime.Web.Dialog.ModuleDescription,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.ModuleDescriptionInterface,
-		Runtime.Interfaces.AssetsInterface,
-	],
 });
 Runtime.rtl.defClass(Runtime.Web.Dialog.ModuleDescription);
 window["Runtime.Web.Dialog.ModuleDescription"] = Runtime.Web.Dialog.ModuleDescription;
@@ -1424,7 +1384,7 @@ Object.assign(Runtime.Web.Input.Input,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Input.Input",
@@ -1443,7 +1403,7 @@ Object.assign(Runtime.Web.Input.Input,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -1531,24 +1491,9 @@ Object.assign(Runtime.Web.Input.ModuleDescription,
 		return Runtime.Dict.from({"Runtime.Web":">=0.3"});
 	},
 	/**
-	 * Returns module files load order
-	 * @return Collection<string>
-	 */
-	assets: function(ctx)
-	{
-		return Runtime.Collection.from(["Runtime.Web.Input/Input","Runtime.Web.Input/ModuleDescription"]);
-	},
-	/**
 	 * Returns enities
 	 */
 	entities: function(ctx)
-	{
-		return null;
-	},
-	/**
-	 * Returns sync loaded files
-	 */
-	resources: function(ctx)
 	{
 		return null;
 	},
@@ -1569,7 +1514,7 @@ Object.assign(Runtime.Web.Input.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Input.ModuleDescription",
@@ -1588,7 +1533,7 @@ Object.assign(Runtime.Web.Input.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -1601,11 +1546,6 @@ Object.assign(Runtime.Web.Input.ModuleDescription,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.ModuleDescriptionInterface,
-		Runtime.Interfaces.AssetsInterface,
-	],
 });
 Runtime.rtl.defClass(Runtime.Web.Input.ModuleDescription);
 window["Runtime.Web.Input.ModuleDescription"] = Runtime.Web.Input.ModuleDescription;

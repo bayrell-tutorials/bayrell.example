@@ -90,7 +90,7 @@
 			}
 		}
 	},
-	"languages": ["es6"],
+	"languages": [ "es6", "php" ],
 	"watch":
 	{
 		"dir":

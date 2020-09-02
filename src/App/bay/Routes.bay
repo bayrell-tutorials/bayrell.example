@@ -60,7 +60,7 @@ static class Routes
 		};
 		
 		/* Set title */
-		container <= layout <= title <= "User";
+		container <= layout <= title <= "Index page";
 		container <= layout <= layout_name <= "default";
 		
 		/* Set model */
@@ -156,7 +156,7 @@ static class Routes
 		};
 		
 		/* Set title */
-		container <= layout <= title <= "Test";
+		container <= layout <= title <= "Test page";
 		container <= layout <= layout_name <= "default";
 		
 		/* Set model */
@@ -188,6 +188,9 @@ static class Routes
 		/* Set model */
 		container <= layout <= page_class <= classof Page404;
 		container <= layout <= page_model <= page_model;
+		
+		/* Set 404 code */
+		container <= new_http_code <= 404;
 		
 		return [ container ];
 	}

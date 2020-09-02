@@ -1,7 +1,5 @@
 namespace Example3;
 
-use Runtime.Interfaces.AssetsInterface;
-use Runtime.Interfaces.ModuleDescriptionInterface;
 use Runtime.Core.Context;
 use Runtime.Core.Driver;
 use Runtime.Core.Entity;
@@ -16,7 +14,7 @@ use Example3.IndexPage;
 use Example3.IndexPageModel;
 
 
-class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
+static class ModuleDescription
 {
 	
 	/**

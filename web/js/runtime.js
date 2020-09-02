@@ -29,6 +29,12 @@ Object.assign(Runtime.rtl.prototype,
 	{
 		return (new Date()).getTime() * 1000;
 	},
+	/**
+	 * Debug
+	 */
+	trace: function()
+	{
+	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof Runtime.rtl)
@@ -1017,7 +1023,7 @@ Object.assign(Runtime.rtl,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.rtl",
@@ -1036,7 +1042,7 @@ Object.assign(Runtime.rtl,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "LOG_FATAL") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.rtl",
@@ -1691,7 +1697,7 @@ Object.assign(Runtime.lib,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.lib",
@@ -1710,7 +1716,7 @@ Object.assign(Runtime.lib,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -1822,7 +1828,7 @@ Object.assign(Runtime.re,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.re",
@@ -1841,7 +1847,7 @@ Object.assign(Runtime.re,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -2296,6 +2302,16 @@ Object.assign(Runtime.rs,
 	{
 		return this.replace(ctx, "\n", "<br/>", s);
 	},
+	/**
+	 * Remove spaces
+	 */
+	spaceless: function(ctx, s)
+	{
+		s = Runtime.re.replace(ctx, " +", " ", s);
+		s = Runtime.re.replace(ctx, "\t", "", s);
+		s = Runtime.re.replace(ctx, "\n", "", s);
+		return s;
+	},
 	/* =================== Deprecated =================== */
 	/**
 	 * Разбивает строку на подстроки
@@ -2423,7 +2439,7 @@ Object.assign(Runtime.rs,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.rs",
@@ -2442,7 +2458,7 @@ Object.assign(Runtime.rs,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -2560,7 +2576,7 @@ Object.assign(Runtime.fs,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.fs",
@@ -2579,7 +2595,7 @@ Object.assign(Runtime.fs,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "DIRECTORY_SEPARATOR") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.fs",
@@ -3244,7 +3260,7 @@ Object.assign(Runtime.Collection,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Collection",
@@ -3263,7 +3279,7 @@ Object.assign(Runtime.Collection,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -3705,7 +3721,7 @@ Object.assign(Runtime.Dict,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Dict",
@@ -3724,7 +3740,7 @@ Object.assign(Runtime.Dict,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -3852,7 +3868,7 @@ Object.assign(Runtime.Map,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Map",
@@ -3871,7 +3887,7 @@ Object.assign(Runtime.Map,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -4122,7 +4138,7 @@ Object.assign(Runtime.Monad,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Monad",
@@ -4146,7 +4162,7 @@ Object.assign(Runtime.Monad,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "val") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Monad",
@@ -4253,7 +4269,7 @@ Object.assign(Runtime.Mutex,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Mutex",
@@ -4272,7 +4288,7 @@ Object.assign(Runtime.Mutex,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -4544,7 +4560,7 @@ Object.assign(Runtime.Vector,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Vector",
@@ -4563,7 +4579,7 @@ Object.assign(Runtime.Vector,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -4685,7 +4701,6 @@ Object.assign(Runtime.Exceptions.RuntimeException.prototype,
 	},
 	_init: function(ctx)
 	{
-		this.context = null;
 		this.prev = null;
 		this.error_message = "";
 		this.error_str = "";
@@ -4699,7 +4714,6 @@ Object.assign(Runtime.Exceptions.RuntimeException.prototype,
 	{
 		if (o instanceof Runtime.Exceptions.RuntimeException)
 		{
-			this.context = o.context;
 			this.prev = o.prev;
 			this.error_message = o.error_message;
 			this.error_str = o.error_str;
@@ -4712,8 +4726,7 @@ Object.assign(Runtime.Exceptions.RuntimeException.prototype,
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "context")this.context = v;
-		else if (k == "prev")this.prev = v;
+		if (k == "prev")this.prev = v;
 		else if (k == "error_message")this.error_message = v;
 		else if (k == "error_str")this.error_str = v;
 		else if (k == "error_code")this.error_code = v;
@@ -4725,8 +4738,7 @@ Object.assign(Runtime.Exceptions.RuntimeException.prototype,
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "context")return this.context;
-		else if (k == "prev")return this.prev;
+		if (k == "prev")return this.prev;
 		else if (k == "error_message")return this.error_message;
 		else if (k == "error_str")return this.error_str;
 		else if (k == "error_code")return this.error_code;
@@ -4760,7 +4772,7 @@ Object.assign(Runtime.Exceptions.RuntimeException,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Exceptions.RuntimeException",
@@ -4775,7 +4787,6 @@ Object.assign(Runtime.Exceptions.RuntimeException,
 		if (f==undefined) f=0;
 		if ((f|2)==2)
 		{
-			a.push("context");
 			a.push("prev");
 			a.push("error_message");
 			a.push("error_str");
@@ -4790,14 +4801,7 @@ Object.assign(Runtime.Exceptions.RuntimeException,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
-		if (field_name == "context") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Exceptions.RuntimeException",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "prev") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Exceptions.RuntimeException",
@@ -4945,7 +4949,7 @@ Object.assign(Runtime.Exceptions.ApiException,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Exceptions.ApiException",
@@ -4968,7 +4972,7 @@ Object.assign(Runtime.Exceptions.ApiException,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "response") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Exceptions.ApiException",
@@ -5062,7 +5066,7 @@ Object.assign(Runtime.Exceptions.AssignStructValueError,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Exceptions.AssignStructValueError",
@@ -5081,7 +5085,7 @@ Object.assign(Runtime.Exceptions.AssignStructValueError,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -5168,7 +5172,7 @@ Object.assign(Runtime.Exceptions.IndexOutOfRange,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Exceptions.IndexOutOfRange",
@@ -5187,7 +5191,7 @@ Object.assign(Runtime.Exceptions.IndexOutOfRange,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -5274,7 +5278,7 @@ Object.assign(Runtime.Exceptions.KeyNotFound,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Exceptions.KeyNotFound",
@@ -5293,7 +5297,7 @@ Object.assign(Runtime.Exceptions.KeyNotFound,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -5380,7 +5384,7 @@ Object.assign(Runtime.Exceptions.UnknownError,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Exceptions.UnknownError",
@@ -5399,7 +5403,7 @@ Object.assign(Runtime.Exceptions.UnknownError,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -5435,31 +5439,39 @@ if (typeof module != "undefined" && typeof module.exports != "undefined") module
  *  limitations under the License.
  */
 if (typeof Runtime == 'undefined') Runtime = {};
-if (typeof Runtime.Interfaces == 'undefined') Runtime.Interfaces = {};
-Runtime.Interfaces.AssetsInterface = function(ctx)
+Runtime.SerializeInterface = function(ctx)
 {
 };
-Object.assign(Runtime.Interfaces.AssetsInterface.prototype,
+Object.assign(Runtime.SerializeInterface.prototype,
 {
+	/**
+	 * Returns instance of the value by variable name
+	 * @param string variable_name
+	 * @return var
+	 */
+	takeValue: function(ctx, variable_name, default_value)
+	{
+		if (default_value == undefined) default_value = null;
+	},
 	getClassName: function(ctx)
 	{
-		return "Runtime.Interfaces.AssetsInterface";
+		return "Runtime.SerializeInterface";
 	},
 });
-Object.assign(Runtime.Interfaces.AssetsInterface,
+Object.assign(Runtime.SerializeInterface,
 {
 	getCurrentNamespace: function()
 	{
-		return "Runtime.Interfaces";
+		return "Runtime";
 	},
 	getCurrentClassName: function()
 	{
-		return "Runtime.Interfaces.AssetsInterface";
+		return "Runtime.SerializeInterface";
 	},
 });
-Runtime.rtl.defClass(Runtime.Interfaces.AssetsInterface);
-window["Runtime.Interfaces.AssetsInterface"] = Runtime.Interfaces.AssetsInterface;
-if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Interfaces.AssetsInterface;
+Runtime.rtl.defClass(Runtime.SerializeInterface);
+window["Runtime.SerializeInterface"] = Runtime.SerializeInterface;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.SerializeInterface;
 "use strict;"
 /*!
  *  Bayrell Runtime Library
@@ -5479,99 +5491,10 @@ if (typeof module != "undefined" && typeof module.exports != "undefined") module
  *  limitations under the License.
  */
 if (typeof Runtime == 'undefined') Runtime = {};
-if (typeof Runtime.Interfaces == 'undefined') Runtime.Interfaces = {};
-Runtime.Interfaces.ContextInterface = function(ctx)
+Runtime.StringInterface = function(ctx)
 {
 };
-Object.assign(Runtime.Interfaces.ContextInterface.prototype,
-{
-	getClassName: function(ctx)
-	{
-		return "Runtime.Interfaces.ContextInterface";
-	},
-});
-Object.assign(Runtime.Interfaces.ContextInterface,
-{
-	getCurrentNamespace: function()
-	{
-		return "Runtime.Interfaces";
-	},
-	getCurrentClassName: function()
-	{
-		return "Runtime.Interfaces.ContextInterface";
-	},
-});
-Runtime.rtl.defClass(Runtime.Interfaces.ContextInterface);
-window["Runtime.Interfaces.ContextInterface"] = Runtime.Interfaces.ContextInterface;
-if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Interfaces.ContextInterface;
-"use strict;"
-/*!
- *  Bayrell Runtime Library
- *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-if (typeof Runtime == 'undefined') Runtime = {};
-if (typeof Runtime.Interfaces == 'undefined') Runtime.Interfaces = {};
-Runtime.Interfaces.ModuleDescriptionInterface = function(ctx)
-{
-};
-Object.assign(Runtime.Interfaces.ModuleDescriptionInterface.prototype,
-{
-	getClassName: function(ctx)
-	{
-		return "Runtime.Interfaces.ModuleDescriptionInterface";
-	},
-});
-Object.assign(Runtime.Interfaces.ModuleDescriptionInterface,
-{
-	getCurrentNamespace: function()
-	{
-		return "Runtime.Interfaces";
-	},
-	getCurrentClassName: function()
-	{
-		return "Runtime.Interfaces.ModuleDescriptionInterface";
-	},
-});
-Runtime.rtl.defClass(Runtime.Interfaces.ModuleDescriptionInterface);
-window["Runtime.Interfaces.ModuleDescriptionInterface"] = Runtime.Interfaces.ModuleDescriptionInterface;
-if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Interfaces.ModuleDescriptionInterface;
-"use strict;"
-/*!
- *  Bayrell Runtime Library
- *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-if (typeof Runtime == 'undefined') Runtime = {};
-if (typeof Runtime.Interfaces == 'undefined') Runtime.Interfaces = {};
-Runtime.Interfaces.StringInterface = function(ctx)
-{
-};
-Object.assign(Runtime.Interfaces.StringInterface.prototype,
+Object.assign(Runtime.StringInterface.prototype,
 {
 	/**
 	 * Returns string
@@ -5581,23 +5504,23 @@ Object.assign(Runtime.Interfaces.StringInterface.prototype,
 	},
 	getClassName: function(ctx)
 	{
-		return "Runtime.Interfaces.StringInterface";
+		return "Runtime.StringInterface";
 	},
 });
-Object.assign(Runtime.Interfaces.StringInterface,
+Object.assign(Runtime.StringInterface,
 {
 	getCurrentNamespace: function()
 	{
-		return "Runtime.Interfaces";
+		return "Runtime";
 	},
 	getCurrentClassName: function()
 	{
-		return "Runtime.Interfaces.StringInterface";
+		return "Runtime.StringInterface";
 	},
 });
-Runtime.rtl.defClass(Runtime.Interfaces.StringInterface);
-window["Runtime.Interfaces.StringInterface"] = Runtime.Interfaces.StringInterface;
-if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Interfaces.StringInterface;
+Runtime.rtl.defClass(Runtime.StringInterface);
+window["Runtime.StringInterface"] = Runtime.StringInterface;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.StringInterface;
 "use strict;"
 /*!
  *  Bayrell Runtime Library
@@ -5629,6 +5552,14 @@ Object.assign(Runtime.BaseObject.prototype,
 	 */
 	_init: function(ctx)
 	{
+	},
+	/* Old functions */
+	assignValue: function(ctx, k, v)
+	{
+	},
+	takeValue: function(ctx, k, v)
+	{
+		if (v == undefined) v = null;
 	},
 	assignObject: function(ctx,o)
 	{
@@ -5667,7 +5598,7 @@ Object.assign(Runtime.BaseObject,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.BaseObject",
@@ -5686,7 +5617,7 @@ Object.assign(Runtime.BaseObject,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -5885,7 +5816,7 @@ Object.assign(Runtime.BaseStruct,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.BaseStruct",
@@ -5904,7 +5835,7 @@ Object.assign(Runtime.BaseStruct,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -5917,6 +5848,10 @@ Object.assign(Runtime.BaseStruct,
 	{
 		return null;
 	},
+	__implements__:
+	[
+		Runtime.SerializeInterface,
+	],
 });
 Runtime.rtl.defClass(Runtime.BaseStruct);
 window["Runtime.BaseStruct"] = Runtime.BaseStruct;
@@ -6197,7 +6132,7 @@ Object.assign(Runtime.DateTime,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.DateTime",
@@ -6227,7 +6162,7 @@ Object.assign(Runtime.DateTime,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "y") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.DateTime",
@@ -6401,7 +6336,7 @@ Object.assign(Runtime.PathInfo,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.PathInfo",
@@ -6428,7 +6363,7 @@ Object.assign(Runtime.PathInfo,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "filepath") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.PathInfo",
@@ -6478,7 +6413,7 @@ Object.assign(Runtime.PathInfo,
 	},
 	__implements__:
 	[
-		Runtime.Interfaces.StringInterface,
+		Runtime.StringInterface,
 	],
 });
 Runtime.rtl.defClass(Runtime.PathInfo);
@@ -6579,7 +6514,7 @@ Object.assign(Runtime.Reference,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Reference",
@@ -6603,7 +6538,7 @@ Object.assign(Runtime.Reference,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "uq") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Reference",
@@ -6634,6 +6569,377 @@ Object.assign(Runtime.Reference,
 Runtime.rtl.defClass(Runtime.Reference);
 window["Runtime.Reference"] = Runtime.Reference;
 if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Reference;
+"use strict;"
+/*!
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+if (typeof Runtime == 'undefined') Runtime = {};
+Runtime.IntrospectionClass = function(ctx)
+{
+	Runtime.BaseStruct.apply(this, arguments);
+};
+Runtime.IntrospectionClass.prototype = Object.create(Runtime.BaseStruct.prototype);
+Runtime.IntrospectionClass.prototype.constructor = Runtime.IntrospectionClass;
+Object.assign(Runtime.IntrospectionClass.prototype,
+{
+	_init: function(ctx)
+	{
+		var defProp = use('Runtime.rtl').defProp;
+		var a = Object.getOwnPropertyNames(this);
+		this.class_name = "";
+		this.class_info = null;
+		this.fields = null;
+		this.methods = null;
+		this.interfaces = null;
+		Runtime.BaseStruct.prototype._init.call(this,ctx);
+	},
+	assignObject: function(ctx,o)
+	{
+		if (o instanceof Runtime.IntrospectionClass)
+		{
+			this.class_name = o.class_name;
+			this.class_info = o.class_info;
+			this.fields = o.fields;
+			this.methods = o.methods;
+			this.interfaces = o.interfaces;
+		}
+		Runtime.BaseStruct.prototype.assignObject.call(this,ctx,o);
+	},
+	assignValue: function(ctx,k,v)
+	{
+		if (k == "class_name")this.class_name = v;
+		else if (k == "class_info")this.class_info = v;
+		else if (k == "fields")this.fields = v;
+		else if (k == "methods")this.methods = v;
+		else if (k == "interfaces")this.interfaces = v;
+		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
+	},
+	takeValue: function(ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		if (k == "class_name")return this.class_name;
+		else if (k == "class_info")return this.class_info;
+		else if (k == "fields")return this.fields;
+		else if (k == "methods")return this.methods;
+		else if (k == "interfaces")return this.interfaces;
+		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
+	},
+	getClassName: function(ctx)
+	{
+		return "Runtime.IntrospectionClass";
+	},
+});
+Object.assign(Runtime.IntrospectionClass, Runtime.BaseStruct);
+Object.assign(Runtime.IntrospectionClass,
+{
+	/* ======================= Class Init Functions ======================= */
+	getCurrentNamespace: function()
+	{
+		return "Runtime";
+	},
+	getCurrentClassName: function()
+	{
+		return "Runtime.IntrospectionClass";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.BaseStruct";
+	},
+	getClassInfo: function(ctx)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "Runtime.IntrospectionClass",
+			"name": "Runtime.IntrospectionClass",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		if ((f|3)==3)
+		{
+			a.push("class_name");
+			a.push("class_info");
+			a.push("fields");
+			a.push("methods");
+			a.push("interfaces");
+		}
+		return Runtime.Collection.from(a);
+	},
+	getFieldInfoByName: function(ctx,field_name)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		if (field_name == "class_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionClass",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "class_info") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionClass",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "fields") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionClass",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "methods") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionClass",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "interfaces") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionClass",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		return null;
+	},
+	getMethodsList: function(ctx)
+	{
+		var a = [
+		];
+		return Runtime.Collection.from(a);
+	},
+	getMethodInfoByName: function(ctx,field_name)
+	{
+		return null;
+	},
+});
+Runtime.rtl.defClass(Runtime.IntrospectionClass);
+window["Runtime.IntrospectionClass"] = Runtime.IntrospectionClass;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.IntrospectionClass;
+"use strict;"
+/*!
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+if (typeof Runtime == 'undefined') Runtime = {};
+Runtime.IntrospectionInfo = function(ctx)
+{
+	Runtime.BaseStruct.apply(this, arguments);
+};
+Runtime.IntrospectionInfo.prototype = Object.create(Runtime.BaseStruct.prototype);
+Runtime.IntrospectionInfo.prototype.constructor = Runtime.IntrospectionInfo;
+Object.assign(Runtime.IntrospectionInfo.prototype,
+{
+	/**
+	 * Returns true if has annotations by class_name
+	 * @string class_name
+	 * @return bool
+	 */
+	filterAnnotations: function(ctx, class_name)
+	{
+		if (this.annotations == null)
+		{
+			return null;
+		}
+		return this.annotations.filter(ctx, Runtime.lib.isInstance(ctx, class_name)).toCollection(ctx);
+	},
+	_init: function(ctx)
+	{
+		var defProp = use('Runtime.rtl').defProp;
+		var a = Object.getOwnPropertyNames(this);
+		this.class_name = "";
+		this.kind = "";
+		this.name = "";
+		this.annotations = null;
+		Runtime.BaseStruct.prototype._init.call(this,ctx);
+	},
+	assignObject: function(ctx,o)
+	{
+		if (o instanceof Runtime.IntrospectionInfo)
+		{
+			this.class_name = o.class_name;
+			this.kind = o.kind;
+			this.name = o.name;
+			this.annotations = o.annotations;
+		}
+		Runtime.BaseStruct.prototype.assignObject.call(this,ctx,o);
+	},
+	assignValue: function(ctx,k,v)
+	{
+		if (k == "class_name")this.class_name = v;
+		else if (k == "kind")this.kind = v;
+		else if (k == "name")this.name = v;
+		else if (k == "annotations")this.annotations = v;
+		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
+	},
+	takeValue: function(ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		if (k == "class_name")return this.class_name;
+		else if (k == "kind")return this.kind;
+		else if (k == "name")return this.name;
+		else if (k == "annotations")return this.annotations;
+		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
+	},
+	getClassName: function(ctx)
+	{
+		return "Runtime.IntrospectionInfo";
+	},
+});
+Object.assign(Runtime.IntrospectionInfo, Runtime.BaseStruct);
+Object.assign(Runtime.IntrospectionInfo,
+{
+	ITEM_CLASS: "class",
+	ITEM_FIELD: "field",
+	ITEM_METHOD: "method",
+	/* ======================= Class Init Functions ======================= */
+	getCurrentNamespace: function()
+	{
+		return "Runtime";
+	},
+	getCurrentClassName: function()
+	{
+		return "Runtime.IntrospectionInfo";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.BaseStruct";
+	},
+	getClassInfo: function(ctx)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "Runtime.IntrospectionInfo",
+			"name": "Runtime.IntrospectionInfo",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		if ((f|3)==3)
+		{
+			a.push("class_name");
+			a.push("kind");
+			a.push("name");
+			a.push("annotations");
+		}
+		return Runtime.Collection.from(a);
+	},
+	getFieldInfoByName: function(ctx,field_name)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		if (field_name == "ITEM_CLASS") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionInfo",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "ITEM_FIELD") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionInfo",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "ITEM_METHOD") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionInfo",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "class_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionInfo",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "kind") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionInfo",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionInfo",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "annotations") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.IntrospectionInfo",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		return null;
+	},
+	getMethodsList: function(ctx)
+	{
+		var a = [
+		];
+		return Runtime.Collection.from(a);
+	},
+	getMethodInfoByName: function(ctx,field_name)
+	{
+		return null;
+	},
+});
+Runtime.rtl.defClass(Runtime.IntrospectionInfo);
+window["Runtime.IntrospectionInfo"] = Runtime.IntrospectionInfo;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.IntrospectionInfo;
 "use strict;"
 /*!
  *  Bayrell Runtime Library
@@ -6876,7 +7182,7 @@ Object.assign(Runtime.RuntimeUtils,
 		{
 			return item.toCollection(ctx);
 		});
-		var __memorize_value = new Runtime.Annotations.IntrospectionClass(ctx, Runtime.Dict.from({"class_name":class_name,"class_info":(class_info != null) ? (class_info.toCollection(ctx)) : (null),"fields":fields.toDict(ctx),"methods":methods.toDict(ctx),"interfaces":Runtime.rtl.getInterfaces(ctx, class_name)}));
+		var __memorize_value = new Runtime.IntrospectionClass(ctx, Runtime.Dict.from({"class_name":class_name,"class_info":(class_info != null) ? (class_info.toCollection(ctx)) : (null),"fields":fields.toDict(ctx),"methods":methods.toDict(ctx),"interfaces":Runtime.rtl.getInterfaces(ctx, class_name)}));
 		Runtime.rtl._memorizeSave("Runtime.RuntimeUtils.getClassIntrospection", arguments, __memorize_value);
 		return __memorize_value;
 	},
@@ -6977,7 +7283,7 @@ Object.assign(Runtime.RuntimeUtils,
 			}
 			return obj.toDict(ctx);
 		}
-		if (Runtime.rtl.is_implements(obj, Runtime.Interfaces.SerializeInterface))
+		if (obj instanceof Runtime.BaseStruct)
 		{
 			var values = new Runtime.Map(ctx);
 			var names = this.getVariablesNames(ctx, obj.getClassName(ctx), 1);
@@ -7044,7 +7350,7 @@ Object.assign(Runtime.RuntimeUtils,
 			{
 				return null;
 			}
-			if (!Runtime.rtl.class_implements(ctx, class_name, "Runtime.Interfaces.SerializeInterface"))
+			if (!Runtime.rtl.class_implements(ctx, class_name, "Runtime.SerializeInterface"))
 			{
 				return null;
 			}
@@ -7217,7 +7523,7 @@ Object.assign(Runtime.RuntimeUtils,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.RuntimeUtils",
@@ -7236,7 +7542,7 @@ Object.assign(Runtime.RuntimeUtils,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "_global_context") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.RuntimeUtils",
@@ -7274,379 +7580,6 @@ Object.assign(Runtime.RuntimeUtils,
 Runtime.rtl.defClass(Runtime.RuntimeUtils);
 window["Runtime.RuntimeUtils"] = Runtime.RuntimeUtils;
 if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.RuntimeUtils;
-"use strict;"
-/*!
- *  Bayrell Runtime Library
- *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-if (typeof Runtime == 'undefined') Runtime = {};
-if (typeof Runtime.Annotations == 'undefined') Runtime.Annotations = {};
-Runtime.Annotations.IntrospectionClass = function(ctx)
-{
-	Runtime.BaseStruct.apply(this, arguments);
-};
-Runtime.Annotations.IntrospectionClass.prototype = Object.create(Runtime.BaseStruct.prototype);
-Runtime.Annotations.IntrospectionClass.prototype.constructor = Runtime.Annotations.IntrospectionClass;
-Object.assign(Runtime.Annotations.IntrospectionClass.prototype,
-{
-	_init: function(ctx)
-	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
-		this.class_name = "";
-		this.class_info = null;
-		this.fields = null;
-		this.methods = null;
-		this.interfaces = null;
-		Runtime.BaseStruct.prototype._init.call(this,ctx);
-	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof Runtime.Annotations.IntrospectionClass)
-		{
-			this.class_name = o.class_name;
-			this.class_info = o.class_info;
-			this.fields = o.fields;
-			this.methods = o.methods;
-			this.interfaces = o.interfaces;
-		}
-		Runtime.BaseStruct.prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "class_name")this.class_name = v;
-		else if (k == "class_info")this.class_info = v;
-		else if (k == "fields")this.fields = v;
-		else if (k == "methods")this.methods = v;
-		else if (k == "interfaces")this.interfaces = v;
-		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-		if (k == "class_name")return this.class_name;
-		else if (k == "class_info")return this.class_info;
-		else if (k == "fields")return this.fields;
-		else if (k == "methods")return this.methods;
-		else if (k == "interfaces")return this.interfaces;
-		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
-	},
-	getClassName: function(ctx)
-	{
-		return "Runtime.Annotations.IntrospectionClass";
-	},
-});
-Object.assign(Runtime.Annotations.IntrospectionClass, Runtime.BaseStruct);
-Object.assign(Runtime.Annotations.IntrospectionClass,
-{
-	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
-	{
-		return "Runtime.Annotations";
-	},
-	getCurrentClassName: function()
-	{
-		return "Runtime.Annotations.IntrospectionClass";
-	},
-	getParentClassName: function()
-	{
-		return "Runtime.BaseStruct";
-	},
-	getClassInfo: function(ctx)
-	{
-		var Collection = Runtime.Collection;
-		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Runtime.Annotations.IntrospectionClass",
-			"name": "Runtime.Annotations.IntrospectionClass",
-			"annotations": Collection.from([
-			]),
-		});
-	},
-	getFieldsList: function(ctx, f)
-	{
-		var a = [];
-		if (f==undefined) f=0;
-		if ((f|3)==3)
-		{
-			a.push("class_name");
-			a.push("class_info");
-			a.push("fields");
-			a.push("methods");
-			a.push("interfaces");
-		}
-		return Runtime.Collection.from(a);
-	},
-	getFieldInfoByName: function(ctx,field_name)
-	{
-		var Collection = Runtime.Collection;
-		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
-		if (field_name == "class_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionClass",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "class_info") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionClass",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "fields") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionClass",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "methods") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionClass",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "interfaces") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionClass",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		return null;
-	},
-	getMethodsList: function(ctx)
-	{
-		var a = [
-		];
-		return Runtime.Collection.from(a);
-	},
-	getMethodInfoByName: function(ctx,field_name)
-	{
-		return null;
-	},
-});
-Runtime.rtl.defClass(Runtime.Annotations.IntrospectionClass);
-window["Runtime.Annotations.IntrospectionClass"] = Runtime.Annotations.IntrospectionClass;
-if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Annotations.IntrospectionClass;
-"use strict;"
-/*!
- *  Bayrell Runtime Library
- *
- *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-if (typeof Runtime == 'undefined') Runtime = {};
-if (typeof Runtime.Annotations == 'undefined') Runtime.Annotations = {};
-Runtime.Annotations.IntrospectionInfo = function(ctx)
-{
-	Runtime.BaseStruct.apply(this, arguments);
-};
-Runtime.Annotations.IntrospectionInfo.prototype = Object.create(Runtime.BaseStruct.prototype);
-Runtime.Annotations.IntrospectionInfo.prototype.constructor = Runtime.Annotations.IntrospectionInfo;
-Object.assign(Runtime.Annotations.IntrospectionInfo.prototype,
-{
-	/**
-	 * Returns true if has annotations by class_name
-	 * @string class_name
-	 * @return bool
-	 */
-	filterAnnotations: function(ctx, class_name)
-	{
-		if (this.annotations == null)
-		{
-			return null;
-		}
-		return this.annotations.filter(ctx, Runtime.lib.isInstance(ctx, class_name)).toCollection(ctx);
-	},
-	_init: function(ctx)
-	{
-		var defProp = use('Runtime.rtl').defProp;
-		var a = Object.getOwnPropertyNames(this);
-		this.class_name = "";
-		this.kind = "";
-		this.name = "";
-		this.annotations = null;
-		Runtime.BaseStruct.prototype._init.call(this,ctx);
-	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof Runtime.Annotations.IntrospectionInfo)
-		{
-			this.class_name = o.class_name;
-			this.kind = o.kind;
-			this.name = o.name;
-			this.annotations = o.annotations;
-		}
-		Runtime.BaseStruct.prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "class_name")this.class_name = v;
-		else if (k == "kind")this.kind = v;
-		else if (k == "name")this.name = v;
-		else if (k == "annotations")this.annotations = v;
-		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-		if (k == "class_name")return this.class_name;
-		else if (k == "kind")return this.kind;
-		else if (k == "name")return this.name;
-		else if (k == "annotations")return this.annotations;
-		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
-	},
-	getClassName: function(ctx)
-	{
-		return "Runtime.Annotations.IntrospectionInfo";
-	},
-});
-Object.assign(Runtime.Annotations.IntrospectionInfo, Runtime.BaseStruct);
-Object.assign(Runtime.Annotations.IntrospectionInfo,
-{
-	ITEM_CLASS: "class",
-	ITEM_FIELD: "field",
-	ITEM_METHOD: "method",
-	/* ======================= Class Init Functions ======================= */
-	getCurrentNamespace: function()
-	{
-		return "Runtime.Annotations";
-	},
-	getCurrentClassName: function()
-	{
-		return "Runtime.Annotations.IntrospectionInfo";
-	},
-	getParentClassName: function()
-	{
-		return "Runtime.BaseStruct";
-	},
-	getClassInfo: function(ctx)
-	{
-		var Collection = Runtime.Collection;
-		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
-		return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Runtime.Annotations.IntrospectionInfo",
-			"name": "Runtime.Annotations.IntrospectionInfo",
-			"annotations": Collection.from([
-			]),
-		});
-	},
-	getFieldsList: function(ctx, f)
-	{
-		var a = [];
-		if (f==undefined) f=0;
-		if ((f|3)==3)
-		{
-			a.push("class_name");
-			a.push("kind");
-			a.push("name");
-			a.push("annotations");
-		}
-		return Runtime.Collection.from(a);
-	},
-	getFieldInfoByName: function(ctx,field_name)
-	{
-		var Collection = Runtime.Collection;
-		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
-		if (field_name == "ITEM_CLASS") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionInfo",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "ITEM_FIELD") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionInfo",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "ITEM_METHOD") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionInfo",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "class_name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionInfo",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "kind") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionInfo",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "name") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionInfo",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "annotations") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Annotations.IntrospectionInfo",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		return null;
-	},
-	getMethodsList: function(ctx)
-	{
-		var a = [
-		];
-		return Runtime.Collection.from(a);
-	},
-	getMethodInfoByName: function(ctx,field_name)
-	{
-		return null;
-	},
-});
-Runtime.rtl.defClass(Runtime.Annotations.IntrospectionInfo);
-window["Runtime.Annotations.IntrospectionInfo"] = Runtime.Annotations.IntrospectionInfo;
-if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Annotations.IntrospectionInfo;
 "use strict;"
 /*!
  *  Bayrell Runtime Library
@@ -7705,7 +7638,7 @@ Object.assign(Runtime.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.10.2";
+		return "0.10.3";
 	},
 	/**
 	 * Returns required modules
@@ -7716,26 +7649,11 @@ Object.assign(Runtime.ModuleDescription,
 		return null;
 	},
 	/**
-	 * Returns module files load order
-	 * @return Collection<string>
-	 */
-	assets: function(ctx)
-	{
-		return Runtime.Collection.from(["Runtime/rtl","Runtime/rs","Runtime/re","Runtime/lib","Runtime/AsyncAwait","Runtime/Collection","Runtime/Dict","Runtime/Map","Runtime/Vector","Runtime/Monad","Runtime/BaseObject","Runtime/BaseStruct","Runtime/DateTime","Runtime/Exceptions/RuntimeException","Runtime/Interfaces/AssetsInterface","Runtime/Interfaces/ModuleDescriptionInterface","Runtime/ModuleDescription"]);
-	},
-	/**
 	 * Returns enities
 	 */
 	entities: function(ctx)
 	{
 		return Runtime.Collection.from([]);
-	},
-	/**
-	 * Returns enities
-	 */
-	resources: function(ctx)
-	{
-		return null;
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -7754,7 +7672,7 @@ Object.assign(Runtime.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.ModuleDescription",
@@ -7773,7 +7691,7 @@ Object.assign(Runtime.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -7786,11 +7704,6 @@ Object.assign(Runtime.ModuleDescription,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.ModuleDescriptionInterface,
-		Runtime.Interfaces.AssetsInterface,
-	],
 });
 Runtime.rtl.defClass(Runtime.ModuleDescription);
 window["Runtime.ModuleDescription"] = Runtime.ModuleDescription;
@@ -8009,7 +7922,7 @@ Object.assign(Runtime.Core.Context.prototype,
 			var item_chain_name = item.chain;
 			if (item_chain_name != "")
 			{
-				args = await this.chainAwait(ctx, item_chain_name, args);
+				args = await this.chainAsync(ctx, item_chain_name, args);
 			}
 			else
 			{
@@ -8181,8 +8094,11 @@ Object.assign(Runtime.Core.Context,
 		if (main_module)
 		{
 			main_module_class_name = main_module + Runtime.rtl.toStr(".ModuleDescription");
-			var f = Runtime.rtl.method(ctx, main_module_class_name, "appSettings");
-			settings = f(ctx, c.enviroments);
+			if (Runtime.rtl.method_exists(ctx, main_module_class_name, "appSettings"))
+			{
+				var f = Runtime.rtl.method(ctx, main_module_class_name, "appSettings");
+				settings = f(ctx, c.enviroments);
+			}
 		}
 		/* Add main module */
 		if (main_module)
@@ -8438,7 +8354,7 @@ Object.assign(Runtime.Core.Context,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.Context",
@@ -8473,7 +8389,7 @@ Object.assign(Runtime.Core.Context,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "base_path") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Core.Context",
@@ -8577,10 +8493,6 @@ Object.assign(Runtime.Core.Context,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.ContextInterface,
-	],
 });
 Runtime.rtl.defClass(Runtime.Core.Context);
 window["Runtime.Core.Context"] = Runtime.Core.Context;
@@ -8712,7 +8624,7 @@ Object.assign(Runtime.Core.CoreObject,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.CoreObject",
@@ -8739,7 +8651,7 @@ Object.assign(Runtime.Core.CoreObject,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "object_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Core.CoreObject",
@@ -8866,7 +8778,7 @@ Object.assign(Runtime.Core.CoreDriver,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.CoreDriver",
@@ -8885,7 +8797,7 @@ Object.assign(Runtime.Core.CoreDriver,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -8985,7 +8897,7 @@ Object.assign(Runtime.Core.CoreEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.CoreEvent",
@@ -9004,7 +8916,7 @@ Object.assign(Runtime.Core.CoreEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -9117,7 +9029,7 @@ Object.assign(Runtime.Core.Entity,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.Entity",
@@ -9142,7 +9054,7 @@ Object.assign(Runtime.Core.Entity,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Core.Entity",
@@ -9249,7 +9161,7 @@ Object.assign(Runtime.Core.Driver,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.Driver",
@@ -9268,7 +9180,7 @@ Object.assign(Runtime.Core.Driver,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -9384,7 +9296,7 @@ Object.assign(Runtime.Core.LambdaChain,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.LambdaChain",
@@ -9411,7 +9323,7 @@ Object.assign(Runtime.Core.LambdaChain,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Core.LambdaChain",
@@ -9459,10 +9371,6 @@ Object.assign(Runtime.Core.LambdaChain,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.EntityInterface,
-	],
 });
 Runtime.rtl.defClass(Runtime.Core.LambdaChain);
 window["Runtime.Core.LambdaChain"] = Runtime.Core.LambdaChain;
@@ -9554,7 +9462,7 @@ Object.assign(Runtime.Core.LambdaChainDeclare,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.LambdaChainDeclare",
@@ -9578,7 +9486,7 @@ Object.assign(Runtime.Core.LambdaChainDeclare,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Core.LambdaChainDeclare",
@@ -9605,10 +9513,6 @@ Object.assign(Runtime.Core.LambdaChainDeclare,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.EntityInterface,
-	],
 });
 Runtime.rtl.defClass(Runtime.Core.LambdaChainDeclare);
 window["Runtime.Core.LambdaChainDeclare"] = Runtime.Core.LambdaChainDeclare;
@@ -9743,7 +9647,7 @@ Object.assign(Runtime.Core.Message,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.Message",
@@ -9770,7 +9674,7 @@ Object.assign(Runtime.Core.Message,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "from") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Core.Message",
@@ -9844,7 +9748,7 @@ if (typeof Runtime == 'undefined') Runtime = {};
 if (typeof Runtime.Core == 'undefined') Runtime.Core = {};
 Runtime.Core.ObjectManager = function(ctx)
 {
-	Runtime.Core.CoreObject.call(this, ctx);
+	Runtime.BaseObject.call(this, ctx);
 	/* Create object */
 	this.objects = new Runtime.Map(ctx);
 	this.drivers = new Runtime.Map(ctx);
@@ -9860,7 +9764,7 @@ Runtime.Core.ObjectManager = function(ctx)
 	this.listeners = new Runtime.Vector(ctx);
 	this.manager = this;
 };
-Runtime.Core.ObjectManager.prototype = Object.create(Runtime.Core.CoreObject.prototype);
+Runtime.Core.ObjectManager.prototype = Object.create(Runtime.BaseObject.prototype);
 Runtime.Core.ObjectManager.prototype.constructor = Runtime.Core.ObjectManager;
 Object.assign(Runtime.Core.ObjectManager.prototype,
 {
@@ -10176,7 +10080,7 @@ Object.assign(Runtime.Core.ObjectManager.prototype,
 		this.mutex_objects = null;
 		this.mutex_process = null;
 		this.listeners = null;
-		Runtime.Core.CoreObject.prototype._init.call(this,ctx);
+		Runtime.BaseObject.prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -10190,7 +10094,7 @@ Object.assign(Runtime.Core.ObjectManager.prototype,
 			this.mutex_process = o.mutex_process;
 			this.listeners = o.listeners;
 		}
-		Runtime.Core.CoreObject.prototype.assignObject.call(this,ctx,o);
+		Runtime.BaseObject.prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
@@ -10201,7 +10105,7 @@ Object.assign(Runtime.Core.ObjectManager.prototype,
 		else if (k == "mutex_objects")this.mutex_objects = v;
 		else if (k == "mutex_process")this.mutex_process = v;
 		else if (k == "listeners")this.listeners = v;
-		else Runtime.Core.CoreObject.prototype.assignValue.call(this,ctx,k,v);
+		else Runtime.BaseObject.prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -10213,14 +10117,14 @@ Object.assign(Runtime.Core.ObjectManager.prototype,
 		else if (k == "mutex_objects")return this.mutex_objects;
 		else if (k == "mutex_process")return this.mutex_process;
 		else if (k == "listeners")return this.listeners;
-		return Runtime.Core.CoreObject.prototype.takeValue.call(this,ctx,k,d);
+		return Runtime.BaseObject.prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Runtime.Core.ObjectManager";
 	},
 });
-Object.assign(Runtime.Core.ObjectManager, Runtime.Core.CoreObject);
+Object.assign(Runtime.Core.ObjectManager, Runtime.BaseObject);
 Object.assign(Runtime.Core.ObjectManager,
 {
 	/* ======================= Class Init Functions ======================= */
@@ -10234,13 +10138,13 @@ Object.assign(Runtime.Core.ObjectManager,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.Core.CoreObject";
+		return "Runtime.BaseObject";
 	},
 	getClassInfo: function(ctx)
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.ObjectManager",
@@ -10269,7 +10173,7 @@ Object.assign(Runtime.Core.ObjectManager,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "objects") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Core.ObjectManager",
@@ -10394,7 +10298,7 @@ Object.assign(Runtime.Core.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.10.2";
+		return "0.10.3";
 	},
 	/**
 	 * Returns required modules
@@ -10405,26 +10309,11 @@ Object.assign(Runtime.Core.ModuleDescription,
 		return Runtime.Dict.from({"Runtime":">=0.3"});
 	},
 	/**
-	 * Returns module files load order
-	 * @return Collection<string>
-	 */
-	assets: function(ctx)
-	{
-		return Runtime.Collection.from(["Runtime.Core/Context","Runtime.Core/CoreDriver","Runtime.Core/CoreEvent","Runtime.Core/CoreProvider","Runtime.Core/Entity","Runtime.Core/Driver","Runtime.Core/LambdaChain","Runtime.Core/LambdaChainDeclare","Runtime.Core/Message","Runtime.Core/MessageRPC","Runtime.Core/MessageSession","Runtime.Core/ModuleDescription","Runtime.Core/Provider"]);
-	},
-	/**
 	 * Returns enities
 	 */
 	entities: function(ctx)
 	{
 		return Runtime.Collection.from([]);
-	},
-	/**
-	 * Returns sync loaded files
-	 */
-	resources: function(ctx)
-	{
-		return null;
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -10443,7 +10332,7 @@ Object.assign(Runtime.Core.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Core.ModuleDescription",
@@ -10462,7 +10351,7 @@ Object.assign(Runtime.Core.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -10475,11 +10364,6 @@ Object.assign(Runtime.Core.ModuleDescription,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.ModuleDescriptionInterface,
-		Runtime.Interfaces.AssetsInterface,
-	],
 });
 Runtime.rtl.defClass(Runtime.Core.ModuleDescription);
 window["Runtime.Core.ModuleDescription"] = Runtime.Core.ModuleDescription;
@@ -10790,7 +10674,7 @@ Object.assign(Runtime.Web.Component,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Component",
@@ -10817,7 +10701,7 @@ Object.assign(Runtime.Web.Component,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "path_id") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Component",
@@ -10976,7 +10860,7 @@ Object.assign(Runtime.Web.Cookie,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Cookie",
@@ -11006,7 +10890,7 @@ Object.assign(Runtime.Web.Cookie,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Cookie",
@@ -11149,7 +11033,7 @@ Object.assign(Runtime.Web.Layout,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Layout",
@@ -11168,7 +11052,7 @@ Object.assign(Runtime.Web.Layout,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -11360,7 +11244,7 @@ Object.assign(Runtime.Web.LayoutModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.LayoutModel",
@@ -11407,7 +11291,7 @@ Object.assign(Runtime.Web.LayoutModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "is_https") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.LayoutModel",
@@ -11627,6 +11511,11 @@ Runtime.Web.RenderContainer.prototype = Object.create(Runtime.BaseStruct.prototy
 Runtime.Web.RenderContainer.prototype.constructor = Runtime.Web.RenderContainer;
 Object.assign(Runtime.Web.RenderContainer.prototype,
 {
+	/* Functions */
+	isRequestExists: function(ctx)
+	{
+		return this.request != null;
+	},
 	isResponseExists: function(ctx)
 	{
 		return this.response != null;
@@ -11647,8 +11536,12 @@ Object.assign(Runtime.Web.RenderContainer.prototype,
 		this.response = null;
 		this.route = null;
 		this.route_params = null;
-		this.new_cookies = null;
 		this.layout = null;
+		this.new_cookies = Runtime.Dict.from({});
+		this.new_headers = Runtime.Dict.from({});
+		this.new_http_code = 200;
+		this.bag = new Runtime.Dict(ctx);
+		this.env = new Runtime.Dict(ctx);
 		this.pattern_name = "default";
 		this.pattern_class = "";
 		Runtime.BaseStruct.prototype._init.call(this,ctx);
@@ -11661,8 +11554,12 @@ Object.assign(Runtime.Web.RenderContainer.prototype,
 			this.response = o.response;
 			this.route = o.route;
 			this.route_params = o.route_params;
-			this.new_cookies = o.new_cookies;
 			this.layout = o.layout;
+			this.new_cookies = o.new_cookies;
+			this.new_headers = o.new_headers;
+			this.new_http_code = o.new_http_code;
+			this.bag = o.bag;
+			this.env = o.env;
 			this.pattern_name = o.pattern_name;
 			this.pattern_class = o.pattern_class;
 		}
@@ -11674,8 +11571,12 @@ Object.assign(Runtime.Web.RenderContainer.prototype,
 		else if (k == "response")this.response = v;
 		else if (k == "route")this.route = v;
 		else if (k == "route_params")this.route_params = v;
-		else if (k == "new_cookies")this.new_cookies = v;
 		else if (k == "layout")this.layout = v;
+		else if (k == "new_cookies")this.new_cookies = v;
+		else if (k == "new_headers")this.new_headers = v;
+		else if (k == "new_http_code")this.new_http_code = v;
+		else if (k == "bag")this.bag = v;
+		else if (k == "env")this.env = v;
 		else if (k == "pattern_name")this.pattern_name = v;
 		else if (k == "pattern_class")this.pattern_class = v;
 		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
@@ -11687,8 +11588,12 @@ Object.assign(Runtime.Web.RenderContainer.prototype,
 		else if (k == "response")return this.response;
 		else if (k == "route")return this.route;
 		else if (k == "route_params")return this.route_params;
-		else if (k == "new_cookies")return this.new_cookies;
 		else if (k == "layout")return this.layout;
+		else if (k == "new_cookies")return this.new_cookies;
+		else if (k == "new_headers")return this.new_headers;
+		else if (k == "new_http_code")return this.new_http_code;
+		else if (k == "bag")return this.bag;
+		else if (k == "env")return this.env;
 		else if (k == "pattern_name")return this.pattern_name;
 		else if (k == "pattern_class")return this.pattern_class;
 		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
@@ -11718,7 +11623,7 @@ Object.assign(Runtime.Web.RenderContainer,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.RenderContainer",
@@ -11737,8 +11642,12 @@ Object.assign(Runtime.Web.RenderContainer,
 			a.push("response");
 			a.push("route");
 			a.push("route_params");
-			a.push("new_cookies");
 			a.push("layout");
+			a.push("new_cookies");
+			a.push("new_headers");
+			a.push("new_http_code");
+			a.push("bag");
+			a.push("env");
 			a.push("pattern_name");
 			a.push("pattern_class");
 		}
@@ -11748,7 +11657,7 @@ Object.assign(Runtime.Web.RenderContainer,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "request") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderContainer",
@@ -11777,6 +11686,13 @@ Object.assign(Runtime.Web.RenderContainer,
 			"annotations": Collection.from([
 			]),
 		});
+		if (field_name == "layout") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RenderContainer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		if (field_name == "new_cookies") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderContainer",
@@ -11784,7 +11700,28 @@ Object.assign(Runtime.Web.RenderContainer,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "layout") return new IntrospectionInfo(ctx, {
+		if (field_name == "new_headers") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RenderContainer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "new_http_code") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RenderContainer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "bag") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RenderContainer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "env") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderContainer",
 			"name": field_name,
@@ -12041,10 +11978,26 @@ Object.assign(Runtime.Web.RenderController.prototype,
 		this.selector = __v0.value(ctx);
 		var __v1 = new Runtime.Monad(ctx, Runtime.rtl.attr(ctx, this.entity, ["params", "main_controller"]));
 		this.is_main_controller = __v1.value(ctx);
-		var __v2 = new Runtime.Monad(ctx, Runtime.rtl.attr(ctx, this.entity, ["params", "window"]));
-		var window_name = __v2.value(ctx);
+		var __v2 = new Runtime.Monad(ctx, Runtime.rtl.attr(ctx, this.entity, ["params", "selector_model"]));
+		var selector_model = __v2.value(ctx);
+		if (selector_model == null || selector_model == "")
+		{
+			selector_model = this.selector + Runtime.rtl.toStr("_model");
+		}
+		var __v3 = new Runtime.Monad(ctx, Runtime.rtl.attr(ctx, this.entity, ["params", "window"]));
+		var window_name = __v3.value(ctx);
 		if (window_name != "") window[window_name] = this;
 		if (this.selector != "") this.root_elem = document.querySelector(this.selector);
+		
+		/* get model */
+		if (selector_model != "" && selector_model != null)
+		{
+			var layout_input = document.querySelector(selector_model);
+			var layout = layout_input.value;
+			layout = Runtime.rs.base64_decode_url(ctx, layout);
+			layout = Runtime.RuntimeUtils.json_decode(ctx, layout);
+			this.layout = layout;
+		}
 		this.components = new Runtime.Map(ctx);
 		this.saveComponent(ctx, this);
 	},
@@ -12123,17 +12076,31 @@ Object.assign(Runtime.Web.RenderController.prototype,
 		/* Add new css */
 		if (this.new_css != this.old_css)
 		{
-			var elem = RenderDriver.getPreviousElement(this.root_elem);
-			if (elem != null && elem.tagName == "STYLE" && elem._root_elem == this.root_elem)
+			var elem = document.querySelector(this.selector + "_style");
+			if (elem != null)
 			{
+				if (elem.textContent != this.new_css) elem.textContent = this.new_css;
 			}
 			else
 			{
-				elem = document.createElement("STYLE");
-				elem._root_elem = this.root_elem;
-				this.root_elem.parentElement.insertBefore(elem, this.root_elem);
+				var elem = RenderDriver.getPreviousElement(this.root_elem);
+				if (elem != null && elem.tagName == "STYLE" && elem._root_elem == this.root_elem)
+				{
+				}
+				else
+				{
+					elem = document.createElement("STYLE");
+					elem._root_elem = this.root_elem;
+					this.root_elem.parentElement.insertBefore(elem, this.root_elem);
+				}
+				if (elem.textContent != this.new_css) elem.textContent = this.new_css;
 			}
-			elem.textContent = this.new_css;
+		}
+		
+		/* Set title */
+		if (this.isMainController(ctx))
+		{
+			document.title = this.layout.title;
 		}
 		this.old_css = this.new_css;
 	},
@@ -12516,7 +12483,7 @@ Object.assign(Runtime.Web.RenderController,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.RenderController",
@@ -12551,7 +12518,7 @@ Object.assign(Runtime.Web.RenderController,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ctx") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderController",
@@ -12724,6 +12691,15 @@ Object.assign(Runtime.Web.RenderDriver.prototype,
 			ctx.registerListener(ctx, this.getObjectName(ctx), event_class_name, object_name, method_name);
 		}
 	},
+	/**
+	 * Returns css
+	 */
+	getLayoutCSS: function(ctx, layout)
+	{
+		var components = Runtime.Web.RenderDriver.getLayoutComponents(ctx, layout);
+		var css = Runtime.Web.RenderDriver.getCSSFromComponents(ctx, components, layout.css_vars);
+		return css;
+	},
 	_init: function(ctx)
 	{
 		this.listen_events = new Runtime.Map(ctx);
@@ -12757,18 +12733,19 @@ Object.assign(Runtime.Web.RenderDriver, Runtime.Core.CoreDriver);
 Object.assign(Runtime.Web.RenderDriver,
 {
 	LAYOUT_CHAIN: "Runtime.Web.RenderDriver::LAYOUT_CHAIN",
+	PATTERN_CHAIN: "Runtime.Web.RenderDriver::PATTERN_CHAIN",
 	RENDER_CHAIN: "Runtime.Web.RenderDriver::RENDER_CHAIN",
 	RENDER_CHAIN_START: 500,
 	RENDER_CHAIN_CREATE_LAYOUT_MODEL: 1000,
-	RENDER_CHAIN_SET_FRONTEND_ENVIROMENTS: 1200,
-	RENDER_CHAIN_MIDDLEWARE: 1500,
-	RENDER_CHAIN_CALL_ROUTE_PRE: 1900,
-	RENDER_CHAIN_CALL_ROUTE: 2000,
-	RENDER_CHAIN_CALL_PAGE_NOT_FOUND: 2050,
-	RENDER_CHAIN_CALL_ROUTE_POST: 2100,
-	RENDER_CHAIN_INIT_ASSETS: 3000,
-	RENDER_CHAIN_RESPONSE: 4000,
-	RENDER_CHAIN_RESPONSE_POST: 4500,
+	RENDER_CHAIN_SET_FRONTEND_ENVIROMENTS: 1500,
+	RENDER_CHAIN_MIDDLEWARE: 2000,
+	RENDER_CHAIN_CALL_ROUTE_PRE: 2500,
+	RENDER_CHAIN_CALL_ROUTE: 3000,
+	RENDER_CHAIN_CALL_PAGE_NOT_FOUND: 3100,
+	RENDER_CHAIN_CALL_ROUTE_POST: 3500,
+	RENDER_CHAIN_RESPONSE_BEFORE: 4000,
+	RENDER_CHAIN_RESPONSE: 4500,
+	RENDER_CHAIN_RESPONSE_POST: 5000,
 	/**
 	 * JS Event
 	 */
@@ -13024,13 +13001,13 @@ Object.assign(Runtime.Web.RenderDriver,
 	 * Render chain
 	 * Create layout model
 	 */
-	createLayoutModel: function(ctx, container)
+	chainRenderCreateLayoutModel: function(ctx, container)
 	{
 		if (container == null)
 		{
 			return Runtime.Collection.from([container]);
 		}
-		if (container.response != null)
+		if (container.isResponseExists(ctx))
 		{
 			return Runtime.Collection.from([container]);
 		}
@@ -13042,7 +13019,7 @@ Object.assign(Runtime.Web.RenderDriver,
 	 * Render chain
 	 * Call route middlewares
 	 */
-	callRouteMiddleware: async function(ctx, container)
+	chainRenderCallRouteMiddleware: async function(ctx, container)
 	{
 		if (container == null)
 		{
@@ -13082,7 +13059,7 @@ Object.assign(Runtime.Web.RenderDriver,
 	 * Render chain
 	 * Call route
 	 */
-	callRoute: async function(ctx, container)
+	chainRenderCallRoute: async function(ctx, container)
 	{
 		if (container == null)
 		{
@@ -13136,7 +13113,7 @@ Object.assign(Runtime.Web.RenderDriver,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.RenderDriver",
@@ -13159,8 +13136,15 @@ Object.assign(Runtime.Web.RenderDriver,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "LAYOUT_CHAIN") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RenderDriver",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "PATTERN_CHAIN") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriver",
 			"name": field_name,
@@ -13230,7 +13214,7 @@ Object.assign(Runtime.Web.RenderDriver,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "RENDER_CHAIN_INIT_ASSETS") return new IntrospectionInfo(ctx, {
+		if (field_name == "RENDER_CHAIN_RESPONSE_BEFORE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriver",
 			"name": field_name,
@@ -13836,7 +13820,7 @@ Object.assign(Runtime.Web.RenderDriverControl,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.RenderDriverControl",
@@ -13867,7 +13851,7 @@ Object.assign(Runtime.Web.RenderDriverControl,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ctx") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriverControl",
@@ -14075,7 +14059,7 @@ Object.assign(Runtime.Web.Request,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Request",
@@ -14108,7 +14092,7 @@ Object.assign(Runtime.Web.Request,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "METHOD_GET") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Request",
@@ -14359,7 +14343,7 @@ Object.assign(Runtime.Web.Response,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Response",
@@ -14384,7 +14368,7 @@ Object.assign(Runtime.Web.Response,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "http_code") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Response",
@@ -14574,7 +14558,7 @@ Object.assign(Runtime.Web.Route,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Route",
@@ -14602,7 +14586,7 @@ Object.assign(Runtime.Web.Route,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "uri") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Route",
@@ -14696,7 +14680,7 @@ Object.assign(Runtime.Web.RouteController.prototype,
 	{
 		this.history = new Runtime.Vector(ctx);
 		this.routes = this.constructor.getRoutesByEntities(ctx, ctx.entities);
-		this.route_prefix = ctx.config(ctx, Runtime.Collection.from(["Runtime.Web","route_prefix"]), "");
+		this.route_prefix = ctx.env(ctx, "X-ROUTE-PREFIX", "");
 		/* Add mouse listener */
 		var body = document.getElementsByTagName("body")[0];
 		body.addEventListener("click", Runtime.Web.RouteController.js_click);
@@ -14714,6 +14698,29 @@ Object.assign(Runtime.Web.RouteController.prototype,
 		history.pushState(obj, "", href);
 		this.history.push(ctx, href);
 		this.renderPage(ctx, href);
+	},
+	/**
+	 * Render
+	 */
+	renderFirst: async function(ctx)
+	{
+		var render = false;
+		/* Check if need to render */
+		var controllers = ctx.getDrivers(ctx, "Runtime.Web.RenderController");
+		for (var i = 0;i < controllers.count(ctx);i++)
+		{
+			var controller = Runtime.rtl.get(ctx, controllers, i);
+			if (controller.isMainController(ctx) && controller.layout == null)
+			{
+				render = true;
+				break;
+			}
+		}
+		/* render */
+		if (render)
+		{
+			this.renderCurrentPage(ctx);
+		}
 	},
 	/**
 	 * Render
@@ -14944,7 +14951,7 @@ Object.assign(Runtime.Web.RouteController,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.RouteController",
@@ -14969,7 +14976,7 @@ Object.assign(Runtime.Web.RouteController,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "history") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RouteController",
@@ -15076,7 +15083,7 @@ Object.assign(Runtime.Web.RouteList,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.RouteList",
@@ -15095,7 +15102,7 @@ Object.assign(Runtime.Web.RouteList,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -15191,7 +15198,7 @@ Object.assign(Runtime.Web.RouteMiddleware,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.RouteMiddleware",
@@ -15214,7 +15221,7 @@ Object.assign(Runtime.Web.RouteMiddleware,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "value") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RouteMiddleware",
@@ -15349,7 +15356,7 @@ Object.assign(Runtime.Web.SeoModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.SeoModel",
@@ -15380,7 +15387,7 @@ Object.assign(Runtime.Web.SeoModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "og_type") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.SeoModel",
@@ -15537,7 +15544,7 @@ Object.assign(Runtime.Web.Events.UIEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.UIEvent",
@@ -15556,7 +15563,7 @@ Object.assign(Runtime.Web.Events.UIEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -15770,7 +15777,7 @@ Object.assign(Runtime.Web.Events.WebEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.WebEvent",
@@ -15803,7 +15810,7 @@ Object.assign(Runtime.Web.Events.WebEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.WebEvent",
@@ -15968,7 +15975,7 @@ Object.assign(Runtime.Web.Events.BlurEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.BlurEvent",
@@ -15987,7 +15994,7 @@ Object.assign(Runtime.Web.Events.BlurEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.BlurEvent",
@@ -16097,7 +16104,7 @@ Object.assign(Runtime.Web.Events.ChangeEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.ChangeEvent",
@@ -16120,7 +16127,7 @@ Object.assign(Runtime.Web.Events.ChangeEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.ChangeEvent",
@@ -16222,7 +16229,7 @@ Object.assign(Runtime.Web.Events.FocusEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.FocusEvent",
@@ -16241,7 +16248,7 @@ Object.assign(Runtime.Web.Events.FocusEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.FocusEvent",
@@ -16405,7 +16412,7 @@ Object.assign(Runtime.Web.Events.KeyboardEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.KeyboardEvent",
@@ -16439,7 +16446,7 @@ Object.assign(Runtime.Web.Events.KeyboardEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "altKey") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.KeyboardEvent",
@@ -16611,7 +16618,7 @@ Object.assign(Runtime.Web.Events.KeyDownEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.KeyDownEvent",
@@ -16630,7 +16637,7 @@ Object.assign(Runtime.Web.Events.KeyDownEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.KeyDownEvent",
@@ -16725,7 +16732,7 @@ Object.assign(Runtime.Web.Events.KeyPressEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.KeyPressEvent",
@@ -16744,7 +16751,7 @@ Object.assign(Runtime.Web.Events.KeyPressEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.KeyPressEvent",
@@ -16839,7 +16846,7 @@ Object.assign(Runtime.Web.Events.KeyUpEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.KeyUpEvent",
@@ -16858,7 +16865,7 @@ Object.assign(Runtime.Web.Events.KeyUpEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.KeyUpEvent",
@@ -17067,7 +17074,7 @@ Object.assign(Runtime.Web.Events.MouseEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseEvent",
@@ -17110,7 +17117,7 @@ Object.assign(Runtime.Web.Events.MouseEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "altKey") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseEvent",
@@ -17345,7 +17352,7 @@ Object.assign(Runtime.Web.Events.MouseClickEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseClickEvent",
@@ -17364,7 +17371,7 @@ Object.assign(Runtime.Web.Events.MouseClickEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseClickEvent",
@@ -17459,7 +17466,7 @@ Object.assign(Runtime.Web.Events.MouseContextMenuEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseContextMenuEvent",
@@ -17478,7 +17485,7 @@ Object.assign(Runtime.Web.Events.MouseContextMenuEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseContextMenuEvent",
@@ -17573,7 +17580,7 @@ Object.assign(Runtime.Web.Events.MouseDoubleClickEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseDoubleClickEvent",
@@ -17592,7 +17599,7 @@ Object.assign(Runtime.Web.Events.MouseDoubleClickEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseDoubleClickEvent",
@@ -17687,7 +17694,7 @@ Object.assign(Runtime.Web.Events.MouseDownEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseDownEvent",
@@ -17706,7 +17713,7 @@ Object.assign(Runtime.Web.Events.MouseDownEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseDownEvent",
@@ -17801,7 +17808,7 @@ Object.assign(Runtime.Web.Events.MouseEnterEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseEnterEvent",
@@ -17820,7 +17827,7 @@ Object.assign(Runtime.Web.Events.MouseEnterEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseEnterEvent",
@@ -17915,7 +17922,7 @@ Object.assign(Runtime.Web.Events.MouseLeaveEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseLeaveEvent",
@@ -17934,7 +17941,7 @@ Object.assign(Runtime.Web.Events.MouseLeaveEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseLeaveEvent",
@@ -18029,7 +18036,7 @@ Object.assign(Runtime.Web.Events.MouseMoveEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseMoveEvent",
@@ -18048,7 +18055,7 @@ Object.assign(Runtime.Web.Events.MouseMoveEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseMoveEvent",
@@ -18143,7 +18150,7 @@ Object.assign(Runtime.Web.Events.MouseOutEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseOutEvent",
@@ -18162,7 +18169,7 @@ Object.assign(Runtime.Web.Events.MouseOutEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseOutEvent",
@@ -18257,7 +18264,7 @@ Object.assign(Runtime.Web.Events.MouseOverEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseOverEvent",
@@ -18276,7 +18283,7 @@ Object.assign(Runtime.Web.Events.MouseOverEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseOverEvent",
@@ -18371,7 +18378,7 @@ Object.assign(Runtime.Web.Events.MouseUpEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseUpEvent",
@@ -18390,7 +18397,7 @@ Object.assign(Runtime.Web.Events.MouseUpEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseUpEvent",
@@ -18510,7 +18517,7 @@ Object.assign(Runtime.Web.Events.MouseWheelEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.Events.MouseWheelEvent",
@@ -18535,7 +18542,7 @@ Object.assign(Runtime.Web.Events.MouseWheelEvent,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "ES6_EVENT_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.Events.MouseWheelEvent",
@@ -18650,26 +18657,11 @@ Object.assign(Runtime.Web.ModuleDescription,
 		return Runtime.Dict.from({"Runtime":">=0.3","Runtime.Web":"*"});
 	},
 	/**
-	 * Returns module files load order
-	 * @return Collection<string>
-	 */
-	assets: function(ctx)
-	{
-		return Runtime.Collection.from(["Runtime.Web/Events/UIEvent","Runtime.Web/Events/WebEvent","Runtime.Web/Events/BlurEvent","Runtime.Web/Events/ChangeEvent","Runtime.Web/Events/FocusEvent","Runtime.Web/Events/KeyboardEvent","Runtime.Web/Events/KeyDownEvent","Runtime.Web/Events/KeyPressEvent","Runtime.Web/Events/KeyUpEvent","Runtime.Web/Events/MouseEvent","Runtime.Web/Events/MouseClickEvent","Runtime.Web/Events/MouseContextMenuEvent","Runtime.Web/Events/MouseDoubleClickEvent","Runtime.Web/Events/MouseDownEvent","Runtime.Web/Events/MouseEnterEvent","Runtime.Web/Events/MouseLeaveEvent","Runtime.Web/Events/MouseMoveEvent","Runtime.Web/Events/MouseOutEvent","Runtime.Web/Events/MouseOverEvent","Runtime.Web/Events/MouseUpEvent","Runtime.Web/Events/MouseWheelEvent","Runtime.Web/Component","Runtime.Web/Layout","Runtime.Web/LayoutModel","Runtime.Web/SeoModel","Runtime.Web/ModuleDescription"]);
-	},
-	/**
 	 * Returns enities
 	 */
 	entities: function(ctx)
 	{
-		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"Runtime.Web.RenderDriver"})),new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"Runtime.Web.RouteController"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10000,"value":"Runtime.Web.RenderDriver::chainLayoutModel"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::createLayoutModel","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CREATE_LAYOUT_MODEL})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::callRouteMiddleware","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_ROUTE_PRE,"is_async":true})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::callRoute","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_ROUTE,"is_async":true}))]);
-	},
-	/**
-	 * Returns sync loaded files
-	 */
-	resources: function(ctx)
-	{
-		return null;
+		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"Runtime.Web.RenderDriver"})),new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"Runtime.Web.RouteController"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10000,"value":"Runtime.Web.RenderDriver::chainLayoutModel"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::chainRenderCreateLayoutModel","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CREATE_LAYOUT_MODEL})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::chainRenderCallRouteMiddleware","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_ROUTE_PRE,"is_async":true})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::chainRenderCallRoute","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_ROUTE,"is_async":true}))]);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -18688,7 +18680,7 @@ Object.assign(Runtime.Web.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Runtime.Web.ModuleDescription",
@@ -18707,7 +18699,7 @@ Object.assign(Runtime.Web.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -18720,12 +18712,57 @@ Object.assign(Runtime.Web.ModuleDescription,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.ModuleDescriptionInterface,
-		Runtime.Interfaces.AssetsInterface,
-	],
 });
 Runtime.rtl.defClass(Runtime.Web.ModuleDescription);
 window["Runtime.Web.ModuleDescription"] = Runtime.Web.ModuleDescription;
 if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Web.ModuleDescription;
+function runWebApp(env)
+{
+	/* Create context */
+	var context = Runtime.Core.Context.create(null, Runtime.Dict.from(env));
+
+	/* Set context params */
+	context = context.copy(context, {
+		"start_time": Date.now(),
+	});
+
+	/* Set entry point */
+	context = context.constructor.setMainModule(context, context, "App");
+	
+	/* Set global context */
+	Runtime.RuntimeUtils.setContext(context);
+
+	/* Run app */
+	(async () => {
+		try
+		{
+			/* Run entry */
+			context = await context.constructor.run
+			(
+				context,
+				context,
+				
+				/* Before start */
+				async (ctx, c) =>
+				{
+					return c;
+				},
+				
+				/* Before run */
+				async (ctx, c) =>
+				{
+					/* Set global context */
+					window["globalContext"] = c;
+					Runtime.RuntimeUtils.setContext(c);
+					return c;
+				}
+			);
+		}
+		catch (e)
+		{
+			console.log( e.stack );
+		}
+	})();
+	
+	return context;
+}

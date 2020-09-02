@@ -1,7 +1,5 @@
 namespace Example1;
 
-use Runtime.Interfaces.AssetsInterface;
-use Runtime.Interfaces.ModuleDescriptionInterface;
 use Runtime.Core.Context;
 use Runtime.Core.Driver;
 use Runtime.Core.Entity;
@@ -16,9 +14,8 @@ use Example1.IndexPage;
 use Example1.IndexPageModel;
 
 
-class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
-{
-	
+static class ModuleDescription
+{	
 	/**
 	 * Returns module name
 	 * @return string
@@ -52,16 +49,6 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 	
 	
 	/**
-	 * Returns module files load order
-	 * @return Collection<string>
-	 */
-	pure Collection<string> assets() => 
-	[
-	];
-	
-	
-	
-	/**
 	 * Returns enities
 	 */
 	pure Collection<Dict> entities() => 
@@ -90,13 +77,6 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 		/* Register RouteController */
 		new Driver{ "name": classof RouteController },
 	];
-	
-	
-	
-	/**
-	 * Returns sync loaded files
-	 */		
-	public static Collection<string> resources() => null;	
 	
 	
 	

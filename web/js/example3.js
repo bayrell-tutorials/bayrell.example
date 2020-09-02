@@ -67,7 +67,7 @@ Object.assign(Example3.AppLayout,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Example3.AppLayout",
@@ -86,7 +86,7 @@ Object.assign(Example3.AppLayout,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -217,7 +217,7 @@ Object.assign(Example3.Box,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Example3.Box",
@@ -240,7 +240,7 @@ Object.assign(Example3.Box,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "box") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Example3.Box",
@@ -345,7 +345,7 @@ Object.assign(Example3.BoxModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Example3.BoxModel",
@@ -373,7 +373,7 @@ Object.assign(Example3.BoxModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "move") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Example3.BoxModel",
@@ -510,7 +510,7 @@ Object.assign(Example3.IndexPage,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Example3.IndexPage",
@@ -529,7 +529,7 @@ Object.assign(Example3.IndexPage,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -611,7 +611,7 @@ Object.assign(Example3.IndexPageModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Example3.IndexPageModel",
@@ -635,7 +635,7 @@ Object.assign(Example3.IndexPageModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "box1") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Example3.IndexPageModel",
@@ -919,7 +919,7 @@ Object.assign(Example3.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Example3.ModuleDescription",
@@ -938,7 +938,7 @@ Object.assign(Example3.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -955,11 +955,6 @@ Object.assign(Example3.ModuleDescription,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.ModuleDescriptionInterface,
-		Runtime.Interfaces.AssetsInterface,
-	],
 });
 Runtime.rtl.defClass(Example3.ModuleDescription);
 window["Example3.ModuleDescription"] = Example3.ModuleDescription;

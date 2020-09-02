@@ -82,7 +82,7 @@ Object.assign(Example1.AppLayout,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Example1.AppLayout",
@@ -101,7 +101,7 @@ Object.assign(Example1.AppLayout,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -216,7 +216,7 @@ Object.assign(Example1.IndexPage,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Example1.IndexPage",
@@ -235,7 +235,7 @@ Object.assign(Example1.IndexPage,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -313,7 +313,7 @@ Object.assign(Example1.IndexPageModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Example1.IndexPageModel",
@@ -336,7 +336,7 @@ Object.assign(Example1.IndexPageModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		if (field_name == "item") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Example1.IndexPageModel",
@@ -412,26 +412,11 @@ Object.assign(Example1.ModuleDescription,
 		return Runtime.Dict.from({"Runtime.Web":"*"});
 	},
 	/**
-	 * Returns module files load order
-	 * @return Collection<string>
-	 */
-	assets: function(ctx)
-	{
-		return Runtime.Collection.from([]);
-	},
-	/**
 	 * Returns enities
 	 */
 	entities: function(ctx)
 	{
 		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"root-controller","value":"Runtime.Web.RenderController","params":Runtime.Dict.from({"selector":".root","main_controller":true,"window":"RootController"})})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10,"value":"Example1.ModuleDescription::chainLayoutModel"})),new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"Runtime.Web.RouteController"}))]);
-	},
-	/**
-	 * Returns sync loaded files
-	 */
-	resources: function(ctx)
-	{
-		return null;
 	},
 	/**
 	 * Layout chain
@@ -493,7 +478,7 @@ Object.assign(Example1.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Example1.ModuleDescription",
@@ -512,7 +497,7 @@ Object.assign(Example1.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -529,11 +514,6 @@ Object.assign(Example1.ModuleDescription,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.ModuleDescriptionInterface,
-		Runtime.Interfaces.AssetsInterface,
-	],
 });
 Runtime.rtl.defClass(Example1.ModuleDescription);
 window["Example1.ModuleDescription"] = Example1.ModuleDescription;

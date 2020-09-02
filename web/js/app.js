@@ -34,7 +34,7 @@ Object.assign(App.AppLayout,
 {
 	css: function(ctx, vars)
 	{
-		return "\n*{box-sizing: border-box;}body{margin:0;padding:0;}\na { text-decoration: inherit; color: #0000d0; cursor: pointer; }\na:hover, a:visited:hover { text-decoration: underline; color: red; }\na:visited { text-decoration: inherit; color: #0000d0; }\na.link { text-decoration: none; color: #0000d0; cursor: pointer; }\na.link:hover, a.link:visited:hover { text-decoration: underline; color: red; }\na.link:visited { text-decoration: none; color: #0000d0; }\nbody, html{\n\tfont-family: 'Ubuntu', sans-serif;\n\tfont-size: 14px;\n\twidth: 100%;\n\theight: 100vh;\n\tpadding: 0;\n\tmargin: 0;\n}\n.root{\n\tdisplay: flex;\n\tflex-direction: row;\n}\n.menu.h-70d2{\n\twidth: 100px;\n}\n.content.h-70d2{\n\twidth: calc(100% - 100px);\n}\n.menu.h-70d2, .content.h-70d2{\n\tpadding: 10px;\n}\n.menu_title.h-70d2{\n\tfont-weight: bold;\n\tpadding-bottom: 10px;\n}\n.menu_items.h-70d2{\n\tpadding-bottom: 10px;\n\tpadding-left: 10px;\n}\n.menu_item.h-70d2{\n\tpadding-bottom: 10px;\n}\n.menu_item.h-70d2:last-child{\n\tpadding-bottom: 0px;\n}\n";
+		return "\n*{box-sizing: border-box;}body{margin:0;padding:0;}\na { text-decoration: inherit; color: #0000d0; cursor: pointer; }\na:hover, a:visited:hover { text-decoration: underline; color: red; }\na:visited { text-decoration: inherit; color: #0000d0; }\na.link { text-decoration: none; color: #0000d0; cursor: pointer; }\na.link:hover, a.link:visited:hover { text-decoration: underline; color: red; }\na.link:visited { text-decoration: none; color: #0000d0; }\nbody, html{\n\tfont-family: 'Ubuntu', sans-serif;\n\tfont-size: 14px;\n\twidth: 100%;\n\theight: 100vh;\n\tpadding: 0;\n\tmargin: 0;\n}\n#root{\n\tdisplay: flex;\n\tflex-direction: row;\n}\n.menu.h-70d2{\n\twidth: 100px;\n}\n.content.h-70d2{\n\twidth: calc(100% - 100px);\n}\n.menu.h-70d2, .content.h-70d2{\n\tpadding: 10px;\n}\n.menu_title.h-70d2{\n\tfont-weight: bold;\n\tpadding-bottom: 10px;\n}\n.menu_items.h-70d2{\n\tpadding-bottom: 10px;\n\tpadding-left: 10px;\n}\n.menu_item.h-70d2{\n\tpadding-bottom: 10px;\n}\n.menu_item.h-70d2:last-child{\n\tpadding-bottom: 0px;\n}\n";
 	},
 	render: function(ctx, layout, model, params, content)
 	{
@@ -51,11 +51,11 @@ Object.assign(App.AppLayout,
 			
 			/* Element 'div.menu' */
 			var __v0; var __v0_childs = [];
-			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["menu", this.getCssHash()].join(" "),"@elem_name":"menu"}});
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["menu", this.getCssHash(ctx)].join(" "),"@elem_name":"menu"}});
 			
 			/* Element 'div.menu_title' */
 			var __v1; var __v1_childs = [];
-			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_title", this.getCssHash()].join(" "),"@elem_name":"menu_title"}});
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_title", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_title"}});
 			
 			/* Text */
 			[__vnull, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "text", {"content": "Routes:"});
@@ -63,7 +63,7 @@ Object.assign(App.AppLayout,
 			
 			/* Element 'div.menu_items' */
 			var __v2; var __v2_childs = [];
-			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_items", this.getCssHash()].join(" "),"@elem_name":"menu_items"}});
+			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_items", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_items"}});
 			
 			for (var i = 0;i < routes.count(ctx);i++)
 			{
@@ -71,11 +71,11 @@ Object.assign(App.AppLayout,
 				
 				/* Element 'div.menu_item' */
 				var __v3; var __v3_childs = [];
-				[__v3, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "element", {"name": "div","attrs": {"class":["menu_item", this.getCssHash()].join(" "),"@elem_name":"menu_item"}});
+				[__v3, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "element", {"name": "div","attrs": {"class":["menu_item", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_item"}});
 				
 				/* Element 'a.link' */
 				var __v4; var __v4_childs = [];
-				[__v4, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "element", {"name": "a","attrs": {"href":Runtime.rtl.get(ctx, item, "url"),"class":["link", this.getCssHash()].join(" "),"@elem_name":"link"}});
+				[__v4, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "element", {"name": "a","attrs": {"href":Runtime.rtl.get(ctx, item, "url"),"class":["link", this.getCssHash(ctx)].join(" "),"@elem_name":"link"}});
 				
 				/* Text */
 				[__vnull, __v4_childs] = RenderDriver.e(__v4, __v4_childs, "text", {"content": Runtime.rtl.get(ctx, item, "content")});
@@ -86,7 +86,7 @@ Object.assign(App.AppLayout,
 			
 			/* Element 'div.menu_title' */
 			var __v5; var __v5_childs = [];
-			[__v5, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_title", this.getCssHash()].join(" "),"@elem_name":"menu_title"}});
+			[__v5, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_title", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_title"}});
 			
 			/* Text */
 			[__vnull, __v5_childs] = RenderDriver.e(__v5, __v5_childs, "text", {"content": "Projects:"});
@@ -94,7 +94,7 @@ Object.assign(App.AppLayout,
 			
 			/* Element 'div.menu_items' */
 			var __v6; var __v6_childs = [];
-			[__v6, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_items", this.getCssHash()].join(" "),"@elem_name":"menu_items"}});
+			[__v6, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_items", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_items"}});
 			
 			for (var i = 0;i < urls.count(ctx);i++)
 			{
@@ -102,11 +102,11 @@ Object.assign(App.AppLayout,
 				
 				/* Element 'div.menu_item' */
 				var __v7; var __v7_childs = [];
-				[__v7, __v6_childs] = RenderDriver.e(__v6, __v6_childs, "element", {"name": "div","attrs": {"class":["menu_item", this.getCssHash()].join(" "),"@elem_name":"menu_item"}});
+				[__v7, __v6_childs] = RenderDriver.e(__v6, __v6_childs, "element", {"name": "div","attrs": {"class":["menu_item", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_item"}});
 				
 				/* Element 'a.link' */
 				var __v8; var __v8_childs = [];
-				[__v8, __v7_childs] = RenderDriver.e(__v7, __v7_childs, "element", {"name": "a","attrs": {"href":Runtime.rtl.get(ctx, item, "url"),"target":"_self","class":["link", this.getCssHash()].join(" "),"@elem_name":"link"}});
+				[__v8, __v7_childs] = RenderDriver.e(__v7, __v7_childs, "element", {"name": "a","attrs": {"href":Runtime.rtl.get(ctx, item, "url"),"target":"_self","class":["link", this.getCssHash(ctx)].join(" "),"@elem_name":"link"}});
 				
 				/* Text */
 				[__vnull, __v8_childs] = RenderDriver.e(__v8, __v8_childs, "text", {"content": Runtime.rtl.get(ctx, item, "content")});
@@ -118,7 +118,7 @@ Object.assign(App.AppLayout,
 			
 			/* Element 'div.content' */
 			var __v9; var __v9_childs = [];
-			[__v9, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["content", this.getCssHash()].join(" "),"@elem_name":"content"}});
+			[__v9, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["content", this.getCssHash(ctx)].join(" "),"@elem_name":"content"}});
 			
 			if (class_name != "")
 			{
@@ -146,7 +146,7 @@ Object.assign(App.AppLayout,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "App.AppLayout",
@@ -165,7 +165,7 @@ Object.assign(App.AppLayout,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -250,7 +250,7 @@ Object.assign(App.IndexPage,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "App.IndexPage",
@@ -269,7 +269,7 @@ Object.assign(App.IndexPage,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -337,7 +337,7 @@ Object.assign(App.IndexPageModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "App.IndexPageModel",
@@ -356,7 +356,7 @@ Object.assign(App.IndexPageModel,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -441,7 +441,7 @@ Object.assign(App.Page404,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "App.Page404",
@@ -460,7 +460,7 @@ Object.assign(App.Page404,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -545,7 +545,7 @@ Object.assign(App.Route1,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "App.Route1",
@@ -564,7 +564,7 @@ Object.assign(App.Route1,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -649,7 +649,7 @@ Object.assign(App.Route2,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "App.Route2",
@@ -668,7 +668,7 @@ Object.assign(App.Route2,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -753,7 +753,7 @@ Object.assign(App.Route3,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "App.Route3",
@@ -772,7 +772,7 @@ Object.assign(App.Route3,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -852,7 +852,7 @@ Object.assign(App.Routes,
 	{
 		var page_model = new App.IndexPageModel(ctx, Runtime.Dict.from({}));
 		/* Set title */
-		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "title"]), "User");
+		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "title"]), "Index page");
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "layout_name"]), "default");
 		/* Set model */
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_class"]), "App.IndexPage");
@@ -912,7 +912,7 @@ Object.assign(App.Routes,
 	{
 		var page_model = new App.IndexPageModel(ctx, Runtime.Dict.from({}));
 		/* Set title */
-		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "title"]), "Test");
+		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "title"]), "Test page");
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "layout_name"]), "default");
 		/* Set model */
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_class"]), "App.TestPage");
@@ -937,6 +937,8 @@ Object.assign(App.Routes,
 		/* Set model */
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_class"]), "App.Page404");
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_model"]), page_model);
+		/* Set 404 code */
+		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["new_http_code"]), 404);
 		return Promise.resolve(Runtime.Collection.from([container]));
 	},
 	/* ======================= Class Init Functions ======================= */
@@ -956,7 +958,7 @@ Object.assign(App.Routes,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "App.Routes",
@@ -976,7 +978,7 @@ Object.assign(App.Routes,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -996,7 +998,7 @@ Object.assign(App.Routes,
 		{
 			var Collection = Runtime.Collection;
 			var Dict = Runtime.Dict;
-			var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+			var IntrospectionInfo = Runtime.IntrospectionInfo;
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "App.Routes",
@@ -1010,7 +1012,7 @@ Object.assign(App.Routes,
 		{
 			var Collection = Runtime.Collection;
 			var Dict = Runtime.Dict;
-			var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+			var IntrospectionInfo = Runtime.IntrospectionInfo;
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "App.Routes",
@@ -1024,7 +1026,7 @@ Object.assign(App.Routes,
 		{
 			var Collection = Runtime.Collection;
 			var Dict = Runtime.Dict;
-			var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+			var IntrospectionInfo = Runtime.IntrospectionInfo;
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "App.Routes",
@@ -1038,7 +1040,7 @@ Object.assign(App.Routes,
 		{
 			var Collection = Runtime.Collection;
 			var Dict = Runtime.Dict;
-			var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+			var IntrospectionInfo = Runtime.IntrospectionInfo;
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "App.Routes",
@@ -1052,7 +1054,7 @@ Object.assign(App.Routes,
 		{
 			var Collection = Runtime.Collection;
 			var Dict = Runtime.Dict;
-			var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+			var IntrospectionInfo = Runtime.IntrospectionInfo;
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "App.Routes",
@@ -1139,7 +1141,7 @@ Object.assign(App.TestPage,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "App.TestPage",
@@ -1158,7 +1160,7 @@ Object.assign(App.TestPage,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -1227,26 +1229,11 @@ Object.assign(App.ModuleDescription,
 		return Runtime.Dict.from({"Runtime.Web":"*"});
 	},
 	/**
-	 * Returns module files load order
-	 * @return Collection<string>
-	 */
-	assets: function(ctx)
-	{
-		return Runtime.Collection.from([]);
-	},
-	/**
 	 * Returns enities
 	 */
 	entities: function(ctx)
 	{
-		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"root-controller","value":"Runtime.Web.RenderController","params":Runtime.Dict.from({"selector":".root","main_controller":true,"window":"RootController"})})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10,"value":"App.Routes::chainLayoutModel"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"App.Routes::Page404","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_PAGE_NOT_FOUND,"is_async":true})),new Runtime.Core.Entity(ctx, Runtime.Dict.from({"value":"App.Routes"}))]);
-	},
-	/**
-	 * Returns sync loaded files
-	 */
-	resources: function(ctx)
-	{
-		return null;
+		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"root-controller","value":"Runtime.Web.RenderController","params":Runtime.Dict.from({"selector":"#root","main_controller":true,"window":"RootController"})})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10,"value":"App.Routes::chainLayoutModel"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"App.Routes::Page404","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_PAGE_NOT_FOUND,"is_async":true})),new Runtime.Core.Entity(ctx, Runtime.Dict.from({"value":"App.Routes"}))]);
 	},
 	/**
 	 * Returns context settings
@@ -1276,7 +1263,7 @@ Object.assign(App.ModuleDescription,
 	appRun: async function(ctx)
 	{
 		var controller = ctx.getDriver(ctx, "Runtime.Web.RouteController");
-		await controller.renderCurrentPage(ctx);
+		await controller.renderFirst(ctx);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -1295,7 +1282,7 @@ Object.assign(App.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "App.ModuleDescription",
@@ -1314,7 +1301,7 @@ Object.assign(App.ModuleDescription,
 	{
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
-		var IntrospectionInfo = Runtime.Annotations.IntrospectionInfo;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -1331,11 +1318,6 @@ Object.assign(App.ModuleDescription,
 	{
 		return null;
 	},
-	__implements__:
-	[
-		Runtime.Interfaces.ModuleDescriptionInterface,
-		Runtime.Interfaces.AssetsInterface,
-	],
 });
 Runtime.rtl.defClass(App.ModuleDescription);
 window["App.ModuleDescription"] = App.ModuleDescription;

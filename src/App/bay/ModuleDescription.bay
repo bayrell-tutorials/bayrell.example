@@ -1,7 +1,5 @@
 namespace App;
 
-use Runtime.Interfaces.AssetsInterface;
-use Runtime.Interfaces.ModuleDescriptionInterface;
 use Runtime.Core.Context;
 use Runtime.Core.Driver;
 use Runtime.Core.Entity;
@@ -17,7 +15,7 @@ use App.IndexPageModel;
 use App.Routes;
 
 
-class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
+static class ModuleDescription
 {
 	
 	/**
@@ -46,19 +44,10 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 		
 		/* Backend */
 		#ifdef BACKEND then
+		'Runtime.Task': '*',
 		'Runtime.Web.Backend': '*',
 		#endif
 	};
-	
-	
-	
-	/**
-	 * Returns module files load order
-	 * @return Collection<string>
-	 */
-	pure Collection<string> assets() => 
-	[
-	];
 	
 	
 	
@@ -74,7 +63,7 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 			"value": classof RenderController,
 			"params":
 			{
-				"selector": ".root",
+				"selector": "#root",
 				"main_controller": true,
 				"window": "RootController",
 			}
@@ -100,14 +89,6 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 		/* Register routes */
 		new Entity{ "value": classof Routes },
 	];
-	
-	
-	
-	/**
-	 * Returns sync loaded files
-	 */		
-	public static Collection<string> resources() => null;	
-	
 	
 	
 	
@@ -163,7 +144,7 @@ class ModuleDescription implements ModuleDescriptionInterface, AssetsInterface
 	static async void appRun()
 	{
 		RenderController controller = @.getDriver(classof RouteController);
-		await controller.renderCurrentPage();
+		await controller.renderFirst();
 	}
 	
 	

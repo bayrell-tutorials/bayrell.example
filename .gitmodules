@@ -16,3 +16,9 @@
 [submodule "lib/Runtime.Web.Button"]
 	path = lib/Runtime.Web.Button
 	url = https://github.com/bayrell/Runtime.Web.Button
+[submodule "lib/Runtime.Web.Backend"]
+	path = lib/Runtime.Web.Backend
+	url = https://github.com/bayrell/Runtime.Web.Backend
+[submodule "lib/Runtime.Task"]
+	path = lib/Runtime.Task
+	url = https://github.com/bayrell/Runtime.Task

@@ -1,6 +1,6 @@
 {
 	"name": "Example2",
-	"files":
+	"assets":
 	[
 		"AppLayout",
 		"IndexPage",
