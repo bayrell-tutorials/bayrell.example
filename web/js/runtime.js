@@ -13988,8 +13988,8 @@ Object.assign(Runtime.Web.RenderDriver,
 	RENDER_CHAIN_START: 500,
 	RENDER_CHAIN_CREATE_LAYOUT_MODEL: 1000,
 	RENDER_CHAIN_SET_FRONTEND_ENVIROMENTS: 1500,
-	RENDER_CHAIN_MIDDLEWARE: 2000,
-	RENDER_CHAIN_CALL_ROUTE_BEFORE: 2500,
+	RENDER_CHAIN_CALL_ROUTE_BEFORE: 2000,
+	RENDER_CHAIN_CALL_ROUTE_MIDDLEWARE: 2500,
 	RENDER_CHAIN_CALL_ROUTE: 3000,
 	RENDER_CHAIN_CALL_PAGE_NOT_FOUND: 3100,
 	RENDER_CHAIN_CALL_ROUTE_AFTER: 3500,
@@ -14284,20 +14284,17 @@ Object.assign(Runtime.Web.RenderDriver,
 		{
 			return Runtime.Collection.from([container]);
 		}
-		/* Load frontend keep data */
-		var layout_old = null;
+		var driver = ctx.getDriver(ctx, "Runtime.Web.FrontendStorageDriver");
 		var frontend_keep_data = Runtime.Dict.from({});
-		if (container.frontend_controller_name != "")
+		/* Load frontend data */
+		if (driver != null && container.frontend_controller_name != "")
 		{
-			var driver = ctx.getDriver(ctx, "Runtime.Web.FrontendStorageDriver");
-			layout_old = driver.loadControllerModel(ctx, container.frontend_controller_name);
-			if (layout_old != null)
+			var old_layout = driver.loadControllerModel(ctx, container.frontend_controller_name);
+			if (old_layout != null)
 			{
-				frontend_keep_data = layout_old.keep_data;
+				frontend_keep_data = old_layout.keep_data;
 			}
 		}
-		/* Set old layout */
-		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout_old"]), layout_old);
 		/* Create LayoutModel */
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout"]), new Runtime.Web.LayoutModel(ctx, Runtime.Dict.from({"uri":this.splitRoutePrefix(ctx, container.request.uri, container.request.route_prefix),"f_inc":ctx.config(ctx, Runtime.Collection.from(["Runtime.Web","f_inc"]), "1"),"full_uri":container.request.uri,"route":container.route,"route_prefix":container.request.route_prefix,"route_params":container.route_params,"keep_data":frontend_keep_data})));
 		return Runtime.Collection.from([container]);
@@ -14313,6 +14310,10 @@ Object.assign(Runtime.Web.RenderDriver,
 			return Promise.resolve(Runtime.Collection.from([container]));
 		}
 		if (container.isResponseExists(ctx))
+		{
+			return Promise.resolve(Runtime.Collection.from([container]));
+		}
+		if (container.isPageExists(ctx))
 		{
 			return Promise.resolve(Runtime.Collection.from([container]));
 		}
@@ -14338,7 +14339,8 @@ Object.assign(Runtime.Web.RenderDriver,
 			var method_name = arr.get(ctx, 1, "");
 			var f = Runtime.rtl.method(ctx, class_name, method_name);
 			/* Run method */
-			container = await f(ctx, container);
+			var res = await f(ctx, container);
+			container = Runtime.rtl.get(ctx, res, 0);
 		}
 		return Promise.resolve(Runtime.Collection.from([container]));
 	},
@@ -14365,7 +14367,8 @@ Object.assign(Runtime.Web.RenderDriver,
 			return Promise.resolve(Runtime.Collection.from([container]));
 		}
 		var f = Runtime.rtl.method(ctx, container.route.class_name, container.route.class_method_name);
-		container = await f(ctx, container);
+		var res = await f(ctx, container);
+		container = Runtime.rtl.get(ctx, res, 0);
 		return Promise.resolve(Runtime.Collection.from([container]));
 	},
 	/**
@@ -14473,14 +14476,14 @@ Object.assign(Runtime.Web.RenderDriver,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "RENDER_CHAIN_MIDDLEWARE") return new IntrospectionInfo(ctx, {
+		if (field_name == "RENDER_CHAIN_CALL_ROUTE_BEFORE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriver",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "RENDER_CHAIN_CALL_ROUTE_BEFORE") return new IntrospectionInfo(ctx, {
+		if (field_name == "RENDER_CHAIN_CALL_ROUTE_MIDDLEWARE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriver",
 			"name": field_name,

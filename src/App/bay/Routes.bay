@@ -95,7 +95,7 @@ static class Routes
 		container <= layout <= page_class <= classof IndexPage;
 		container <= layout <= page_model <= page_model;
 		
-		return container;
+		return [ container ];
 	}
 	
 	
@@ -119,7 +119,7 @@ static class Routes
 		container <= layout <= page_class <= classof Route1;
 		container <= layout <= page_model <= page_model;
 		
-		return container;
+		return [ container ];
 	}
 	
 	
@@ -143,7 +143,7 @@ static class Routes
 		container <= layout <= page_class <= classof Route2;
 		container <= layout <= page_model <= page_model;
 		
-		return container;
+		return [ container ];
 	}
 	
 	
@@ -167,7 +167,7 @@ static class Routes
 		container <= layout <= page_class <= classof Route3;
 		container <= layout <= page_model <= page_model;
 		
-		return container;
+		return [ container ];
 	}
 	
 	
@@ -191,7 +191,7 @@ static class Routes
 		container <= layout <= page_class <= classof TestPage;
 		container <= layout <= page_model <= page_model;
 		
-		return container;
+		return [ container ];
 	}
 	
 	

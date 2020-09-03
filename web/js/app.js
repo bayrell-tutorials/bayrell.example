@@ -956,7 +956,7 @@ Object.assign(App.Routes,
 		/* Set model */
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_class"]), "App.IndexPage");
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_model"]), page_model);
-		return Promise.resolve(container);
+		return Promise.resolve(Runtime.Collection.from([container]));
 	},
 	/**
 	 * Route Action
@@ -971,7 +971,7 @@ Object.assign(App.Routes,
 		/* Set model */
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_class"]), "App.Route1");
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_model"]), page_model);
-		return Promise.resolve(container);
+		return Promise.resolve(Runtime.Collection.from([container]));
 	},
 	/**
 	 * Route Action
@@ -986,7 +986,7 @@ Object.assign(App.Routes,
 		/* Set model */
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_class"]), "App.Route2");
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_model"]), page_model);
-		return Promise.resolve(container);
+		return Promise.resolve(Runtime.Collection.from([container]));
 	},
 	/**
 	 * Route Action
@@ -1001,7 +1001,7 @@ Object.assign(App.Routes,
 		/* Set model */
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_class"]), "App.Route3");
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_model"]), page_model);
-		return Promise.resolve(container);
+		return Promise.resolve(Runtime.Collection.from([container]));
 	},
 	/**
 	 * Route Action
@@ -1016,7 +1016,7 @@ Object.assign(App.Routes,
 		/* Set model */
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_class"]), "App.TestPage");
 		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_model"]), page_model);
-		return Promise.resolve(container);
+		return Promise.resolve(Runtime.Collection.from([container]));
 	},
 	/**
 	 * Render chain

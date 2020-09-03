@@ -133,8 +133,8 @@ static class ModuleDescription
 			"Runtime.Web.Backend":
 			{
 				"api": true,
-				"bus_class": "",
-				"bus_default": true,
+				"external_bus_class": "",
+				"external_bus_default": true,
 			},
 			#endif
 		},
