@@ -46,6 +46,7 @@ static class ModuleDescription
 		#ifdef BACKEND then
 		'Runtime.Task': '*',
 		'Runtime.Web.Backend': '*',
+		'App.Api': '*',
 		#endif
 	};
 	
@@ -74,7 +75,7 @@ static class ModuleDescription
 		{
 			"name": RenderDriver::LAYOUT_CHAIN,
 			"pos": 10,
-			"value": "App.Routes::chainLayoutModel",
+			"value": "App.Routes::layoutChain",
 		},
 		
 		/* Render Chain. Page not found */
@@ -86,13 +87,33 @@ static class ModuleDescription
 			"is_async": true,
 		},
 		
+		/* Render Chain. Route after */
+		new LambdaChain
+		{
+			"name": RenderDriver::RENDER_CHAIN,
+			"value": "App.Routes::renderChainRouteAfter",
+			"pos": RenderDriver::RENDER_CHAIN_CALL_ROUTE_AFTER,
+			"is_async": true,
+		},
+		
 		/* Register routes */
 		new Entity{ "value": classof Routes },
+		
+		
+		#ifdef BACKEND then
+		
+		/* Render Chain. Pattern */
+		new LambdaChain
+		{
+			"name": RenderDriver::RENDER_CHAIN,
+			"value": "App.Routes::renderChainPatternDefault",
+			"pos": RenderDriver::RENDER_CHAIN_RESPONSE_BEFORE,
+		},
+		
+		#endif
 	];
 	
 	
-	
-	#ifdef FRONTEND then
 	
 	/**
 	 * Returns context settings
@@ -104,9 +125,18 @@ static class ModuleDescription
 		{
 			"Runtime.Web":
 			{
-				"route_prefix": "",
-				"f_inc": 1,
+				/*"f_inc": (@.env("APP_MODE", "prod") == "prod") ? 1 : rtl::utime(),*/
+				"f_inc": "1",
 			},
+			
+			#ifdef BACKEND then
+			"Runtime.Web.Backend":
+			{
+				"api": true,
+				"bus_class": "",
+				"bus_default": true,
+			},
+			#endif
 		},
 		"secrets":
 		{
@@ -136,6 +166,9 @@ static class ModuleDescription
 		return await c::start(c);
 	}
 	
+	
+	
+	#ifdef FRONTEND then
 	
 	
 	/**

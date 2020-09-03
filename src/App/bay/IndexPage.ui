@@ -4,21 +4,69 @@
 >
 
 <use name="Runtime.Core.Message" />
+<use name="Runtime.Core.RemoteCallAnswer" />
 <use name="Runtime.Web.LayoutModel" />
 <use name="Runtime.Web.Events.MouseClickEvent" />
 <use name="App.IndexPageModel" />
 
 <style>
+%button{
+	cursor: pointer;
+}
 </style>
 
 
 <template name="render">
-	Index page
+	<div class='content' @key='content'>
+		Index page<br/>
+		<br/>
+		<br/>
+		Test api:<br/>
+		<button class='button' @event:MouseClickEvent='onPingClick'>Ping</button>
+		<button class='button' @event:MouseClickEvent='onTimeClick'>Time</button>
+		<div class='api_response'>{ model.api_response }</div>
+	</div>
 </template>
 
 
 <script type="frontend">
 
+
+/**
+ * Mouse click event
+ */
+async void onPingClick(Message<MouseClickEvent> msg)
+{
+	
+	RemoteCallAnswer answer = await this.remoteBusCall
+	{
+		"object_name": "App.Test",
+		"method_name": "ping",
+	};
+	log(answer);
+	
+	this.updateModel("setAttr", "api_response", answer.response);
+	
+}
+
+
+
+/**
+ * Mouse click event
+ */
+async void onTimeClick(Message<MouseClickEvent> msg)
+{
+	
+	RemoteCallAnswer answer = await this.remoteBusCall
+	{
+		"object_name": "App.Test",
+		"interface_name": "test",
+		"method_name": "time",
+	};
+	log(answer);
+	
+	this.updateModel("setAttr", "api_response", answer.response);
+}
 
 </script>
 

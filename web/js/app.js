@@ -45,7 +45,7 @@ Object.assign(App.AppLayout,
 			
 			var class_name = model.page_class;
 			
-			var routes = Runtime.Collection.from([Runtime.Dict.from({"url":"/","content":"Index"}),Runtime.Dict.from({"url":"/route1/","content":"Route 1"}),Runtime.Dict.from({"url":"/route2/","content":"Route 2"}),Runtime.Dict.from({"url":"/route3/","content":"Route 3"}),Runtime.Dict.from({"url":"/test/1/","content":"Test 1"}),Runtime.Dict.from({"url":"/test/2/","content":"Test 2"}),Runtime.Dict.from({"url":"/test/3/","content":"Test 3"})]);
+			var routes = Runtime.Collection.from([Runtime.Dict.from({"url":"/","content":"Index"}),Runtime.Dict.from({"url":"/route1/","content":"Route 1"}),Runtime.Dict.from({"url":"/route2/","content":"Route 2"}),Runtime.Dict.from({"url":"/route3/","content":"Route 3"}),Runtime.Dict.from({"url":"/test/1/name1/","content":"Test 1"}),Runtime.Dict.from({"url":"/test/2/name2/","content":"Test 2"}),Runtime.Dict.from({"url":"/test/3/name3/","content":"Test 3"})]);
 			
 			var urls = Runtime.Collection.from([Runtime.Dict.from({"url":"/example1.html","content":"Example 1"}),Runtime.Dict.from({"url":"/example2.html","content":"Example 2"}),Runtime.Dict.from({"url":"/example3.html","content":"Example 3"})]);
 			
@@ -192,6 +192,24 @@ App.IndexPage.prototype = Object.create(Runtime.Web.Component.prototype);
 App.IndexPage.prototype.constructor = App.IndexPage;
 Object.assign(App.IndexPage.prototype,
 {
+	/**
+ * Mouse click event
+ */
+	onPingClick: async function(ctx, msg)
+	{
+		var answer = await this.remoteBusCall(ctx, Runtime.Dict.from({"object_name":"App.Test","method_name":"ping"}));
+		console.log(answer);
+		this.updateModel(ctx, "setAttr", "api_response", answer.response);
+	},
+	/**
+ * Mouse click event
+ */
+	onTimeClick: async function(ctx, msg)
+	{
+		var answer = await this.remoteBusCall(ctx, Runtime.Dict.from({"object_name":"App.Test","interface_name":"test","method_name":"time"}));
+		console.log(answer);
+		this.updateModel(ctx, "setAttr", "api_response", answer.response);
+	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof App.IndexPage)
@@ -218,7 +236,7 @@ Object.assign(App.IndexPage,
 {
 	css: function(ctx, vars)
 	{
-		return "\n";
+		return "\n.button.h-74d5{\n\tcursor: pointer;\n}\n";
 	},
 	render: function(ctx, layout, model, params, content)
 	{
@@ -227,8 +245,48 @@ Object.assign(App.IndexPage,
 			var __vnull = null;
 			var __control_childs = [];
 			
+			/* Element 'div.content' */
+			var __v0; var __v0_childs = [];
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["content", this.getCssHash(ctx)].join(" "),"@key":"content","@elem_name":"content"}});
+			
 			/* Text */
-			[__vnull, __control_childs] = RenderDriver.e(__control, __control_childs, "text", {"content": "Index page"});
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "text", {"content": "Index page"});
+			
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null});
+			
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null});
+			
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null});
+			
+			/* Text */
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "text", {"content": "Test api:"});
+			
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null});
+			
+			/* Element 'button.button' */
+			var __v1; var __v1_childs = [];
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["App.IndexPage","onPingClick"],"class":["button", this.getCssHash(ctx)].join(" "),"@elem_name":"button"}});
+			
+			/* Text */
+			[__vnull, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "text", {"content": "Ping"});
+			RenderDriver.p(__v1, __v1_childs);
+			
+			/* Element 'button.button' */
+			var __v2; var __v2_childs = [];
+			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["App.IndexPage","onTimeClick"],"class":["button", this.getCssHash(ctx)].join(" "),"@elem_name":"button"}});
+			
+			/* Text */
+			[__vnull, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "text", {"content": "Time"});
+			RenderDriver.p(__v2, __v2_childs);
+			
+			/* Element 'div.api_response' */
+			var __v3; var __v3_childs = [];
+			[__v3, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["api_response", this.getCssHash(ctx)].join(" "),"@elem_name":"api_response"}});
+			
+			/* Text */
+			[__vnull, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "text", {"content": model.api_response});
+			RenderDriver.p(__v3, __v3_childs);
+			RenderDriver.p(__v0, __v0_childs);
 			
 			return __control_childs;
 		};
@@ -296,20 +354,30 @@ App.IndexPageModel.prototype = Object.create(Runtime.BaseStruct.prototype);
 App.IndexPageModel.prototype.constructor = App.IndexPageModel;
 Object.assign(App.IndexPageModel.prototype,
 {
+	_init: function(ctx)
+	{
+		var defProp = use('Runtime.rtl').defProp;
+		var a = Object.getOwnPropertyNames(this);
+		this.api_response = "";
+		Runtime.BaseStruct.prototype._init.call(this,ctx);
+	},
 	assignObject: function(ctx,o)
 	{
 		if (o instanceof App.IndexPageModel)
 		{
+			this.api_response = o.api_response;
 		}
 		Runtime.BaseStruct.prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
+		if (k == "api_response")this.api_response = v;
+		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
+		if (k == "api_response")return this.api_response;
 		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
@@ -350,6 +418,10 @@ Object.assign(App.IndexPageModel,
 	{
 		var a = [];
 		if (f==undefined) f=0;
+		if ((f|3)==3)
+		{
+			a.push("api_response");
+		}
 		return Runtime.Collection.from(a);
 	},
 	getFieldInfoByName: function(ctx,field_name)
@@ -357,6 +429,13 @@ Object.assign(App.IndexPageModel,
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
 		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		if (field_name == "api_response") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "App.IndexPageModel",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -836,13 +915,33 @@ Object.assign(App.Routes,
 	/**
 	 * Layout chain
 	 */
-	chainLayoutModel: function(ctx, layout)
+	layoutChain: function(ctx, layout)
 	{
 		if (layout.layout_name == "default")
 		{
 			layout = Runtime.rtl.setAttr(ctx, layout, Runtime.Collection.from(["layout_class"]), "App.AppLayout");
 		}
 		return Runtime.Collection.from([layout]);
+	},
+	/**
+	 * Render chain. Set default pattern
+	 */
+	renderChainPatternDefault: function(ctx, container)
+	{
+		if (container.pattern_name == "default" && container.pattern_class == "" || container.pattern_class == "")
+		{
+			container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["pattern_class"]), "App.Pattern");
+		}
+		return Runtime.Collection.from([container]);
+	},
+	/**
+	 * Render chain. Route after
+	 */
+	renderChainRouteAfter: function(ctx, container)
+	{
+		/* Change title */
+		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "title"]), container.layout.title + Runtime.rtl.toStr(" | Test app"));
+		return Runtime.Collection.from([container]);
 	},
 	/**
 	 * Route Action
@@ -1060,7 +1159,7 @@ Object.assign(App.Routes,
 				"class_name": "App.Routes",
 				"name": "TestPage",
 				"annotations": Collection.from([
-					new Runtime.Web.Route(ctx, Runtime.Dict.from({"uri":"/test/{id}/","name":"site:test_page"})),
+					new Runtime.Web.Route(ctx, Runtime.Dict.from({"uri":"/test/{id}/{name}/","name":"site:test_page"})),
 				]),
 			});
 		}
@@ -1120,6 +1219,12 @@ Object.assign(App.TestPage,
 			
 			/* Text */
 			[__vnull, __control_childs] = RenderDriver.e(__control, __control_childs, "text", {"content": Runtime.rtl.get(ctx, layout.route_params, "id")});
+			
+			/* Text */
+			[__vnull, __control_childs] = RenderDriver.e(__control, __control_childs, "text", {"content": ". Name="});
+			
+			/* Text */
+			[__vnull, __control_childs] = RenderDriver.e(__control, __control_childs, "text", {"content": Runtime.rtl.get(ctx, layout.route_params, "name")});
 			
 			return __control_childs;
 		};
@@ -1233,7 +1338,7 @@ Object.assign(App.ModuleDescription,
 	 */
 	entities: function(ctx)
 	{
-		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"root-controller","value":"Runtime.Web.RenderController","params":Runtime.Dict.from({"selector":"#root","main_controller":true,"window":"RootController"})})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10,"value":"App.Routes::chainLayoutModel"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"App.Routes::Page404","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_PAGE_NOT_FOUND,"is_async":true})),new Runtime.Core.Entity(ctx, Runtime.Dict.from({"value":"App.Routes"}))]);
+		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"root-controller","value":"Runtime.Web.RenderController","params":Runtime.Dict.from({"selector":"#root","main_controller":true,"window":"RootController"})})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10,"value":"App.Routes::layoutChain"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"App.Routes::Page404","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_PAGE_NOT_FOUND,"is_async":true})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"App.Routes::renderChainRouteAfter","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_ROUTE_AFTER,"is_async":true})),new Runtime.Core.Entity(ctx, Runtime.Dict.from({"value":"App.Routes"}))]);
 	},
 	/**
 	 * Returns context settings
@@ -1241,7 +1346,7 @@ Object.assign(App.ModuleDescription,
 	 */
 	appSettings: function(ctx, env)
 	{
-		return Runtime.Dict.from({"config":Runtime.Dict.from({"Runtime.Web":Runtime.Dict.from({"route_prefix":"","f_inc":1})}),"secrets":Runtime.Dict.from({}),"providers":Runtime.Dict.from({})});
+		return Runtime.Dict.from({"config":Runtime.Dict.from({"Runtime.Web":Runtime.Dict.from({"f_inc":"1"})}),"secrets":Runtime.Dict.from({}),"providers":Runtime.Dict.from({})});
 	},
 	/**
 	 * Init app
@@ -1307,9 +1412,6 @@ Object.assign(App.ModuleDescription,
 	getMethodsList: function(ctx)
 	{
 		var a = [
-			"appSettings",
-			"appInit",
-			"appStart",
 			"appRun",
 		];
 		return Runtime.Collection.from(a);

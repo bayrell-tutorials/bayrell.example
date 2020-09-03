@@ -47,15 +47,15 @@ Object.assign(Example1.AppLayout,
 			
 			/* Element 'section.section' */
 			var __v0; var __v0_childs = [];
-			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "section","attrs": {"class":["section", this.getCssHash()].join(" "),"@elem_name":"section"}});
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "section","attrs": {"class":["section", this.getCssHash(ctx)].join(" "),"@elem_name":"section"}});
 			
 			/* Element 'div.container' */
 			var __v1; var __v1_childs = [];
-			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["container", this.getCssHash()].join(" "),"@elem_name":"container"}});
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["container", this.getCssHash(ctx)].join(" "),"@elem_name":"container"}});
 			
 			/* Element 'div.container-in' */
 			var __v2; var __v2_childs = [];
-			[__v2, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "element", {"name": "div","attrs": {"class":["container-in", this.getCssHash()].join(" "),"@elem_name":"container-in"}});
+			[__v2, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "element", {"name": "div","attrs": {"class":["container-in", this.getCssHash(ctx)].join(" "),"@elem_name":"container-in"}});
 			
 			[__vnull, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "component", {"name": class_name,"attrs": {"@bind":["Example1.AppLayout","page_model"],"@key":"page"}, "layout": layout});
 			RenderDriver.p(__v2, __v2_childs);
@@ -173,23 +173,23 @@ Object.assign(Example1.IndexPage,
 			
 			/* Element 'div.content' */
 			var __v0; var __v0_childs = [];
-			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["content", this.getCssHash()].join(" "),"@key":"content","@elem_name":"content"}});
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["content", this.getCssHash(ctx)].join(" "),"@key":"content","@elem_name":"content"}});
 			
 			/* Element 'div.label' */
 			var __v1; var __v1_childs = [];
-			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["label", this.getCssHash()].join(" "),"@elem_name":"label"}});
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["label", this.getCssHash(ctx)].join(" "),"@elem_name":"label"}});
 			
 			/* Text */
 			[__vnull, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "text", {"content": Runtime.rtl.attr(ctx, model, ["item", "content"])});
 			RenderDriver.p(__v1, __v1_childs);
 			
-			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "input","attrs": {"@bind":["Example1.IndexPage",Runtime.Collection.from(["item","content"])],"class":["input", this.getCssHash()].join(" "),"@elem_name":"input"}});
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "input","attrs": {"@bind":["Example1.IndexPage",Runtime.Collection.from(["item","content"])],"class":["input", this.getCssHash(ctx)].join(" "),"@elem_name":"input"}});
 			
 			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null});
 			
 			/* Element 'button.button' */
 			var __v2; var __v2_childs = [];
-			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["Example1.IndexPage","onMouseClick"],"class":["button", this.getCssHash()].join(" "),"@elem_name":"button"}});
+			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["Example1.IndexPage","onMouseClick"],"class":["button", this.getCssHash(ctx)].join(" "),"@elem_name":"button"}});
 			
 			/* Text */
 			[__vnull, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "text", {"content": "Click Me!"});

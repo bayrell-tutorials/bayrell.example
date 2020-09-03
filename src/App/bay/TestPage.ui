@@ -13,7 +13,7 @@
 
 
 <template name="render">
-	TestPage. ID={ layout.route_params["id"] }
+	TestPage. ID={ layout.route_params["id"] }. Name={ layout.route_params["name"] }
 </template>
 
 

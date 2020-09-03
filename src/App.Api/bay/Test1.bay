@@ -1,0 +1,21 @@
+namespace App.Api;
+
+use Runtime.rtl;
+use Runtime.Core.RemoteCallAnswer;
+use Runtime.Core.RemoteCallRequest;
+use Runtime.Web.Backend.ApiList;
+use Runtime.Web.Backend.ApiMethod;
+
+
+@ApiList{ "object_name": "App.Test", "interface_name": "default" }
+static class Test1
+{
+	
+	@ApiMethod{ "method_name": "ping" }
+	static async list pingAction(RemoteCallRequest request, RemoteCallAnswer answer)
+	{
+		answer <= RemoteCallAnswer::success(answer, "ok");
+		return [request, answer];
+	}
+	
+}

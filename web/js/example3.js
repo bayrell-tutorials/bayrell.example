@@ -195,7 +195,7 @@ Object.assign(Example3.Box,
 			var __vnull = null;
 			var __control_childs = [];
 			
-			[__vnull, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"style":(Runtime.Dict.from({"top":model.y + Runtime.rtl.toStr("px"),"left":model.x + Runtime.rtl.toStr("px"),"background-color":model.color,"cursor":(model.move) ? ("grabbing") : ("default")})),"@ref":["Example3.Box","box"],"@event:Runtime.Web.Events.MouseDownEvent":["Example3.Box","onMouseDown"],"class":["box", this.getCssHash()].join(" "),"@elem_name":"box"}});
+			[__vnull, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"style":(Runtime.Dict.from({"top":model.y + Runtime.rtl.toStr("px"),"left":model.x + Runtime.rtl.toStr("px"),"background-color":model.color,"cursor":(model.move) ? ("grabbing") : ("default")})),"@ref":["Example3.Box","box"],"@event:Runtime.Web.Events.MouseDownEvent":["Example3.Box","onMouseDown"],"class":["box", this.getCssHash(ctx)].join(" "),"@elem_name":"box"}});
 			
 			return __control_childs;
 		};
@@ -479,7 +479,7 @@ Object.assign(Example3.IndexPage,
 			
 			/* Element 'div.app' */
 			var __v0; var __v0_childs = [];
-			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["app", this.getCssHash()].join(" "),"@elem_name":"app"}});
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["app", this.getCssHash(ctx)].join(" "),"@elem_name":"app"}});
 			
 			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "component", {"name": "Example3.Box","attrs": {"@bind":["Example3.IndexPage","box1"]}, "layout": layout});
 			

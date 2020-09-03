@@ -27,6 +27,7 @@ use App.AppLayout;
 use App.IndexPage;
 use App.IndexPageModel;
 use App.Page404;
+use App.Pattern;
 use App.Route1;
 use App.Route2;
 use App.Route3;
@@ -40,10 +41,37 @@ static class Routes
 	/**
 	 * Layout chain
 	 */
-	pure LayoutModel chainLayoutModel(LayoutModel layout)
+	pure LayoutModel layoutChain(LayoutModel layout)
 	{
 		if (layout.layout_name == "default") layout <= layout_class <= classof AppLayout;
 		return [ layout ];
+	}
+	
+	
+	
+	/**
+	 * Render chain. Set default pattern
+	 */
+	pure RenderContainer renderChainPatternDefault(RenderContainer container)
+	{
+		if (container.pattern_name == "default" and container.pattern_class == "" or container.pattern_class == "")
+		{
+			container <= pattern_class <= classof Pattern;
+		}
+		return [ container ];
+	}
+	
+	
+	
+	/**
+	 * Render chain. Route after
+	 */
+	pure RenderContainer renderChainRouteAfter(RenderContainer container)
+	{
+		/* Change title */
+		container <= layout <= title <= container.layout.title ~ " | Test app";
+		
+		return [ container ];
 	}
 	
 	
@@ -148,7 +176,7 @@ static class Routes
 	 * Route Action
 	 * @return RenderContainer
 	 */
-	@Route{ "uri": "/test/{id}/", "name": "site:test_page" }
+	@Route{ "uri": "/test/{id}/{name}/", "name": "site:test_page" }
 	static async RenderContainer TestPage(RenderContainer container)
 	{
 		IndexPageModel page_model = new IndexPageModel

@@ -71,7 +71,7 @@ Object.assign(Runtime.Web.Button.Button,
 			
 			/* Element 'button.button' */
 			var __v0; var __v0_childs = [];
-			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "button","attrs": {"@tag":Runtime.rtl.get(ctx, params, "@tag"),"@event:Runtime.Web.Events.MouseClickEvent":["Runtime.Web.Button.Button","onClick"],"class":["button", this.getCssHash()].join(" "),"@elem_name":"button"}});
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "button","attrs": {"@tag":Runtime.rtl.get(ctx, params, "@tag"),"@event:Runtime.Web.Events.MouseClickEvent":["Runtime.Web.Button.Button","onClick"],"class":["button", this.getCssHash(ctx)].join(" "),"@elem_name":"button"}});
 			
 			/* Text */
 			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "text", {"content": content});
@@ -301,7 +301,7 @@ Object.assign(Runtime.Web.Dialog.Dialog.prototype,
 		{
 			if (this.model.input == "")
 			{
-				this.updateModel(ctx, "setError", ctx.constructor.translate(ctx, ctx, "Runtime.Web.Dialog", "Type input"));
+				this.updateModel(ctx, "setError", ctx.translate(ctx, "Runtime.Web.Dialog", "Type input"));
 				return false;
 			}
 		}
@@ -387,13 +387,13 @@ Object.assign(Runtime.Web.Dialog.Dialog,
 			
 			/* Element 'div.dialog_box' */
 			var __v0; var __v0_childs = [];
-			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_box", ((model.is_open) ? ("open") : ("")), this.getCssHash()].join(" "),"@elem_name":"dialog_box"}});
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_box", ((model.is_open) ? ("open") : ("")), this.getCssHash(ctx)].join(" "),"@elem_name":"dialog_box"}});
 			
-			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["dialog_shadow", this.getCssHash()].join(" "),"@elem_name":"dialog_shadow"}});
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["dialog_shadow", this.getCssHash(ctx)].join(" "),"@elem_name":"dialog_shadow"}});
 			
 			/* Element 'table.dialog_wrap' */
 			var __v1; var __v1_childs = [];
-			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "table","attrs": {"class":["dialog_wrap", this.getCssHash()].join(" "),"@elem_name":"dialog_wrap"}});
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "table","attrs": {"class":["dialog_wrap", this.getCssHash(ctx)].join(" "),"@elem_name":"dialog_wrap"}});
 			
 			/* Element 'tr' */
 			var __v2; var __v2_childs = [];
@@ -405,7 +405,7 @@ Object.assign(Runtime.Web.Dialog.Dialog,
 			
 			/* Element 'div.dialog' */
 			var __v4; var __v4_childs = [];
-			[__v4, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "element", {"name": "div","attrs": {"class":["dialog", this.getCssHash()].join(" "),"@elem_name":"dialog"}});
+			[__v4, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "element", {"name": "div","attrs": {"class":["dialog", this.getCssHash(ctx)].join(" "),"@elem_name":"dialog"}});
 			
 			/* Text */
 			[__vnull, __v4_childs] = RenderDriver.e(__v4, __v4_childs, "text", {"content": this.renderDialog(ctx, layout, model, params, content)});
@@ -444,7 +444,7 @@ Object.assign(Runtime.Web.Dialog.Dialog,
 			{
 				/* Element 'div.dialog_title' */
 				var __v0; var __v0_childs = [];
-				[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_title", this.getCssHash()].join(" "),"@elem_name":"dialog_title"}});
+				[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_title", this.getCssHash(ctx)].join(" "),"@elem_name":"dialog_title"}});
 				
 				/* Text */
 				[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "text", {"content": model.title});
@@ -465,7 +465,7 @@ Object.assign(Runtime.Web.Dialog.Dialog,
 			{
 				/* Element 'div.dialog_message' */
 				var __v0; var __v0_childs = [];
-				[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_message", this.getCssHash()].join(" "),"@elem_name":"dialog_message"}});
+				[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_message", this.getCssHash(ctx)].join(" "),"@elem_name":"dialog_message"}});
 				
 				/* Text */
 				[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "text", {"content": model.text});
@@ -488,9 +488,9 @@ Object.assign(Runtime.Web.Dialog.Dialog,
 			{
 				/* Element 'div.dialog_promt' */
 				var __v0; var __v0_childs = [];
-				[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_promt", this.getCssHash()].join(" "),"@elem_name":"dialog_promt"}});
+				[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_promt", this.getCssHash(ctx)].join(" "),"@elem_name":"dialog_promt"}});
 				
-				[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "input","attrs": {"@event:Runtime.Web.Events.KeyDownEvent":["Runtime.Web.Dialog.Dialog","onInputKeyDown"],"@bind":["Runtime.Web.Dialog.Dialog","input"],"class":["dialog_promt_input", this.getCssHash()].join(" "),"@elem_name":"dialog_promt_input"}});
+				[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "input","attrs": {"@event:Runtime.Web.Events.KeyDownEvent":["Runtime.Web.Dialog.Dialog","onInputKeyDown"],"@bind":["Runtime.Web.Dialog.Dialog","input"],"class":["dialog_promt_input", this.getCssHash(ctx)].join(" "),"@elem_name":"dialog_promt_input"}});
 				RenderDriver.p(__v0, __v0_childs);
 			}
 			
@@ -510,7 +510,7 @@ Object.assign(Runtime.Web.Dialog.Dialog,
 			{
 				/* Element 'div.dialog_content' */
 				var __v0; var __v0_childs = [];
-				[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_content", this.getCssHash()].join(" "),"@elem_name":"dialog_content"}});
+				[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_content", this.getCssHash(ctx)].join(" "),"@elem_name":"dialog_content"}});
 				
 				/* Text */
 				[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "text", {"content": content});
@@ -529,7 +529,7 @@ Object.assign(Runtime.Web.Dialog.Dialog,
 			
 			/* Element 'div.dialog_buttons' */
 			var __v0; var __v0_childs = [];
-			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_buttons", this.getCssHash()].join(" "),"@elem_name":"dialog_buttons"}});
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_buttons", this.getCssHash(ctx)].join(" "),"@elem_name":"dialog_buttons"}});
 			
 			/* Component 'Button' */
 			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "component", {"name": "Runtime.Web.Button.Button","attrs": {"@tag":"ok","@event:Runtime.Web.Events.MouseClickEvent":["Runtime.Web.Dialog.Dialog","onButtonClick"]}, "layout": layout, "content": (__control) =>
@@ -570,7 +570,7 @@ Object.assign(Runtime.Web.Dialog.Dialog,
 			{
 				/* Element 'div.dialog_result' */
 				var __v0; var __v0_childs = [];
-				[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_result", this.getResultClass(ctx, model), this.getCssHash()].join(" "),"@elem_name":"dialog_result"}});
+				[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialog_result", this.getResultClass(ctx, model), this.getCssHash(ctx)].join(" "),"@elem_name":"dialog_result"}});
 				
 				/* Text */
 				[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "text", {"content": model.message});
@@ -1358,7 +1358,7 @@ Object.assign(Runtime.Web.Input.Input,
 			
 			/* Element 'input.input' */
 			var __v0; var __v0_childs = [];
-			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "input","attrs": {"@tag":tag,"@event:Runtime.Web.Events.User.ChangeEvent":["Runtime.Web.Input.Input","onChange"],"name":name,"type":kind,"value":model,"class":["input", this.getCssHash()].join(" "),"@elem_name":"input"}});
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "input","attrs": {"@tag":tag,"@event:Runtime.Web.Events.User.ChangeEvent":["Runtime.Web.Input.Input","onChange"],"name":name,"type":kind,"value":model,"class":["input", this.getCssHash(ctx)].join(" "),"@elem_name":"input"}});
 			
 			/* Text */
 			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "text", {"content": content});

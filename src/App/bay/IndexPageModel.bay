@@ -5,4 +5,5 @@ use Runtime.BaseStruct;
 
 struct IndexPageModel extends BaseStruct
 {
+	string api_response = "";
 }

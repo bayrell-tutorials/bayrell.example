@@ -1,0 +1,91 @@
+namespace App.Api;
+
+use Runtime.Core.Context;
+use Runtime.Core.Entity;
+use App.Api.Test1;
+use App.Api.Test2;
+
+
+static class ModuleDescription
+{
+	
+	/**
+	 * Returns module name
+	 * @return string
+	 */
+	pure string getModuleName() => "App.Api";
+	
+	
+	
+	/**
+	 * Returns module name
+	 * @return string
+	 */
+	pure string getModuleVersion() => "0.0.1";
+	
+	
+	
+	/**
+	 * Returns required modules
+	 * @return Map<string>
+	 */
+	pure Map<string> requiredModules() => 
+	{
+		/* Backend */
+		#ifdef BACKEND then
+		'Runtime.Web.Backend': '*',
+		#endif
+	};
+	
+	
+	
+	/**
+	 * Returns enities
+	 */
+	pure Collection<Dict> entities() => 
+	[
+		/* Register routes */
+		new Entity{ "value": classof Test1 },
+		new Entity{ "value": classof Test2 },
+	];
+	
+	
+	
+	/**
+	 * Returns context settings
+	 * @return Dict<string>
+	 */
+	pure Dict<string> appSettings(Dict env) => 
+	{
+		"config":
+		{
+		},
+		"secrets":
+		{
+		},
+		"providers":
+		{
+		}
+	};
+	
+	
+	
+	/**
+	 * Init app
+	 */
+	static Context appInit(Context c)
+	{
+		return c::init(c);
+	}
+	
+	
+	
+	/**
+	 * Start app
+	 */
+	static async Context appStart(Context c)
+	{
+		return await c::start(c);
+	}
+	
+}

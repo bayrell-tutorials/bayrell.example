@@ -1,0 +1,21 @@
+namespace App.Api;
+
+use Runtime.rtl;
+use Runtime.Core.RemoteCallAnswer;
+use Runtime.Core.RemoteCallRequest;
+use Runtime.Web.Backend.ApiList;
+use Runtime.Web.Backend.ApiMethod;
+
+
+@ApiList{ "object_name": "App.Test", "interface_name": "test" }
+static class Test2
+{
+	
+	@ApiMethod{ "method_name": "time" }
+	static async list time(RemoteCallRequest request, RemoteCallAnswer answer)
+	{
+		answer <= RemoteCallAnswer::success(answer, rtl::time());
+		return [request, answer];
+	}
+	
+}

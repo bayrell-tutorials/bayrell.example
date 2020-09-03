@@ -23,13 +23,6 @@ Runtime.rtl = function(ctx)
 Object.assign(Runtime.rtl.prototype,
 {
 	/**
-	 * Returns unix timestamp
-	 */
-	utime: function(ctx)
-	{
-		return (new Date()).getTime() * 1000;
-	},
-	/**
 	 * Debug
 	 */
 	trace: function()
@@ -89,6 +82,8 @@ Object.assign(Runtime.rtl,
 	ERROR_AUTH: -16,
 	ERROR_DUPLICATE: -17,
 	ERROR_API_NOT_FOUND: -18,
+	ERROR_API_WRONG_FORMAT: -19,
+	ERROR_API_WRONG_APP_NAME: -20,
 	ERROR_FATAL: -99,
 	ERROR_HTTP_CONTINUE: -100,
 	ERROR_HTTP_SWITCH: -101,
@@ -323,20 +318,17 @@ Object.assign(Runtime.rtl,
 	/**
 	 * Run thread
 	 */
-	runThread: function(ctx, f)
+	runThread: function(ctx, f, args)
 	{
-		/*
-		args.unshift(ctx);
-		var t = new Runtime.AsyncThread(ctx, {
-			"tasks": Runtime.Collection.from([
-				new Runtime.AsyncTask(ctx, {
-					"pos": "0",
-					"f": f.apply(null, args),
-				})
-			])
-		});
-		Runtime.AsyncThread.run(ctx, t);
-		*/
+		if (args == undefined) args = null;
+		if (args == null)
+		{
+			args = Runtime.Collection.from([]);
+		}
+		(async () => {
+			try { args = args.prependIm(ctx); await f.apply(args); }
+			catch (e) { console.log(e.stack); }
+		})();
 	},
 	/**
 	 * Returns value
@@ -905,6 +897,13 @@ Object.assign(Runtime.rtl,
 		return Math.round((new Date()).getTime() / 1000);
 	},
 	/**
+	 * Returns unix timestamp
+	 */
+	utime: function(ctx)
+	{
+		return (new Date()).getTime() * 1000;
+	},
+	/**
 	 * Clone var
 	 * @param {var} value - Variable
 	 * @return {var} result
@@ -1275,6 +1274,20 @@ Object.assign(Runtime.rtl,
 			]),
 		});
 		if (field_name == "ERROR_API_NOT_FOUND") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.rtl",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "ERROR_API_WRONG_FORMAT") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.rtl",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "ERROR_API_WRONG_APP_NAME") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.rtl",
 			"name": field_name,
@@ -1797,7 +1810,7 @@ Object.assign(Runtime.re,
 	{
 		var arr = [...s.matchAll( new RegExp(r, "g") )];
 		if (arr.length == 0) return null;
-		return Runtime.Collection.from( arr.map( (s) => s[1] ).filter( (s) => s != undefined ) );
+		return Runtime.Collection.from( arr.map( (v) => Runtime.Collection.from(v) ) );
 		return null;
 	},
 	/**
@@ -2748,7 +2761,7 @@ Object.assign(Runtime.Collection.prototype,
 		if (pos < 0 || pos >= this.length)
 		{
 			var _IndexOutOfRange = use("Runtime.Exceptions.IndexOutOfRange");
-			throw new _IndexOutOfRange(ctx);
+			throw new _IndexOutOfRange(ctx, pos);
 		}
 		return this[pos];
 	},
@@ -3517,7 +3530,7 @@ Object.assign(Runtime.Dict.prototype,
 		if (typeof this._map["|" + key] == "undefined")
 		{
 			var _KeyNotFound = use("Runtime.Exceptions.KeyNotFound");
-			throw new _KeyNotFound(key);
+			throw new _KeyNotFound(ctx, key);
 		}
 		var val = this._map["|" + key];
 		if (val === null || typeof val == "undefined") return null;
@@ -5019,7 +5032,7 @@ if (typeof Runtime.Exceptions == 'undefined') Runtime.Exceptions = {};
 Runtime.Exceptions.AssignStructValueError = function(ctx, name, prev)
 {
 	if (prev == undefined) prev = null;
-	Runtime.Exceptions.RuntimeException.call(this, ctx, ctx.constructor.translate(ctx, ctx, "Runtime", "Can not set key '" + Runtime.rtl.toStr(name) + Runtime.rtl.toStr("' in immutable struct")), Runtime.rtl.ERROR_INDEX_OUT_OF_RANGE, prev);
+	Runtime.Exceptions.RuntimeException.call(this, ctx, ctx.translate(ctx, "Runtime", "Can not set key '" + Runtime.rtl.toStr(name) + Runtime.rtl.toStr("' in immutable struct")), Runtime.rtl.ERROR_INDEX_OUT_OF_RANGE, prev);
 };
 Runtime.Exceptions.AssignStructValueError.prototype = Object.create(Runtime.Exceptions.RuntimeException.prototype);
 Runtime.Exceptions.AssignStructValueError.prototype.constructor = Runtime.Exceptions.AssignStructValueError;
@@ -5122,10 +5135,10 @@ if (typeof module != "undefined" && typeof module.exports != "undefined") module
  */
 if (typeof Runtime == 'undefined') Runtime = {};
 if (typeof Runtime.Exceptions == 'undefined') Runtime.Exceptions = {};
-Runtime.Exceptions.IndexOutOfRange = function(ctx, prev)
+Runtime.Exceptions.IndexOutOfRange = function(ctx, pos, prev)
 {
 	if (prev == undefined) prev = null;
-	Runtime.Exceptions.RuntimeException.call(this, ctx, ctx.constructor.translate(ctx, ctx, "Runtime", "Index out of range"), Runtime.rtl.ERROR_INDEX_OUT_OF_RANGE, prev);
+	Runtime.Exceptions.RuntimeException.call(this, ctx, ctx.translate(ctx, "Runtime", "Index out of range. Pos: %pos%", Runtime.Dict.from({"pos":pos})), Runtime.rtl.ERROR_INDEX_OUT_OF_RANGE, prev);
 };
 Runtime.Exceptions.IndexOutOfRange.prototype = Object.create(Runtime.Exceptions.RuntimeException.prototype);
 Runtime.Exceptions.IndexOutOfRange.prototype.constructor = Runtime.Exceptions.IndexOutOfRange;
@@ -5231,7 +5244,7 @@ if (typeof Runtime.Exceptions == 'undefined') Runtime.Exceptions = {};
 Runtime.Exceptions.KeyNotFound = function(ctx, key, prev)
 {
 	if (prev == undefined) prev = null;
-	Runtime.Exceptions.RuntimeException.call(this, ctx, ctx.constructor.translate(ctx, ctx, "Runtime", "Key '" + Runtime.rtl.toStr(key) + Runtime.rtl.toStr("' not found")), Runtime.rtl.ERROR_KEY_NOT_FOUND, prev);
+	Runtime.Exceptions.RuntimeException.call(this, ctx, ctx.translate(ctx, "Runtime", "Key '%key%' not found", Runtime.Dict.from({"key":key})), Runtime.rtl.ERROR_KEY_NOT_FOUND, prev);
 };
 Runtime.Exceptions.KeyNotFound.prototype = Object.create(Runtime.Exceptions.RuntimeException.prototype);
 Runtime.Exceptions.KeyNotFound.prototype.constructor = Runtime.Exceptions.KeyNotFound;
@@ -5337,7 +5350,7 @@ if (typeof Runtime.Exceptions == 'undefined') Runtime.Exceptions = {};
 Runtime.Exceptions.UnknownError = function(ctx, prev)
 {
 	if (prev == undefined) prev = null;
-	Runtime.Exceptions.RuntimeException.call(this, ctx, ctx.constructor.translate(ctx, ctx, "Runtime", "Unknown error"), Runtime.rtl.ERROR_UNKNOWN, prev);
+	Runtime.Exceptions.RuntimeException.call(this, ctx, ctx.translate(ctx, "Runtime", "Unknown error"), Runtime.rtl.ERROR_UNKNOWN, prev);
 };
 Runtime.Exceptions.UnknownError.prototype = Object.create(Runtime.Exceptions.RuntimeException.prototype);
 Runtime.Exceptions.UnknownError.prototype.constructor = Runtime.Exceptions.UnknownError;
@@ -5725,6 +5738,22 @@ Object.assign(Runtime.BaseStruct.prototype,
 	map: function(ctx, field_name, f)
 	{
 		return this.copy(ctx, (new Runtime.Map(ctx)).set(ctx, field_name, f(ctx, this.takeValue(ctx, field_name))).toDict(ctx));
+	},
+	/**
+	 * Returns struct as Dict
+	 * @return Dict
+	 */
+	takeDict: function(ctx)
+	{
+		var values = new Runtime.Map(ctx);
+		var names = Runtime.RuntimeUtils.getVariablesNames(ctx, this.getClassName(ctx), 1);
+		for (var i = 0;i < names.count(ctx);i++)
+		{
+			var variable_name = names.item(ctx, i);
+			var value = this.get(ctx, variable_name, null);
+			values.set(ctx, variable_name, value);
+		}
+		return values.toDict(ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -7728,6 +7757,193 @@ if (typeof module != "undefined" && typeof module.exports != "undefined") module
  */
 if (typeof Runtime == 'undefined') Runtime = {};
 if (typeof Runtime.Core == 'undefined') Runtime.Core = {};
+Runtime.Core.ApiException = function(ctx, message, code, response, prev)
+{
+	if (message == undefined) message = "";
+	if (code == undefined) code = -1;
+	if (response == undefined) response = null;
+	if (prev == undefined) prev = null;
+	Runtime.Exceptions.RuntimeException.call(this, ctx, message, code, prev);
+	this.response = response;
+};
+Runtime.Core.ApiException.prototype = Object.create(Runtime.Exceptions.RuntimeException.prototype);
+Runtime.Core.ApiException.prototype.constructor = Runtime.Core.ApiException;
+Object.assign(Runtime.Core.ApiException.prototype,
+{
+	_init: function(ctx)
+	{
+		this.response = null;
+		Runtime.Exceptions.RuntimeException.prototype._init.call(this,ctx);
+	},
+	assignObject: function(ctx,o)
+	{
+		if (o instanceof Runtime.Core.ApiException)
+		{
+			this.response = o.response;
+		}
+		Runtime.Exceptions.RuntimeException.prototype.assignObject.call(this,ctx,o);
+	},
+	assignValue: function(ctx,k,v)
+	{
+		if (k == "response")this.response = v;
+		else Runtime.Exceptions.RuntimeException.prototype.assignValue.call(this,ctx,k,v);
+	},
+	takeValue: function(ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		if (k == "response")return this.response;
+		return Runtime.Exceptions.RuntimeException.prototype.takeValue.call(this,ctx,k,d);
+	},
+	getClassName: function(ctx)
+	{
+		return "Runtime.Core.ApiException";
+	},
+});
+Object.assign(Runtime.Core.ApiException, Runtime.Exceptions.RuntimeException);
+Object.assign(Runtime.Core.ApiException,
+{
+	/* ======================= Class Init Functions ======================= */
+	getCurrentNamespace: function()
+	{
+		return "Runtime.Core";
+	},
+	getCurrentClassName: function()
+	{
+		return "Runtime.Core.ApiException";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.Exceptions.RuntimeException";
+	},
+	getClassInfo: function(ctx)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "Runtime.Core.ApiException",
+			"name": "Runtime.Core.ApiException",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		if ((f|2)==2)
+		{
+			a.push("response");
+		}
+		return Runtime.Collection.from(a);
+	},
+	getFieldInfoByName: function(ctx,field_name)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		if (field_name == "response") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.ApiException",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		return null;
+	},
+	getMethodsList: function(ctx)
+	{
+		var a = [
+		];
+		return Runtime.Collection.from(a);
+	},
+	getMethodInfoByName: function(ctx,field_name)
+	{
+		return null;
+	},
+});
+Runtime.rtl.defClass(Runtime.Core.ApiException);
+window["Runtime.Core.ApiException"] = Runtime.Core.ApiException;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Core.ApiException;
+"use strict;"
+/*!
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+if (typeof Runtime == 'undefined') Runtime = {};
+if (typeof Runtime.Core == 'undefined') Runtime.Core = {};
+Runtime.Core.BusDriverInterface = function(ctx)
+{
+};
+Object.assign(Runtime.Core.BusDriverInterface.prototype,
+{
+	/**
+	 * Send message
+	 * @return string
+	 */
+	sendMessage: async function(ctx, msg)
+	{
+	},
+	/**
+	 * Send message
+	 * @return string
+	 */
+	remoteBusCall: async function(ctx, request)
+	{
+	},
+	getClassName: function(ctx)
+	{
+		return "Runtime.Core.BusDriverInterface";
+	},
+});
+Object.assign(Runtime.Core.BusDriverInterface,
+{
+	getCurrentNamespace: function()
+	{
+		return "Runtime.Core";
+	},
+	getCurrentClassName: function()
+	{
+		return "Runtime.Core.BusDriverInterface";
+	},
+});
+Runtime.rtl.defClass(Runtime.Core.BusDriverInterface);
+window["Runtime.Core.BusDriverInterface"] = Runtime.Core.BusDriverInterface;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Core.BusDriverInterface;
+"use strict;"
+/*!
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+if (typeof Runtime == 'undefined') Runtime = {};
+if (typeof Runtime.Core == 'undefined') Runtime.Core = {};
 Runtime.Core.Context = function(ctx)
 {
 	Runtime.BaseStruct.apply(this, arguments);
@@ -7844,7 +8060,7 @@ Object.assign(Runtime.Core.Context.prototype,
 	/**
 	 * Remote call
 	 * @param Dict items
-	 * @return RemoteCallResponse
+	 * @return RemoteCallAnswer
 	 */
 	remoteLocalCall: async function(ctx, items)
 	{
@@ -7863,7 +8079,7 @@ Object.assign(Runtime.Core.Context.prototype,
 	/**
 	 * Remote call
 	 * @param Dict items
-	 * @return RemoteCallResponse
+	 * @return RemoteCallAnswer
 	 */
 	remoteBusCall: async function(ctx, items)
 	{
@@ -8557,7 +8773,7 @@ Object.assign(Runtime.Core.CoreObject.prototype,
 	 */
 	setParent: function(ctx, parent_obj)
 	{
-		this.manager.setParent(ctx, this, parent_obj);
+		this.manager.changeParent(ctx, this, parent_obj);
 	},
 	_init: function(ctx)
 	{
@@ -9748,7 +9964,7 @@ if (typeof Runtime == 'undefined') Runtime = {};
 if (typeof Runtime.Core == 'undefined') Runtime.Core = {};
 Runtime.Core.ObjectManager = function(ctx)
 {
-	Runtime.BaseObject.call(this, ctx);
+	Runtime.Core.CoreDriver.call(this, ctx);
 	/* Create object */
 	this.objects = new Runtime.Map(ctx);
 	this.drivers = new Runtime.Map(ctx);
@@ -9764,7 +9980,7 @@ Runtime.Core.ObjectManager = function(ctx)
 	this.listeners = new Runtime.Vector(ctx);
 	this.manager = this;
 };
-Runtime.Core.ObjectManager.prototype = Object.create(Runtime.BaseObject.prototype);
+Runtime.Core.ObjectManager.prototype = Object.create(Runtime.Core.CoreDriver.prototype);
 Runtime.Core.ObjectManager.prototype.constructor = Runtime.Core.ObjectManager;
 Object.assign(Runtime.Core.ObjectManager.prototype,
 {
@@ -10056,7 +10272,7 @@ Object.assign(Runtime.Core.ObjectManager.prototype,
 	/**
 	 * Set parent
 	 */
-	setParent: function(ctx, child_obj, parent_obj)
+	changeParent: function(ctx, child_obj, parent_obj)
 	{
 		if (child_obj.parent != null)
 		{
@@ -10080,7 +10296,7 @@ Object.assign(Runtime.Core.ObjectManager.prototype,
 		this.mutex_objects = null;
 		this.mutex_process = null;
 		this.listeners = null;
-		Runtime.BaseObject.prototype._init.call(this,ctx);
+		Runtime.Core.CoreDriver.prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -10094,7 +10310,7 @@ Object.assign(Runtime.Core.ObjectManager.prototype,
 			this.mutex_process = o.mutex_process;
 			this.listeners = o.listeners;
 		}
-		Runtime.BaseObject.prototype.assignObject.call(this,ctx,o);
+		Runtime.Core.CoreDriver.prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
@@ -10105,7 +10321,7 @@ Object.assign(Runtime.Core.ObjectManager.prototype,
 		else if (k == "mutex_objects")this.mutex_objects = v;
 		else if (k == "mutex_process")this.mutex_process = v;
 		else if (k == "listeners")this.listeners = v;
-		else Runtime.BaseObject.prototype.assignValue.call(this,ctx,k,v);
+		else Runtime.Core.CoreDriver.prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -10117,14 +10333,14 @@ Object.assign(Runtime.Core.ObjectManager.prototype,
 		else if (k == "mutex_objects")return this.mutex_objects;
 		else if (k == "mutex_process")return this.mutex_process;
 		else if (k == "listeners")return this.listeners;
-		return Runtime.BaseObject.prototype.takeValue.call(this,ctx,k,d);
+		return Runtime.Core.CoreDriver.prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Runtime.Core.ObjectManager";
 	},
 });
-Object.assign(Runtime.Core.ObjectManager, Runtime.BaseObject);
+Object.assign(Runtime.Core.ObjectManager, Runtime.Core.CoreDriver);
 Object.assign(Runtime.Core.ObjectManager,
 {
 	/* ======================= Class Init Functions ======================= */
@@ -10138,7 +10354,7 @@ Object.assign(Runtime.Core.ObjectManager,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.BaseObject";
+		return "Runtime.Core.CoreDriver";
 	},
 	getClassInfo: function(ctx)
 	{
@@ -10239,6 +10455,514 @@ Object.assign(Runtime.Core.ObjectManager,
 Runtime.rtl.defClass(Runtime.Core.ObjectManager);
 window["Runtime.Core.ObjectManager"] = Runtime.Core.ObjectManager;
 if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Core.ObjectManager;
+"use strict;"
+/*!
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+if (typeof Runtime == 'undefined') Runtime = {};
+if (typeof Runtime.Core == 'undefined') Runtime.Core = {};
+Runtime.Core.RemoteCallAnswer = function(ctx)
+{
+	Runtime.BaseStruct.apply(this, arguments);
+};
+Runtime.Core.RemoteCallAnswer.prototype = Object.create(Runtime.BaseStruct.prototype);
+Runtime.Core.RemoteCallAnswer.prototype.constructor = Runtime.Core.RemoteCallAnswer;
+Object.assign(Runtime.Core.RemoteCallAnswer.prototype,
+{
+	/**
+	 * Returns true if success
+	 * @return bool
+	 */
+	isSuccess: function(ctx)
+	{
+		return this.have_answer && this.code >= Runtime.rtl.ERROR_OK;
+	},
+	/**
+	 * Returns true if success
+	 * @return bool
+	 */
+	getMessage: function(ctx)
+	{
+		return (this.isSuccess(ctx)) ? (this.success_message) : (this.error_message);
+	},
+	_init: function(ctx)
+	{
+		var defProp = use('Runtime.rtl').defProp;
+		var a = Object.getOwnPropertyNames(this);
+		this.app_name = "self";
+		this.object_name = "";
+		this.interface_name = "default";
+		this.method_name = "";
+		this.code = 0;
+		this.success_message = "";
+		this.error_message = "";
+		this.error_name = "";
+		this.error_trace = "";
+		this.logs = null;
+		this.have_answer = false;
+		this.response = null;
+		Runtime.BaseStruct.prototype._init.call(this,ctx);
+	},
+	assignObject: function(ctx,o)
+	{
+		if (o instanceof Runtime.Core.RemoteCallAnswer)
+		{
+			this.app_name = o.app_name;
+			this.object_name = o.object_name;
+			this.interface_name = o.interface_name;
+			this.method_name = o.method_name;
+			this.code = o.code;
+			this.success_message = o.success_message;
+			this.error_message = o.error_message;
+			this.error_name = o.error_name;
+			this.error_trace = o.error_trace;
+			this.logs = o.logs;
+			this.have_answer = o.have_answer;
+			this.response = o.response;
+		}
+		Runtime.BaseStruct.prototype.assignObject.call(this,ctx,o);
+	},
+	assignValue: function(ctx,k,v)
+	{
+		if (k == "app_name")this.app_name = v;
+		else if (k == "object_name")this.object_name = v;
+		else if (k == "interface_name")this.interface_name = v;
+		else if (k == "method_name")this.method_name = v;
+		else if (k == "code")this.code = v;
+		else if (k == "success_message")this.success_message = v;
+		else if (k == "error_message")this.error_message = v;
+		else if (k == "error_name")this.error_name = v;
+		else if (k == "error_trace")this.error_trace = v;
+		else if (k == "logs")this.logs = v;
+		else if (k == "have_answer")this.have_answer = v;
+		else if (k == "response")this.response = v;
+		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
+	},
+	takeValue: function(ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		if (k == "app_name")return this.app_name;
+		else if (k == "object_name")return this.object_name;
+		else if (k == "interface_name")return this.interface_name;
+		else if (k == "method_name")return this.method_name;
+		else if (k == "code")return this.code;
+		else if (k == "success_message")return this.success_message;
+		else if (k == "error_message")return this.error_message;
+		else if (k == "error_name")return this.error_name;
+		else if (k == "error_trace")return this.error_trace;
+		else if (k == "logs")return this.logs;
+		else if (k == "have_answer")return this.have_answer;
+		else if (k == "response")return this.response;
+		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
+	},
+	getClassName: function(ctx)
+	{
+		return "Runtime.Core.RemoteCallAnswer";
+	},
+});
+Object.assign(Runtime.Core.RemoteCallAnswer, Runtime.BaseStruct);
+Object.assign(Runtime.Core.RemoteCallAnswer,
+{
+	/**
+	 * Set success result
+	 * @param primitive res
+	 * @return Message
+	 */
+	success: function(ctx, msg, response, message, code)
+	{
+		if (message == undefined) message = "";
+		if (code == undefined) code = 1;
+		return msg.copy(ctx, Runtime.Dict.from({"code":code,"error_message":"","success_message":message,"response":response}));
+	},
+	/**
+	 * Set fail result
+	 * @param primitive res
+	 * @return Message
+	 */
+	fail: function(ctx, msg, response, error, code, error_name)
+	{
+		if (error == undefined) error = "";
+		if (code == undefined) code = -1;
+		if (error_name == undefined) error_name = "";
+		return msg.copy(ctx, Runtime.Dict.from({"code":code,"error_message":error,"error_name":error_name,"response":response}));
+	},
+	/**
+	 * Set exception
+	 * @param primitive res
+	 * @return Message
+	 */
+	exception: function(ctx, msg, e)
+	{
+		msg = msg.copy(ctx, Runtime.Dict.from({"code":e.getErrorCode(ctx),"error_message":e.getErrorMessage(ctx),"error_name":e.getClassName(ctx),"response":null}));
+		if (e instanceof Runtime.Core.ApiException)
+		{
+			msg = Runtime.rtl.setAttr(ctx, msg, Runtime.Collection.from(["response"]), e.response);
+		}
+		return msg;
+	},
+	/**
+	 * End pipe
+	 */
+	end: function(ctx, m)
+	{
+		if (m.err == null)
+		{
+			return m;
+		}
+		return new Runtime.Monad(ctx, new Runtime.Core.Message(ctx, Runtime.Dict.from({"error_message":m.err.getErrorMessage(ctx),"error_name":m.err.getClassName(ctx),"code":m.err.getErrorCode(ctx),"response":m.err})));
+	},
+	/* ======================= Class Init Functions ======================= */
+	getCurrentNamespace: function()
+	{
+		return "Runtime.Core";
+	},
+	getCurrentClassName: function()
+	{
+		return "Runtime.Core.RemoteCallAnswer";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.BaseStruct";
+	},
+	getClassInfo: function(ctx)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": "Runtime.Core.RemoteCallAnswer",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		if ((f|3)==3)
+		{
+			a.push("app_name");
+			a.push("object_name");
+			a.push("interface_name");
+			a.push("method_name");
+			a.push("code");
+			a.push("success_message");
+			a.push("error_message");
+			a.push("error_name");
+			a.push("error_trace");
+			a.push("logs");
+			a.push("have_answer");
+			a.push("response");
+		}
+		return Runtime.Collection.from(a);
+	},
+	getFieldInfoByName: function(ctx,field_name)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		if (field_name == "app_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "object_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "interface_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "method_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "code") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "success_message") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "error_message") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "error_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "error_trace") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "logs") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "have_answer") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "response") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallAnswer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		return null;
+	},
+	getMethodsList: function(ctx)
+	{
+		var a = [
+		];
+		return Runtime.Collection.from(a);
+	},
+	getMethodInfoByName: function(ctx,field_name)
+	{
+		return null;
+	},
+});
+Runtime.rtl.defClass(Runtime.Core.RemoteCallAnswer);
+window["Runtime.Core.RemoteCallAnswer"] = Runtime.Core.RemoteCallAnswer;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Core.RemoteCallAnswer;
+"use strict;"
+/*!
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+if (typeof Runtime == 'undefined') Runtime = {};
+if (typeof Runtime.Core == 'undefined') Runtime.Core = {};
+Runtime.Core.RemoteCallRequest = function(ctx)
+{
+	Runtime.BaseStruct.apply(this, arguments);
+};
+Runtime.Core.RemoteCallRequest.prototype = Object.create(Runtime.BaseStruct.prototype);
+Runtime.Core.RemoteCallRequest.prototype.constructor = Runtime.Core.RemoteCallRequest;
+Object.assign(Runtime.Core.RemoteCallRequest.prototype,
+{
+	_init: function(ctx)
+	{
+		var defProp = use('Runtime.rtl').defProp;
+		var a = Object.getOwnPropertyNames(this);
+		this.app_name = "self";
+		this.object_name = "";
+		this.interface_name = "default";
+		this.method_name = "";
+		this.data = null;
+		this.storage = null;
+		Runtime.BaseStruct.prototype._init.call(this,ctx);
+	},
+	assignObject: function(ctx,o)
+	{
+		if (o instanceof Runtime.Core.RemoteCallRequest)
+		{
+			this.app_name = o.app_name;
+			this.object_name = o.object_name;
+			this.interface_name = o.interface_name;
+			this.method_name = o.method_name;
+			this.data = o.data;
+			this.storage = o.storage;
+		}
+		Runtime.BaseStruct.prototype.assignObject.call(this,ctx,o);
+	},
+	assignValue: function(ctx,k,v)
+	{
+		if (k == "app_name")this.app_name = v;
+		else if (k == "object_name")this.object_name = v;
+		else if (k == "interface_name")this.interface_name = v;
+		else if (k == "method_name")this.method_name = v;
+		else if (k == "data")this.data = v;
+		else if (k == "storage")this.storage = v;
+		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
+	},
+	takeValue: function(ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		if (k == "app_name")return this.app_name;
+		else if (k == "object_name")return this.object_name;
+		else if (k == "interface_name")return this.interface_name;
+		else if (k == "method_name")return this.method_name;
+		else if (k == "data")return this.data;
+		else if (k == "storage")return this.storage;
+		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
+	},
+	getClassName: function(ctx)
+	{
+		return "Runtime.Core.RemoteCallRequest";
+	},
+});
+Object.assign(Runtime.Core.RemoteCallRequest, Runtime.BaseStruct);
+Object.assign(Runtime.Core.RemoteCallRequest,
+{
+	/* ======================= Class Init Functions ======================= */
+	getCurrentNamespace: function()
+	{
+		return "Runtime.Core";
+	},
+	getCurrentClassName: function()
+	{
+		return "Runtime.Core.RemoteCallRequest";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.BaseStruct";
+	},
+	getClassInfo: function(ctx)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "Runtime.Core.RemoteCallRequest",
+			"name": "Runtime.Core.RemoteCallRequest",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		if ((f|3)==3)
+		{
+			a.push("app_name");
+			a.push("object_name");
+			a.push("interface_name");
+			a.push("method_name");
+			a.push("data");
+			a.push("storage");
+		}
+		return Runtime.Collection.from(a);
+	},
+	getFieldInfoByName: function(ctx,field_name)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		if (field_name == "app_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallRequest",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "object_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallRequest",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "interface_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallRequest",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "method_name") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallRequest",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "data") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallRequest",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "storage") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.RemoteCallRequest",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		return null;
+	},
+	getMethodsList: function(ctx)
+	{
+		var a = [
+		];
+		return Runtime.Collection.from(a);
+	},
+	getMethodInfoByName: function(ctx,field_name)
+	{
+		return null;
+	},
+});
+Runtime.rtl.defClass(Runtime.Core.RemoteCallRequest);
+window["Runtime.Core.RemoteCallRequest"] = Runtime.Core.RemoteCallRequest;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Core.RemoteCallRequest;
 "use strict;"
 /*!
  *  Bayrell Runtime Library
@@ -10488,6 +11212,24 @@ Object.assign(Runtime.Web.Component.prototype,
 	{
 		var msg = new Runtime.Core.Message(ctx, event, this.getObjectName(ctx));
 		await ctx.object_manager.handleMessage(ctx, msg);
+	},
+	/**
+	 * Remote bus call
+	 */
+	remoteBusCall: async function(ctx, items)
+	{
+		/* Set default params */
+		items = items.copy(ctx, Runtime.Dict.from({"app_name":items.get(ctx, "app_name", "self"),"interface_name":items.get(ctx, "interface_name", "default")}));
+		/* Change api request */
+		var request = new Runtime.Core.RemoteCallRequest(ctx, items);
+		var res = ctx.chain(ctx, Runtime.Web.RenderDriver.API_PREPARE_CHAIN, Runtime.Collection.from([request]));
+		request = Runtime.rtl.get(ctx, res, 0);
+		/* Restore request */
+		request = request.copy(ctx, Runtime.Dict.from({"uri":items.get(ctx, "uri", ""),"app_name":items.get(ctx, "app_name", "self"),"object_name":items.get(ctx, "object_name", ""),"interface_name":items.get(ctx, "interface_name", "default"),"method_name":items.get(ctx, "method_name", "")}));
+		/* Send request */
+		var bus = ctx.getDriver(ctx, "default:external_bus");
+		var answer = await bus.remoteBusCall(ctx, request);
+		return Promise.resolve(answer);
 	},
 	/**
 	 * Change params
@@ -10964,6 +11706,474 @@ Runtime.rtl.defClass(Runtime.Web.Cookie);
 window["Runtime.Web.Cookie"] = Runtime.Web.Cookie;
 if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Web.Cookie;
 "use strict;"
+/*!
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+if (typeof Runtime == 'undefined') Runtime = {};
+if (typeof Runtime.Web == 'undefined') Runtime.Web = {};
+Runtime.Web.ExternalBusDriver = function(ctx)
+{
+	Runtime.Core.CoreDriver.apply(this, arguments);
+};
+Runtime.Web.ExternalBusDriver.prototype = Object.create(Runtime.Core.CoreDriver.prototype);
+Runtime.Web.ExternalBusDriver.prototype.constructor = Runtime.Web.ExternalBusDriver;
+Object.assign(Runtime.Web.ExternalBusDriver.prototype,
+{
+	/**
+	 * Send message
+	 * @return string
+	 */
+	sendMessage: async function(ctx, msg)
+	{
+	},
+	/**
+	 * Send message
+	 * @return string
+	 */
+	remoteBusCall: async function(ctx, request)
+	{
+		var uri = request.uri;
+		var app_name = request.app_name;
+		var object_name = request.object_name;
+		var interface_name = request.interface_name;
+		var method_name = request.method_name;
+		var data = request.data;
+		var storage = request.storage;
+		var bus_gate = ctx.env(ctx, "X-ROUTE-PREFIX", "") + Runtime.rtl.toStr("/api");
+		var url = (uri != "") ? (uri) : (bus_gate + "/" + app_name + "/" + object_name + "/" + interface_name + "/" + method_name + "/");
+		/* Send post */
+		var res = await this.constructor.post(ctx, Runtime.Dict.from({"url":url,"data":data,"storage":storage}));
+		/* Answer */
+		try
+		{
+			res = Runtime.rtl.json_decode(ctx, res);
+		}
+		catch (_ex)
+		{
+			if (true)
+			{
+				var e = _ex;
+				
+				res = null;
+			}
+			else
+			{
+				throw _ex;
+			}
+		}
+		if (res != null)
+		{
+			res = new Runtime.Core.RemoteCallAnswer(ctx, res);
+		}
+		else
+		{
+			res = new Runtime.Core.RemoteCallAnswer(ctx, Runtime.Dict.from({"have_answer":false,"error_message":"Json parse error","code":Runtime.rtl.ERROR_PARSE_SERIALIZATION_ERROR,"response":null}));
+		}
+		return Promise.resolve(res);
+	},
+	assignObject: function(ctx,o)
+	{
+		if (o instanceof Runtime.Web.ExternalBusDriver)
+		{
+		}
+		Runtime.Core.CoreDriver.prototype.assignObject.call(this,ctx,o);
+	},
+	assignValue: function(ctx,k,v)
+	{
+		Runtime.Core.CoreDriver.prototype.assignValue.call(this,ctx,k,v);
+	},
+	takeValue: function(ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		return Runtime.Core.CoreDriver.prototype.takeValue.call(this,ctx,k,d);
+	},
+	getClassName: function(ctx)
+	{
+		return "Runtime.Web.ExternalBusDriver";
+	},
+});
+Object.assign(Runtime.Web.ExternalBusDriver, Runtime.Core.CoreDriver);
+Object.assign(Runtime.Web.ExternalBusDriver,
+{
+	/* ======================= Class Init Functions ======================= */
+	getCurrentNamespace: function()
+	{
+		return "Runtime.Web";
+	},
+	getCurrentClassName: function()
+	{
+		return "Runtime.Web.ExternalBusDriver";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.Core.CoreDriver";
+	},
+	getClassInfo: function(ctx)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "Runtime.Web.ExternalBusDriver",
+			"name": "Runtime.Web.ExternalBusDriver",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		return Runtime.Collection.from(a);
+	},
+	getFieldInfoByName: function(ctx,field_name)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return null;
+	},
+	getMethodsList: function(ctx)
+	{
+		var a = [
+		];
+		return Runtime.Collection.from(a);
+	},
+	getMethodInfoByName: function(ctx,field_name)
+	{
+		return null;
+	},
+	__implements__:
+	[
+		Runtime.Core.BusDriverInterface,
+	],
+});
+Runtime.rtl.defClass(Runtime.Web.ExternalBusDriver);
+window["Runtime.Web.ExternalBusDriver"] = Runtime.Web.ExternalBusDriver;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Web.ExternalBusDriver;
+Object.assign(Runtime.Web.ExternalBusDriver,
+{
+	/**
+	 * Send post. Returns json object or null if error
+	 */
+	post: async function(ctx, obj)
+	{
+		var url = obj.get(ctx, "url");
+		var data = obj.get(ctx, "data");
+		var storage = obj.get(ctx, "storage");
+		
+		/* Build pos data */
+		var build_data = this.buildData(ctx, data, storage);
+		var post_data = this.buildPostData(ctx, build_data);
+		
+		/* Send post */
+		var xhr = await this.sendPost(ctx, url, post_data);
+		return xhr.responseText;
+	},
+	
+	
+	
+	/**
+	 * Convert data to Native for ajax POST request
+	 * @params serializable data
+	 * @return Vector
+	 */
+	buildData: function(ctx, data, storage)
+	{
+		var res = [];
+		data = Runtime.RuntimeUtils.json_encode(ctx, data);
+		storage = Runtime.RuntimeUtils.json_encode(ctx, storage);
+		/*json = btoa( unescape(encodeURIComponent(json)) );*/
+		res.push({"key": "data", "value": data});
+		res.push({"key": "storage", "value": storage});
+		return res;
+	},
+	
+	
+	
+	/**
+	 * Returns FormData
+	 * @params data - json object
+	 * @return FormData
+	 */
+	buildPostData: function(ctx, data)
+	{
+		var post_data = new FormData();
+		
+		/* Add data to post data */
+		for (var i=0; i<data.length; i++)
+		{
+			var obj = data[i];
+			var key = obj.key;
+			var val = obj.value;
+			if (val instanceof FileList)
+			{
+				for (var i=0; i<val.length; i++)
+				{
+					post_data.append(key + "[]", val.item(i), val.item(i).name);
+				}
+			}
+			else if (val instanceof File)
+			{
+				post_data.append(key, val, val.name);
+			}
+			else
+			{
+				post_data.append(key, val);
+			}
+		}
+		
+		return post_data;
+	},
+	
+	
+	
+	/**
+	 * Send api request
+	 * @param string class_name
+	 * @param string method_name
+	 * @param Map<string, mixed> data
+	 * @param callback f
+	 */ 
+	sendPost: async function(ctx, url, post_data)
+	{
+		return await new Promise((resolve, reject) =>{
+			try
+			{
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', url, true);
+				xhr.send(post_data);
+				xhr.onreadystatechange = (function(ctx, xhr, resolve, reject) {
+					return function()
+					{
+						if (xhr.readyState != 4) return;
+						if (xhr.status == 200)
+						{
+							resolve(xhr);
+						}
+						else
+						{
+							reject
+							(
+								new Runtime.Exceptions.RuntimeException
+								(ctx, xhr.status + " " + xhr.statusText, xhr.status) 
+							);
+						}
+					}
+				})(ctx, xhr, resolve, reject);
+			}
+			catch (e)
+			{
+				reject(e);
+			}
+		});
+	},
+	
+});
+"use strict;"
+/*!
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+if (typeof Runtime == 'undefined') Runtime = {};
+if (typeof Runtime.Web == 'undefined') Runtime.Web = {};
+Runtime.Web.FrontendStorageDriver = function(ctx)
+{
+	Runtime.Core.CoreDriver.apply(this, arguments);
+};
+Runtime.Web.FrontendStorageDriver.prototype = Object.create(Runtime.Core.CoreDriver.prototype);
+Runtime.Web.FrontendStorageDriver.prototype.constructor = Runtime.Web.FrontendStorageDriver;
+Object.assign(Runtime.Web.FrontendStorageDriver.prototype,
+{
+	/**
+	 * Start controller
+	 */
+	startDriver: async function(ctx)
+	{
+		var storage_input = document.querySelector("#frontend_storage");
+		if (storage_input)
+		{
+			var model = storage_input.value;
+			model = Runtime.rs.base64_decode_url(ctx, model);
+			model = Runtime.RuntimeUtils.json_decode(ctx, model);
+			this.frontend_storage = Runtime.Map.from(model);
+		}
+		this.data = new Runtime.Map(ctx);
+		this.save_models = new Runtime.Map(ctx);
+	},
+	/**
+	 * Save controller data
+	 */
+	saveControllers: function(ctx)
+	{
+		var controllers = ctx.getDrivers(ctx, "Runtime.Web.RenderController");
+		for (var i = 0;i < controllers.count(ctx);i++)
+		{
+			var controller = Runtime.rtl.get(ctx, controllers, i);
+			if (controller.isMainController(ctx))
+			{
+				var controller_name = controller.getObjectName(ctx);
+				this.save_models.set(ctx, controller_name, controller.layout);
+			}
+		}
+	},
+	/**
+	 * Returns saved controller data
+	 */
+	loadControllerModel: function(ctx, controller_name)
+	{
+		if (controller_name == undefined) controller_name = "";
+		return this.save_models.get(ctx, controller_name, null);
+	},
+	_init: function(ctx)
+	{
+		this.data = null;
+		this.frontend_storage = null;
+		this.save_models = null;
+		Runtime.Core.CoreDriver.prototype._init.call(this,ctx);
+	},
+	assignObject: function(ctx,o)
+	{
+		if (o instanceof Runtime.Web.FrontendStorageDriver)
+		{
+			this.data = o.data;
+			this.frontend_storage = o.frontend_storage;
+			this.save_models = o.save_models;
+		}
+		Runtime.Core.CoreDriver.prototype.assignObject.call(this,ctx,o);
+	},
+	assignValue: function(ctx,k,v)
+	{
+		if (k == "data")this.data = v;
+		else if (k == "frontend_storage")this.frontend_storage = v;
+		else if (k == "save_models")this.save_models = v;
+		else Runtime.Core.CoreDriver.prototype.assignValue.call(this,ctx,k,v);
+	},
+	takeValue: function(ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		if (k == "data")return this.data;
+		else if (k == "frontend_storage")return this.frontend_storage;
+		else if (k == "save_models")return this.save_models;
+		return Runtime.Core.CoreDriver.prototype.takeValue.call(this,ctx,k,d);
+	},
+	getClassName: function(ctx)
+	{
+		return "Runtime.Web.FrontendStorageDriver";
+	},
+});
+Object.assign(Runtime.Web.FrontendStorageDriver, Runtime.Core.CoreDriver);
+Object.assign(Runtime.Web.FrontendStorageDriver,
+{
+	/* ======================= Class Init Functions ======================= */
+	getCurrentNamespace: function()
+	{
+		return "Runtime.Web";
+	},
+	getCurrentClassName: function()
+	{
+		return "Runtime.Web.FrontendStorageDriver";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.Core.CoreDriver";
+	},
+	getClassInfo: function(ctx)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "Runtime.Web.FrontendStorageDriver",
+			"name": "Runtime.Web.FrontendStorageDriver",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		if ((f|2)==2)
+		{
+			a.push("data");
+			a.push("frontend_storage");
+			a.push("save_models");
+		}
+		return Runtime.Collection.from(a);
+	},
+	getFieldInfoByName: function(ctx,field_name)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		if (field_name == "data") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.FrontendStorageDriver",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "frontend_storage") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.FrontendStorageDriver",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "save_models") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.FrontendStorageDriver",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		return null;
+	},
+	getMethodsList: function(ctx)
+	{
+		var a = [
+		];
+		return Runtime.Collection.from(a);
+	},
+	getMethodInfoByName: function(ctx,field_name)
+	{
+		return null;
+	},
+});
+Runtime.rtl.defClass(Runtime.Web.FrontendStorageDriver);
+window["Runtime.Web.FrontendStorageDriver"] = Runtime.Web.FrontendStorageDriver;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = Runtime.Web.FrontendStorageDriver;
+"use strict;"
 if (typeof Runtime == 'undefined') Runtime = {};
 if (typeof Runtime.Web == 'undefined') Runtime.Web = {};
 Runtime.Web.Layout = function(ctx)
@@ -11123,7 +12333,8 @@ Object.assign(Runtime.Web.LayoutModel.prototype,
 		this.pages = 0;
 		this.count_in_page = 0;
 		this.breadcrumbs = null;
-		this.storage = new Runtime.Dict(ctx);
+		this.data = new Runtime.Dict(ctx);
+		this.keep_data = new Runtime.Dict(ctx);
 		this.css_vars = new Runtime.Dict(ctx);
 		this.components = null;
 		Runtime.BaseStruct.prototype._init.call(this,ctx);
@@ -11154,7 +12365,8 @@ Object.assign(Runtime.Web.LayoutModel.prototype,
 			this.pages = o.pages;
 			this.count_in_page = o.count_in_page;
 			this.breadcrumbs = o.breadcrumbs;
-			this.storage = o.storage;
+			this.data = o.data;
+			this.keep_data = o.keep_data;
 			this.css_vars = o.css_vars;
 			this.components = o.components;
 		}
@@ -11184,7 +12396,8 @@ Object.assign(Runtime.Web.LayoutModel.prototype,
 		else if (k == "pages")this.pages = v;
 		else if (k == "count_in_page")this.count_in_page = v;
 		else if (k == "breadcrumbs")this.breadcrumbs = v;
-		else if (k == "storage")this.storage = v;
+		else if (k == "data")this.data = v;
+		else if (k == "keep_data")this.keep_data = v;
 		else if (k == "css_vars")this.css_vars = v;
 		else if (k == "components")this.components = v;
 		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
@@ -11214,7 +12427,8 @@ Object.assign(Runtime.Web.LayoutModel.prototype,
 		else if (k == "pages")return this.pages;
 		else if (k == "count_in_page")return this.count_in_page;
 		else if (k == "breadcrumbs")return this.breadcrumbs;
-		else if (k == "storage")return this.storage;
+		else if (k == "data")return this.data;
+		else if (k == "keep_data")return this.keep_data;
 		else if (k == "css_vars")return this.css_vars;
 		else if (k == "components")return this.components;
 		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
@@ -11281,7 +12495,8 @@ Object.assign(Runtime.Web.LayoutModel,
 			a.push("pages");
 			a.push("count_in_page");
 			a.push("breadcrumbs");
-			a.push("storage");
+			a.push("data");
+			a.push("keep_data");
 			a.push("css_vars");
 			a.push("components");
 		}
@@ -11446,7 +12661,14 @@ Object.assign(Runtime.Web.LayoutModel,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "storage") return new IntrospectionInfo(ctx, {
+		if (field_name == "data") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.LayoutModel",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "keep_data") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.LayoutModel",
 			"name": field_name,
@@ -11537,11 +12759,13 @@ Object.assign(Runtime.Web.RenderContainer.prototype,
 		this.route = null;
 		this.route_params = null;
 		this.layout = null;
+		this.backend_storage = new Runtime.Dict(ctx);
 		this.new_cookies = Runtime.Dict.from({});
 		this.new_headers = Runtime.Dict.from({});
 		this.new_http_code = 200;
-		this.bag = new Runtime.Dict(ctx);
-		this.env = new Runtime.Dict(ctx);
+		this.frontend_controller_name = "";
+		this.frontend_storage = new Runtime.Dict(ctx);
+		this.frontend_env = new Runtime.Dict(ctx);
 		this.pattern_name = "default";
 		this.pattern_class = "";
 		Runtime.BaseStruct.prototype._init.call(this,ctx);
@@ -11555,11 +12779,13 @@ Object.assign(Runtime.Web.RenderContainer.prototype,
 			this.route = o.route;
 			this.route_params = o.route_params;
 			this.layout = o.layout;
+			this.backend_storage = o.backend_storage;
 			this.new_cookies = o.new_cookies;
 			this.new_headers = o.new_headers;
 			this.new_http_code = o.new_http_code;
-			this.bag = o.bag;
-			this.env = o.env;
+			this.frontend_controller_name = o.frontend_controller_name;
+			this.frontend_storage = o.frontend_storage;
+			this.frontend_env = o.frontend_env;
 			this.pattern_name = o.pattern_name;
 			this.pattern_class = o.pattern_class;
 		}
@@ -11572,11 +12798,13 @@ Object.assign(Runtime.Web.RenderContainer.prototype,
 		else if (k == "route")this.route = v;
 		else if (k == "route_params")this.route_params = v;
 		else if (k == "layout")this.layout = v;
+		else if (k == "backend_storage")this.backend_storage = v;
 		else if (k == "new_cookies")this.new_cookies = v;
 		else if (k == "new_headers")this.new_headers = v;
 		else if (k == "new_http_code")this.new_http_code = v;
-		else if (k == "bag")this.bag = v;
-		else if (k == "env")this.env = v;
+		else if (k == "frontend_controller_name")this.frontend_controller_name = v;
+		else if (k == "frontend_storage")this.frontend_storage = v;
+		else if (k == "frontend_env")this.frontend_env = v;
 		else if (k == "pattern_name")this.pattern_name = v;
 		else if (k == "pattern_class")this.pattern_class = v;
 		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
@@ -11589,11 +12817,13 @@ Object.assign(Runtime.Web.RenderContainer.prototype,
 		else if (k == "route")return this.route;
 		else if (k == "route_params")return this.route_params;
 		else if (k == "layout")return this.layout;
+		else if (k == "backend_storage")return this.backend_storage;
 		else if (k == "new_cookies")return this.new_cookies;
 		else if (k == "new_headers")return this.new_headers;
 		else if (k == "new_http_code")return this.new_http_code;
-		else if (k == "bag")return this.bag;
-		else if (k == "env")return this.env;
+		else if (k == "frontend_controller_name")return this.frontend_controller_name;
+		else if (k == "frontend_storage")return this.frontend_storage;
+		else if (k == "frontend_env")return this.frontend_env;
 		else if (k == "pattern_name")return this.pattern_name;
 		else if (k == "pattern_class")return this.pattern_class;
 		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
@@ -11643,11 +12873,13 @@ Object.assign(Runtime.Web.RenderContainer,
 			a.push("route");
 			a.push("route_params");
 			a.push("layout");
+			a.push("backend_storage");
 			a.push("new_cookies");
 			a.push("new_headers");
 			a.push("new_http_code");
-			a.push("bag");
-			a.push("env");
+			a.push("frontend_controller_name");
+			a.push("frontend_storage");
+			a.push("frontend_env");
 			a.push("pattern_name");
 			a.push("pattern_class");
 		}
@@ -11693,6 +12925,13 @@ Object.assign(Runtime.Web.RenderContainer,
 			"annotations": Collection.from([
 			]),
 		});
+		if (field_name == "backend_storage") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RenderContainer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		if (field_name == "new_cookies") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderContainer",
@@ -11714,14 +12953,21 @@ Object.assign(Runtime.Web.RenderContainer,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "bag") return new IntrospectionInfo(ctx, {
+		if (field_name == "frontend_controller_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderContainer",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "env") return new IntrospectionInfo(ctx, {
+		if (field_name == "frontend_storage") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RenderContainer",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		if (field_name == "frontend_env") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderContainer",
 			"name": field_name,
@@ -11989,14 +13235,17 @@ Object.assign(Runtime.Web.RenderController.prototype,
 		if (window_name != "") window[window_name] = this;
 		if (this.selector != "") this.root_elem = document.querySelector(this.selector);
 		
-		/* get model */
+		/* Get controller model */
 		if (selector_model != "" && selector_model != null)
 		{
 			var layout_input = document.querySelector(selector_model);
-			var layout = layout_input.value;
-			layout = Runtime.rs.base64_decode_url(ctx, layout);
-			layout = Runtime.RuntimeUtils.json_decode(ctx, layout);
-			this.layout = layout;
+			if (layout_input)
+			{
+				var layout = layout_input.value;
+				layout = Runtime.rs.base64_decode_url(ctx, layout);
+				layout = Runtime.RuntimeUtils.json_decode(ctx, layout);
+				this.layout = layout;
+			}
 		}
 		this.components = new Runtime.Map(ctx);
 		this.saveComponent(ctx, this);
@@ -12735,17 +13984,34 @@ Object.assign(Runtime.Web.RenderDriver,
 	LAYOUT_CHAIN: "Runtime.Web.RenderDriver::LAYOUT_CHAIN",
 	PATTERN_CHAIN: "Runtime.Web.RenderDriver::PATTERN_CHAIN",
 	RENDER_CHAIN: "Runtime.Web.RenderDriver::RENDER_CHAIN",
+	API_PREPARE_CHAIN: "Runtime.Web.RenderDriver::API_PREPARE_CHAIN",
 	RENDER_CHAIN_START: 500,
 	RENDER_CHAIN_CREATE_LAYOUT_MODEL: 1000,
 	RENDER_CHAIN_SET_FRONTEND_ENVIROMENTS: 1500,
 	RENDER_CHAIN_MIDDLEWARE: 2000,
-	RENDER_CHAIN_CALL_ROUTE_PRE: 2500,
+	RENDER_CHAIN_CALL_ROUTE_BEFORE: 2500,
 	RENDER_CHAIN_CALL_ROUTE: 3000,
 	RENDER_CHAIN_CALL_PAGE_NOT_FOUND: 3100,
-	RENDER_CHAIN_CALL_ROUTE_POST: 3500,
+	RENDER_CHAIN_CALL_ROUTE_AFTER: 3500,
 	RENDER_CHAIN_RESPONSE_BEFORE: 4000,
 	RENDER_CHAIN_RESPONSE: 4500,
-	RENDER_CHAIN_RESPONSE_POST: 5000,
+	RENDER_CHAIN_RESPONSE_AFTER: 5000,
+	/**
+	 * Returns main controller
+	 */
+	getMainController: function(ctx)
+	{
+		var controllers = ctx.getDrivers(ctx, "Runtime.Web.RenderController");
+		for (var i = 0;i < controllers.count(ctx);i++)
+		{
+			var controller = Runtime.rtl.get(ctx, controllers, i);
+			if (controller.isMainController(ctx))
+			{
+				return controller;
+			}
+		}
+		return null;
+	},
 	/**
 	 * JS Event
 	 */
@@ -12757,8 +14023,15 @@ Object.assign(Runtime.Web.RenderDriver,
 		
 		/* Send signal */
 		(async () => {
-			var msg = new Runtime.Core.Message(ctx, event, path_id);
-			await ctx.object_manager.handleMessage(ctx, msg);
+			try
+			{
+				var msg = new Runtime.Core.Message(ctx, event, path_id);
+				await ctx.object_manager.handleMessage(ctx, msg);
+			}
+			catch (e)
+			{
+				console.log(e.stack);
+			}
 		})();
 	},
 	/**
@@ -12962,7 +14235,7 @@ Object.assign(Runtime.Web.RenderDriver,
 	/**
 	 * Layout chain
 	 */
-	chainLayoutModel: function(ctx, layout)
+	layoutChainDefault: function(ctx, layout)
 	{
 		if (layout.layout_name == "default" && layout.layout_class == "" || layout.layout_class == "")
 		{
@@ -13001,7 +14274,7 @@ Object.assign(Runtime.Web.RenderDriver,
 	 * Render chain
 	 * Create layout model
 	 */
-	chainRenderCreateLayoutModel: function(ctx, container)
+	renderChainCreateLayoutModel: function(ctx, container)
 	{
 		if (container == null)
 		{
@@ -13011,15 +14284,29 @@ Object.assign(Runtime.Web.RenderDriver,
 		{
 			return Runtime.Collection.from([container]);
 		}
-		/* Create PocketModel */
-		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout"]), new Runtime.Web.LayoutModel(ctx, Runtime.Dict.from({"uri":this.splitRoutePrefix(ctx, container.request.uri, container.request.route_prefix),"f_inc":ctx.config(ctx, Runtime.Collection.from(["Runtime.Web","f_inc"]), 1),"full_uri":container.request.uri,"route":container.route,"route_prefix":container.request.route_prefix,"route_params":container.route_params})));
+		/* Load frontend keep data */
+		var layout_old = null;
+		var frontend_keep_data = Runtime.Dict.from({});
+		if (container.frontend_controller_name != "")
+		{
+			var driver = ctx.getDriver(ctx, "Runtime.Web.FrontendStorageDriver");
+			layout_old = driver.loadControllerModel(ctx, container.frontend_controller_name);
+			if (layout_old != null)
+			{
+				frontend_keep_data = layout_old.keep_data;
+			}
+		}
+		/* Set old layout */
+		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout_old"]), layout_old);
+		/* Create LayoutModel */
+		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout"]), new Runtime.Web.LayoutModel(ctx, Runtime.Dict.from({"uri":this.splitRoutePrefix(ctx, container.request.uri, container.request.route_prefix),"f_inc":ctx.config(ctx, Runtime.Collection.from(["Runtime.Web","f_inc"]), "1"),"full_uri":container.request.uri,"route":container.route,"route_prefix":container.request.route_prefix,"route_params":container.route_params,"keep_data":frontend_keep_data})));
 		return Runtime.Collection.from([container]);
 	},
 	/**
 	 * Render chain
 	 * Call route middlewares
 	 */
-	chainRenderCallRouteMiddleware: async function(ctx, container)
+	renderChainCallRouteMiddleware: async function(ctx, container)
 	{
 		if (container == null)
 		{
@@ -13059,7 +14346,7 @@ Object.assign(Runtime.Web.RenderDriver,
 	 * Render chain
 	 * Call route
 	 */
-	chainRenderCallRoute: async function(ctx, container)
+	renderChainCallRoute: async function(ctx, container)
 	{
 		if (container == null)
 		{
@@ -13158,6 +14445,13 @@ Object.assign(Runtime.Web.RenderDriver,
 			"annotations": Collection.from([
 			]),
 		});
+		if (field_name == "API_PREPARE_CHAIN") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Web.RenderDriver",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		if (field_name == "RENDER_CHAIN_START") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriver",
@@ -13186,7 +14480,7 @@ Object.assign(Runtime.Web.RenderDriver,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "RENDER_CHAIN_CALL_ROUTE_PRE") return new IntrospectionInfo(ctx, {
+		if (field_name == "RENDER_CHAIN_CALL_ROUTE_BEFORE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriver",
 			"name": field_name,
@@ -13207,7 +14501,7 @@ Object.assign(Runtime.Web.RenderDriver,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "RENDER_CHAIN_CALL_ROUTE_POST") return new IntrospectionInfo(ctx, {
+		if (field_name == "RENDER_CHAIN_CALL_ROUTE_AFTER") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriver",
 			"name": field_name,
@@ -13228,7 +14522,7 @@ Object.assign(Runtime.Web.RenderDriver,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "RENDER_CHAIN_RESPONSE_POST") return new IntrospectionInfo(ctx, {
+		if (field_name == "RENDER_CHAIN_RESPONSE_AFTER") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.RenderDriver",
 			"name": field_name,
@@ -14444,14 +15738,17 @@ Object.assign(Runtime.Web.Route.prototype,
 		{
 			var uri_match = this.uri;
 			uri_match = Runtime.re.replace(ctx, "\\/", "\\/", uri_match);
+			var params = new Runtime.Vector(ctx);
 			var matches = Runtime.re.matchAll(ctx, "{(.*?)}", this.uri);
 			if (matches)
 			{
-				matches.each(ctx, (ctx, name) => 
+				matches.each(ctx, (ctx, arr) => 
 				{
+					var name = Runtime.rtl.get(ctx, arr, 1);
 					uri_match = Runtime.re.replace(ctx, "{" + Runtime.rtl.toStr(name) + Runtime.rtl.toStr("}"), "([^\\/]*?)", uri_match);
+					params.push(ctx, name);
 				});
-				this.assignValue(ctx, "params", matches);
+				this.assignValue(ctx, "params", params);
 			}
 			else
 			{
@@ -14522,9 +15819,9 @@ Object.assign(Runtime.Web.Route,
 	{
 		var __memorize_value = Runtime.rtl._memorizeValue("Runtime.Web.Route.getParams", arguments);
 		if (__memorize_value != Runtime.rtl._memorize_not_found) return __memorize_value;
-		if (info.params == null)
+		if (info.params == null || matches == null)
 		{
-			var __memorize_value = new Runtime.Dict(ctx);
+			var __memorize_value = Runtime.Dict.from({});
 			Runtime.rtl._memorizeSave("Runtime.Web.Route.getParams", arguments, __memorize_value);
 			return __memorize_value;
 		}
@@ -14691,13 +15988,13 @@ Object.assign(Runtime.Web.RouteController.prototype,
 	/**
 	 * Open url
 	 */
-	openUrl: function(ctx, href)
+	openUrl: async function(ctx, href)
 	{
 		if (href == undefined) href = "/";
 		var obj = { "href": href, };
 		history.pushState(obj, "", href);
 		this.history.push(ctx, href);
-		this.renderPage(ctx, href);
+		await this.renderPage(ctx, href);
 	},
 	/**
 	 * Render
@@ -14716,10 +16013,19 @@ Object.assign(Runtime.Web.RouteController.prototype,
 				break;
 			}
 		}
+		/* Render all controllers */
+		for (var i = 0;i < controllers.count(ctx);i++)
+		{
+			var controller = Runtime.rtl.get(ctx, controllers, i);
+			if (controller.layout != null)
+			{
+				controller.repaint(ctx);
+			}
+		}
 		/* render */
 		if (render)
 		{
-			this.renderCurrentPage(ctx);
+			await this.renderCurrentPage(ctx);
 		}
 	},
 	/**
@@ -14743,15 +16049,27 @@ Object.assign(Runtime.Web.RouteController.prototype,
 		host = window.location.hostname;
 		protocol = window.location.protocol.substr(0, window.location.protocol.length - 1);
 		var request = new Runtime.Web.Request(ctx, Runtime.Dict.from({"uri":uri,"host":host,"protocol":protocol,"route_prefix":this.route_prefix}));
-		var container = await this.renderRequest(ctx, request);
+		/* Find main controller name */
+		var frontend_controller_name = "";
+		var controller = Runtime.Web.RenderDriver.getMainController(ctx);
+		if (controller)
+		{
+			frontend_controller_name = controller.getObjectName(ctx);
+		}
+		/* Save controllers */
+		var driver = ctx.getDriver(ctx, "Runtime.Web.FrontendStorageDriver");
+		driver.saveControllers(ctx);
+		/* Render request */
+		var container = await this.renderRequest(ctx, request, frontend_controller_name);
 		/* Render container */
 		this.renderContainer(ctx, container);
 	},
 	/**
 	 * Render request
 	 */
-	renderRequest: async function(ctx, request)
+	renderRequest: async function(ctx, request, frontend_controller_name)
 	{
+		if (frontend_controller_name == undefined) frontend_controller_name = "";
 		var route = null;
 		var params = null;
 		/* Search route */
@@ -14759,7 +16077,7 @@ Object.assign(Runtime.Web.RouteController.prototype,
 		route = res.item(ctx, 0);
 		params = res.item(ctx, 1);
 		/* Create render container  */
-		var container = new Runtime.Web.RenderContainer(ctx, Runtime.Dict.from({"request":request,"route":route,"route_params":params}));
+		var container = new Runtime.Web.RenderContainer(ctx, Runtime.Dict.from({"request":request,"route":route,"route_params":params,"frontend_controller_name":frontend_controller_name}));
 		/* Render container */
 		container = await Runtime.Web.RenderDriver.chainRender(ctx, container);
 		/* Result */
@@ -14770,14 +16088,10 @@ Object.assign(Runtime.Web.RouteController.prototype,
 	 */
 	renderContainer: function(ctx, container)
 	{
-		var controllers = ctx.getDrivers(ctx, "Runtime.Web.RenderController");
-		for (var i = 0;i < controllers.count(ctx);i++)
+		var controller = Runtime.Web.RenderDriver.getMainController(ctx);
+		if (controller)
 		{
-			var controller = Runtime.rtl.get(ctx, controllers, i);
-			if (controller.isMainController(ctx))
-			{
-				controller.renderLayout(ctx, container.layout);
-			}
+			controller.renderLayout(ctx, container.layout);
 		}
 	},
 	/**
@@ -14801,6 +16115,11 @@ Object.assign(Runtime.Web.RouteController.prototype,
 			var matches = Runtime.re.matchAll(ctx, info.uri_match, request_uri);
 			if (matches != null)
 			{
+				matches = matches.get(ctx, 0, null);
+				if (matches)
+				{
+					matches = matches.removeFirstIm(ctx);
+				}
 				params = info.constructor.getParams(ctx, matches, info);
 				route = info;
 				break;
@@ -14864,7 +16183,11 @@ Object.assign(Runtime.Web.RouteController,
 			if (target == null)
 			{
 				e.preventDefault();
-				controller.openUrl(ctx, href);
+				(async () => {
+					try { await controller.openUrl(ctx, href); }
+					catch (e) { console.log(e.stack); }
+				})();
+				return false;
 			}
 		}
 	},
@@ -14882,12 +16205,18 @@ Object.assign(Runtime.Web.RouteController,
 		else if (e.state != null && typeof e.state.href == "string")
 		{
 			controller.history.pop(ctx);
-			controller.renderPage(ctx, e.state.href);
+			(async () => {
+				try { await controller.renderPage(ctx, e.state.href); }
+				catch (e) { console.log(e.stack); }
+			})();
 		}
 		else
 		{
 			controller.history.pop(ctx);
-			controller.renderCurrentPage(ctx);
+			(async () => {
+				try { await controller.renderCurrentPage(ctx); }
+				catch (e) { console.log(e.stack); }
+			})();
 		}
 	},
 	/**
@@ -18661,7 +19990,7 @@ Object.assign(Runtime.Web.ModuleDescription,
 	 */
 	entities: function(ctx)
 	{
-		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"Runtime.Web.RenderDriver"})),new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"Runtime.Web.RouteController"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10000,"value":"Runtime.Web.RenderDriver::chainLayoutModel"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::chainRenderCreateLayoutModel","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CREATE_LAYOUT_MODEL})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::chainRenderCallRouteMiddleware","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_ROUTE_PRE,"is_async":true})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::chainRenderCallRoute","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_ROUTE,"is_async":true}))]);
+		return Runtime.Collection.from([new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"Runtime.Web.RenderDriver"})),new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"Runtime.Web.RouteController"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.LAYOUT_CHAIN,"pos":10000,"value":"Runtime.Web.RenderDriver::layoutChainDefault"})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::renderChainCreateLayoutModel","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CREATE_LAYOUT_MODEL})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::renderChainCallRouteMiddleware","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_ROUTE_MIDDLEWARE,"is_async":true})),new Runtime.Core.LambdaChain(ctx, Runtime.Dict.from({"name":Runtime.Web.RenderDriver.RENDER_CHAIN,"value":"Runtime.Web.RenderDriver::renderChainCallRoute","pos":Runtime.Web.RenderDriver.RENDER_CHAIN_CALL_ROUTE,"is_async":true})),new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"default:external_bus","value":"Runtime.Web.ExternalBusDriver"})),new Runtime.Core.Driver(ctx, Runtime.Dict.from({"name":"Runtime.Web.FrontendStorageDriver"}))]);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
