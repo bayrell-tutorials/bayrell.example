@@ -22,3 +22,18 @@
 [submodule "lib/Runtime.Task"]
 	path = lib/Runtime.Task
 	url = https://github.com/bayrell/Runtime.Task
+[submodule "lib/Runtime.Web.CRUD"]
+	path = lib/Runtime.Web.CRUD
+	url = https://github.com/bayrell/Runtime.Web.CRUD
+[submodule "lib/Runtime.ORM"]
+	path = lib/Runtime.ORM
+	url = https://github.com/bayrell/Runtime.ORM
+[submodule "lib/Runtime.ORM.MySQL"]
+	path = lib/Runtime.ORM.MySQL
+	url = https://github.com/bayrell/Runtime.ORM.MySQL
+[submodule "lib/Runtime.Web.Form"]
+	path = lib/Runtime.Web.Form
+	url = https://github.com/bayrell/Runtime.Web.Form
+[submodule "lib/Runtime.Web.Table"]
+	path = lib/Runtime.Web.Table
+	url = https://github.com/bayrell/Runtime.Web.Table
