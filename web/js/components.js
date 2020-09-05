@@ -1465,12 +1465,15 @@ Object.assign(Runtime.Web.Form.Form,
 			if (field != null)
 			{
 				var __v0 = new Runtime.Monad(ctx, Runtime.rtl.get(ctx, field, "class_name"));
+				__v0 = __v0.monad(ctx, Runtime.rtl.m_to(ctx, "string", ""));
 				var class_name = __v0.value(ctx);
 				
 				var __v0 = new Runtime.Monad(ctx, Runtime.rtl.get(ctx, field, "class_name_form"));
+				__v0 = __v0.monad(ctx, Runtime.rtl.m_to(ctx, "string", ""));
 				var class_name_form = __v0.value(ctx);
 				
 				var __v0 = new Runtime.Monad(ctx, Runtime.rtl.get(ctx, field, "class_settings"));
+				__v0 = __v0.monad(ctx, Runtime.rtl.m_to(ctx, "Runtime.Dict", Runtime.Dict.from({})));
 				var class_settings = __v0.value(ctx);
 				
 				var model_path = this.getBindPath(ctx, field);
@@ -1494,12 +1497,12 @@ Object.assign(Runtime.Web.Form.Form,
 				var __v1; var __v1_childs = [];
 				[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["form_value", this.getCssHash(ctx)].join(" "),"@elem_name":"form_value"}});
 				
-				if (Runtime.rtl.exists(ctx, class_name_form))
+				if (!Runtime.rtl.isEmpty(ctx, class_name_form))
 				{
 					class_name = class_name_form;
 				}
 				
-				if (Runtime.rtl.exists(ctx, class_name))
+				if (!Runtime.rtl.isEmpty(ctx, class_name))
 				{
 					[__vnull, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "component", {"name": class_name,"attrs": this.mergeAttrs(ctx, {"@bind":["Runtime.Web.Form.Form",model_path],"@event:Runtime.Web.Events.ChangeEvent":["Runtime.Web.Form.Form","onItemChange"],"used-by":"form","name":field_name,"form-item":Runtime.rtl.get(ctx, model, "item"),"model-path":model_path},class_settings), "layout": layout});
 				}
@@ -3118,20 +3121,23 @@ Object.assign(Runtime.Web.Table.Table,
 			if (field != null)
 			{
 				var __v0 = new Runtime.Monad(ctx, Runtime.rtl.get(ctx, field, "class_name"));
+				__v0 = __v0.monad(ctx, Runtime.rtl.m_to(ctx, "string", ""));
 				var class_name = __v0.value(ctx);
 				
 				var __v0 = new Runtime.Monad(ctx, Runtime.rtl.get(ctx, field, "class_name_table"));
+				__v0 = __v0.monad(ctx, Runtime.rtl.m_to(ctx, "string", ""));
 				var class_name_table = __v0.value(ctx);
 				
 				var __v0 = new Runtime.Monad(ctx, Runtime.rtl.get(ctx, field, "class_settings"));
+				__v0 = __v0.monad(ctx, Runtime.rtl.m_to(ctx, "Runtime.Dict", Runtime.Dict.from({})));
 				var class_settings = __v0.value(ctx);
 				
-				if (Runtime.rtl.exists(ctx, class_name_table))
+				if (!Runtime.rtl.isEmpty(ctx, class_name_table))
 				{
 					class_name = class_name_table;
 				}
 				
-				if (Runtime.rtl.exists(ctx, class_name))
+				if (!Runtime.rtl.isEmpty(ctx, class_name))
 				{
 					[__vnull, __control_childs] = RenderDriver.e(__control, __control_childs, "component", {"name": class_name,"attrs": this.mergeAttrs(ctx, {"@bind":["Runtime.Web.Table.Table",Runtime.Collection.from(["rows",index,field_name])],"used-by":"table","name":field_name,"row-index":index,"row-data":row,"table-model":model,"@key":field_name},class_settings), "layout": layout});
 				}

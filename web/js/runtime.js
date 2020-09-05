@@ -475,7 +475,7 @@ Object.assign(Runtime.rtl,
 		if (def_value == undefined) def_value = null;
 		return (ctx, m) => 
 		{
-			return new Runtime.Monad(ctx, (m.err == null) ? (this.convert(m.value(ctx), type_value, def_value)) : (def_value));
+			return new Runtime.Monad(ctx, (m.err == null) ? (this.convert(m.val, type_value, def_value)) : (def_value));
 		};
 	},
 	/**
@@ -497,11 +497,34 @@ Object.assign(Runtime.rtl,
 	 * @param var type_template
 	 * @return var
 	 */
-	convert: function(value, type_value, def_value, type_template)
+	convert: function(v, t, d)
 	{
-		if (def_value == undefined) def_value = null;
-		if (type_template == undefined) type_template = "";
-		return value;
+		if (d == undefined) d = null;
+		if (t == "mixed" || t == "primitive" || t == "var" || t == "fn" || t == "callback")
+		{
+			return v;
+		}
+		if (t == "bool" || t == "boolean")
+		{
+			return this.toBool(null, v);
+		}
+		else if (t == "string")
+		{
+			return this.toString(null, v);
+		}
+		else if (t == "int")
+		{
+			return this.toInt(null, v);
+		}
+		else if (t == "float" || t == "double")
+		{
+			return this.toFloat(null, v);
+		}
+		else if (Runtime.rtl.is_instanceof(null, v, t))
+		{
+			return v;
+		}
+		return d;
 	},
 	/**
 	 * Returns true if value instanceof tp
@@ -532,6 +555,15 @@ Object.assign(Runtime.rtl,
 			return true;
 		}
 		return false;
+	},
+	/**
+	 * Return true if value is empty
+	 * @param var value
+	 * @return bool
+	 */
+	isEmpty: function(ctx, value)
+	{
+		return !this.exists(ctx, value) || value === null || value === "" || value === false || value === 0;
 	},
 	/**
 	 * Return true if value is exists
@@ -12282,7 +12314,10 @@ Object.assign(Runtime.Web.Layout,
 			
 			var class_name = model.page_class;
 			
-			[__vnull, __control_childs] = RenderDriver.e(__control, __control_childs, "component", {"name": class_name,"attrs": {"@bind":["Runtime.Web.Layout","page_model"],"@key":"view"}, "layout": layout});
+			if (!Runtime.rtl.isEmpty(ctx, class_name))
+			{
+				[__vnull, __control_childs] = RenderDriver.e(__control, __control_childs, "component", {"name": class_name,"attrs": {"@bind":["Runtime.Web.Layout","page_model"],"@key":"view"}, "layout": layout});
+			}
 			
 			return __control_childs;
 		};
@@ -13246,16 +13281,20 @@ Object.assign(Runtime.Web.RenderController.prototype,
 	{
 		this.setParent(ctx, ctx.getDriver(ctx, "Runtime.Web.RenderDriver"));
 		var __v0 = new Runtime.Monad(ctx, Runtime.rtl.attr(ctx, this.entity, ["params", "selector"]));
+		__v0 = __v0.monad(ctx, Runtime.rtl.m_to(ctx, "string", ""));
 		this.selector = __v0.value(ctx);
 		var __v1 = new Runtime.Monad(ctx, Runtime.rtl.attr(ctx, this.entity, ["params", "main_controller"]));
+		__v1 = __v1.monad(ctx, Runtime.rtl.m_to(ctx, "bool", false));
 		this.is_main_controller = __v1.value(ctx);
 		var __v2 = new Runtime.Monad(ctx, Runtime.rtl.attr(ctx, this.entity, ["params", "selector_model"]));
+		__v2 = __v2.monad(ctx, Runtime.rtl.m_to(ctx, "string", ""));
 		var selector_model = __v2.value(ctx);
 		if (selector_model == null || selector_model == "")
 		{
 			selector_model = this.selector + Runtime.rtl.toStr("_model");
 		}
 		var __v3 = new Runtime.Monad(ctx, Runtime.rtl.attr(ctx, this.entity, ["params", "window"]));
+		__v3 = __v3.monad(ctx, Runtime.rtl.m_to(ctx, "string", ""));
 		var window_name = __v3.value(ctx);
 		if (window_name != "") window[window_name] = this;
 		if (this.selector != "") this.root_elem = document.querySelector(this.selector);
