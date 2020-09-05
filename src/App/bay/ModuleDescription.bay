@@ -4,6 +4,8 @@ use Runtime.Core.Context;
 use Runtime.Core.Driver;
 use Runtime.Core.Entity;
 use Runtime.Core.LambdaChain;
+use Runtime.ORM.MySQL.Driver as MySQLDriver;
+use Runtime.ORM.MySQL.Settings as MySQLSettings;
 use Runtime.Web.Layout;
 use Runtime.Web.LayoutModel;
 use Runtime.Web.RenderController;
@@ -110,6 +112,13 @@ static class ModuleDescription
 			"pos": RenderDriver::RENDER_CHAIN_RESPONSE_BEFORE,
 		},
 		
+		/* Register MySQL Driver */
+		new Driver
+		{
+			"name": "Runtime.ORM.DriverInterface",
+			"value": classof MySQLDriver,
+		},
+		
 		#endif
 	];
 	
@@ -130,12 +139,27 @@ static class ModuleDescription
 			},
 			
 			#ifdef BACKEND then
+			
+			/* Web Backend settings */
 			"Runtime.Web.Backend":
 			{
 				"api": true,
 				"external_bus_class": "",
 				"external_bus_default": true,
 			},
+			
+			/* MySQL Settings */
+			"Runtime.ORM.MySQL":
+			{
+				"default": new MySQLSettings
+				{
+					"host": "172.20.0.13",
+					"username": "root",
+					"password": "root",
+					"db": "test",
+				},
+			},
+			
 			#endif
 		},
 		"secrets":

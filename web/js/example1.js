@@ -185,15 +185,15 @@ Object.assign(Example1.IndexPage,
 			
 			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "input","attrs": {"@bind":["Example1.IndexPage",Runtime.Collection.from(["item","content"])],"class":["input", this.getCssHash(ctx)].join(" "),"@elem_name":"input"}});
 			
-			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null});
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": {}});
 			
 			/* Element 'button.button' */
-			var __v2; var __v2_childs = [];
-			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["Example1.IndexPage","onMouseClick"],"class":["button", this.getCssHash(ctx)].join(" "),"@elem_name":"button"}});
+			var __v1; var __v1_childs = [];
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["Example1.IndexPage","onMouseClick"],"class":["button", this.getCssHash(ctx)].join(" "),"@elem_name":"button"}});
 			
 			/* Text */
-			[__vnull, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "text", {"content": "Click Me!"});
-			RenderDriver.p(__v2, __v2_childs);
+			[__vnull, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "text", {"content": "Click Me!"});
+			RenderDriver.p(__v1, __v1_childs);
 			RenderDriver.p(__v0, __v0_childs);
 			
 			return __control_childs;

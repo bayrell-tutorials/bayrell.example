@@ -20,7 +20,10 @@
 			[
 				"Runtime.Web.Button",
 				"Runtime.Web.Dialog",
-				"Runtime.Web.Input"
+				"Runtime.Web.Form",
+				"Runtime.Web.Input",
+				"Runtime.Web.Table",
+				"Runtime.Web.CRUD"
 			]
 		},
 		{
@@ -68,7 +71,10 @@
 	"plugins":
 	[
 		"Bayrell.Bundler.Plugins.BayLang",
-		"Bayrell.Bundler.Plugins.Bundle"
+		"Bayrell.Bundler.Plugins.Bundle",
+		"Bayrell.Bundler.Plugins.FilesPHP",
+		"Bayrell.Bundler.Plugins.FilesES6",
+		"Bayrell.Bundler.Plugins.FilesJS"
 	],
 	"options":
 	{

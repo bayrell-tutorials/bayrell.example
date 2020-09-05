@@ -1,0 +1,89 @@
+<class version="1.0"
+	name="App.UsersPage" extends="Runtime.Web.Component" 
+	module="App" model="App.UsersPageModel"
+>
+
+<use name="Runtime.Exceptions.RuntimeException" />
+<use name="Runtime.Core.Message" />
+<use name="Runtime.Core.RemoteCallAnswer" />
+<use name="Runtime.Web.LayoutModel" />
+<use name="Runtime.Web.RenderDriver" />
+<use name="Runtime.Web.Events.MouseClickEvent" />
+<use name="Runtime.Web.CRUD.CrudPage" component="true" />
+<use name="Runtime.Web.CRUD.CrudPageModel" />
+<use name="Runtime.Web.Input.Input" component="true" />
+<use name="Runtime.Web.Input.Label" component="true" />
+<use name="Runtime.Web.Input.Select" component="true" />
+<use name="Runtime.Web.Input.SelectText" component="true" />
+<use name="App.UsersPageModel" />
+
+<style>
+</style>
+
+
+<template name="render">
+	
+	%var Dict crud_settings =
+	{
+		"name":
+		{
+			"api_name": "name",
+			"label": "Name",
+			"class_name": classof Input,
+			"class_name_table": classof Label,
+		},
+		"type":
+		{
+			"api_name": "type",
+			"label": "Type",
+			"class_name": classof Select,
+			"class_name_table": classof SelectText,
+			"class_settings":
+			{
+				"select_value": true,
+				"options":
+				[
+					{"id": 1, "value": "Type1"},
+					{"id": 2, "value": "Type2"},
+					{"id": 3, "value": "Type3"},
+				],
+			}
+		},
+	};
+	
+	%var Collection<string> form_fields =
+	[
+		"name",
+		"type",
+	];
+	
+	%var Collection<string> table_fields =
+	[
+		"number",
+		"name",
+		"type",
+		"edit"
+	];
+	
+	<CrudPage @name="crud"
+		object_name="App.Users"
+		crud_settings={ crud_settings }
+		form_fields={ form_fields }
+		table_fields={ table_fields }
+	/>
+	
+</template>
+
+
+<script type="frontend">
+
+/**
+ * Update component
+ */
+public void updateComponent(bool created)
+{
+}
+
+</script>
+
+</class>

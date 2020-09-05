@@ -20,6 +20,14 @@ body, html{
 	padding: 0;
 	margin: 0;
 }
+td{
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 14px;
+}
+span.lpad5{
+	display: inline-block;
+	padding-right: 5px;
+}
 #root{
 	display: flex;
 	flex-direction: row;
@@ -76,12 +84,8 @@ body, html{
 			"content": "Test 1",
 		},
 		{
-			"url": "/test/2/name2/",
-			"content": "Test 2",
-		},
-		{
-			"url": "/test/3/name3/",
-			"content": "Test 3",
+			"url": "/users/",
+			"content": "Users",
 		},
 	];
 	

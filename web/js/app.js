@@ -34,7 +34,7 @@ Object.assign(App.AppLayout,
 {
 	css: function(ctx, vars)
 	{
-		return "\n*{box-sizing: border-box;}body{margin:0;padding:0;}\na { text-decoration: inherit; color: #0000d0; cursor: pointer; }\na:hover, a:visited:hover { text-decoration: underline; color: red; }\na:visited { text-decoration: inherit; color: #0000d0; }\na.link { text-decoration: none; color: #0000d0; cursor: pointer; }\na.link:hover, a.link:visited:hover { text-decoration: underline; color: red; }\na.link:visited { text-decoration: none; color: #0000d0; }\nbody, html{\n\tfont-family: 'Ubuntu', sans-serif;\n\tfont-size: 14px;\n\twidth: 100%;\n\theight: 100vh;\n\tpadding: 0;\n\tmargin: 0;\n}\n#root{\n\tdisplay: flex;\n\tflex-direction: row;\n}\n.menu.h-70d2{\n\twidth: 100px;\n}\n.content.h-70d2{\n\twidth: calc(100% - 100px);\n}\n.menu.h-70d2, .content.h-70d2{\n\tpadding: 10px;\n}\n.menu_title.h-70d2{\n\tfont-weight: bold;\n\tpadding-bottom: 10px;\n}\n.menu_items.h-70d2{\n\tpadding-bottom: 10px;\n\tpadding-left: 10px;\n}\n.menu_item.h-70d2{\n\tpadding-bottom: 10px;\n}\n.menu_item.h-70d2:last-child{\n\tpadding-bottom: 0px;\n}\n";
+		return "\n*{box-sizing: border-box;}body{margin:0;padding:0;}\na { text-decoration: inherit; color: #0000d0; cursor: pointer; }\na:hover, a:visited:hover { text-decoration: underline; color: red; }\na:visited { text-decoration: inherit; color: #0000d0; }\na.link { text-decoration: none; color: #0000d0; cursor: pointer; }\na.link:hover, a.link:visited:hover { text-decoration: underline; color: red; }\na.link:visited { text-decoration: none; color: #0000d0; }\nbody, html{\n\tfont-family: 'Ubuntu', sans-serif;\n\tfont-size: 14px;\n\twidth: 100%;\n\theight: 100vh;\n\tpadding: 0;\n\tmargin: 0;\n}\ntd{\n\tfont-family: 'Ubuntu', sans-serif;\n\tfont-size: 14px;\n}\nspan.lpad5{\n\tdisplay: inline-block;\n\tpadding-right: 5px;\n}\n#root{\n\tdisplay: flex;\n\tflex-direction: row;\n}\n.menu.h-70d2{\n\twidth: 100px;\n}\n.content.h-70d2{\n\twidth: calc(100% - 100px);\n}\n.menu.h-70d2, .content.h-70d2{\n\tpadding: 10px;\n}\n.menu_title.h-70d2{\n\tfont-weight: bold;\n\tpadding-bottom: 10px;\n}\n.menu_items.h-70d2{\n\tpadding-bottom: 10px;\n\tpadding-left: 10px;\n}\n.menu_item.h-70d2{\n\tpadding-bottom: 10px;\n}\n.menu_item.h-70d2:last-child{\n\tpadding-bottom: 0px;\n}\n";
 	},
 	render: function(ctx, layout, model, params, content)
 	{
@@ -45,7 +45,7 @@ Object.assign(App.AppLayout,
 			
 			var class_name = model.page_class;
 			
-			var routes = Runtime.Collection.from([Runtime.Dict.from({"url":"/","content":"Index"}),Runtime.Dict.from({"url":"/route1/","content":"Route 1"}),Runtime.Dict.from({"url":"/route2/","content":"Route 2"}),Runtime.Dict.from({"url":"/route3/","content":"Route 3"}),Runtime.Dict.from({"url":"/test/1/name1/","content":"Test 1"}),Runtime.Dict.from({"url":"/test/2/name2/","content":"Test 2"}),Runtime.Dict.from({"url":"/test/3/name3/","content":"Test 3"})]);
+			var routes = Runtime.Collection.from([Runtime.Dict.from({"url":"/","content":"Index"}),Runtime.Dict.from({"url":"/route1/","content":"Route 1"}),Runtime.Dict.from({"url":"/route2/","content":"Route 2"}),Runtime.Dict.from({"url":"/route3/","content":"Route 3"}),Runtime.Dict.from({"url":"/test/1/name1/","content":"Test 1"}),Runtime.Dict.from({"url":"/users/","content":"Users"})]);
 			
 			var urls = Runtime.Collection.from([Runtime.Dict.from({"url":"/example1.html","content":"Example 1"}),Runtime.Dict.from({"url":"/example2.html","content":"Example 2"}),Runtime.Dict.from({"url":"/example3.html","content":"Example 3"})]);
 			
@@ -62,69 +62,69 @@ Object.assign(App.AppLayout,
 			RenderDriver.p(__v1, __v1_childs);
 			
 			/* Element 'div.menu_items' */
-			var __v2; var __v2_childs = [];
-			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_items", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_items"}});
+			var __v1; var __v1_childs = [];
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_items", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_items"}});
 			
 			for (var i = 0;i < routes.count(ctx);i++)
 			{
 				var item = Runtime.rtl.get(ctx, routes, i);
 				
 				/* Element 'div.menu_item' */
-				var __v3; var __v3_childs = [];
-				[__v3, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "element", {"name": "div","attrs": {"class":["menu_item", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_item"}});
+				var __v2; var __v2_childs = [];
+				[__v2, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "element", {"name": "div","attrs": {"class":["menu_item", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_item"}});
 				
 				/* Element 'a.link' */
-				var __v4; var __v4_childs = [];
-				[__v4, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "element", {"name": "a","attrs": {"href":Runtime.rtl.get(ctx, item, "url"),"class":["link", this.getCssHash(ctx)].join(" "),"@elem_name":"link"}});
+				var __v3; var __v3_childs = [];
+				[__v3, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "element", {"name": "a","attrs": {"href":Runtime.rtl.get(ctx, item, "url"),"class":["link", this.getCssHash(ctx)].join(" "),"@elem_name":"link"}});
 				
 				/* Text */
-				[__vnull, __v4_childs] = RenderDriver.e(__v4, __v4_childs, "text", {"content": Runtime.rtl.get(ctx, item, "content")});
-				RenderDriver.p(__v4, __v4_childs);
+				[__vnull, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "text", {"content": Runtime.rtl.get(ctx, item, "content")});
 				RenderDriver.p(__v3, __v3_childs);
+				RenderDriver.p(__v2, __v2_childs);
 			}
-			RenderDriver.p(__v2, __v2_childs);
+			RenderDriver.p(__v1, __v1_childs);
 			
 			/* Element 'div.menu_title' */
-			var __v5; var __v5_childs = [];
-			[__v5, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_title", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_title"}});
+			var __v1; var __v1_childs = [];
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_title", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_title"}});
 			
 			/* Text */
-			[__vnull, __v5_childs] = RenderDriver.e(__v5, __v5_childs, "text", {"content": "Projects:"});
-			RenderDriver.p(__v5, __v5_childs);
+			[__vnull, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "text", {"content": "Projects:"});
+			RenderDriver.p(__v1, __v1_childs);
 			
 			/* Element 'div.menu_items' */
-			var __v6; var __v6_childs = [];
-			[__v6, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_items", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_items"}});
+			var __v1; var __v1_childs = [];
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["menu_items", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_items"}});
 			
 			for (var i = 0;i < urls.count(ctx);i++)
 			{
 				var item = Runtime.rtl.get(ctx, urls, i);
 				
 				/* Element 'div.menu_item' */
-				var __v7; var __v7_childs = [];
-				[__v7, __v6_childs] = RenderDriver.e(__v6, __v6_childs, "element", {"name": "div","attrs": {"class":["menu_item", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_item"}});
+				var __v2; var __v2_childs = [];
+				[__v2, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "element", {"name": "div","attrs": {"class":["menu_item", this.getCssHash(ctx)].join(" "),"@elem_name":"menu_item"}});
 				
 				/* Element 'a.link' */
-				var __v8; var __v8_childs = [];
-				[__v8, __v7_childs] = RenderDriver.e(__v7, __v7_childs, "element", {"name": "a","attrs": {"href":Runtime.rtl.get(ctx, item, "url"),"target":"_self","class":["link", this.getCssHash(ctx)].join(" "),"@elem_name":"link"}});
+				var __v3; var __v3_childs = [];
+				[__v3, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "element", {"name": "a","attrs": {"href":Runtime.rtl.get(ctx, item, "url"),"target":"_self","class":["link", this.getCssHash(ctx)].join(" "),"@elem_name":"link"}});
 				
 				/* Text */
-				[__vnull, __v8_childs] = RenderDriver.e(__v8, __v8_childs, "text", {"content": Runtime.rtl.get(ctx, item, "content")});
-				RenderDriver.p(__v8, __v8_childs);
-				RenderDriver.p(__v7, __v7_childs);
+				[__vnull, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "text", {"content": Runtime.rtl.get(ctx, item, "content")});
+				RenderDriver.p(__v3, __v3_childs);
+				RenderDriver.p(__v2, __v2_childs);
 			}
-			RenderDriver.p(__v6, __v6_childs);
+			RenderDriver.p(__v1, __v1_childs);
 			RenderDriver.p(__v0, __v0_childs);
 			
 			/* Element 'div.content' */
-			var __v9; var __v9_childs = [];
-			[__v9, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["content", this.getCssHash(ctx)].join(" "),"@elem_name":"content"}});
+			var __v0; var __v0_childs = [];
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["content", this.getCssHash(ctx)].join(" "),"@elem_name":"content"}});
 			
 			if (class_name != "")
 			{
-				[__vnull, __v9_childs] = RenderDriver.e(__v9, __v9_childs, "component", {"name": class_name,"attrs": {"@bind":["App.AppLayout","page_model"],"@key":"page"}, "layout": layout});
+				[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "component", {"name": class_name,"attrs": {"@bind":["App.AppLayout","page_model"],"@key":"page"}, "layout": layout});
 			}
-			RenderDriver.p(__v9, __v9_childs);
+			RenderDriver.p(__v0, __v0_childs);
 			
 			return __control_childs;
 		};
@@ -252,16 +252,16 @@ Object.assign(App.IndexPage,
 			/* Text */
 			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "text", {"content": "Index page"});
 			
-			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null});
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": {}});
 			
-			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null});
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": {}});
 			
-			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null});
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": {}});
 			
 			/* Text */
 			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "text", {"content": "Test api:"});
 			
-			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": null});
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "br","attrs": {}});
 			
 			/* Element 'button.button' */
 			var __v1; var __v1_childs = [];
@@ -272,20 +272,20 @@ Object.assign(App.IndexPage,
 			RenderDriver.p(__v1, __v1_childs);
 			
 			/* Element 'button.button' */
-			var __v2; var __v2_childs = [];
-			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["App.IndexPage","onTimeClick"],"class":["button", this.getCssHash(ctx)].join(" "),"@elem_name":"button"}});
+			var __v1; var __v1_childs = [];
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["App.IndexPage","onTimeClick"],"class":["button", this.getCssHash(ctx)].join(" "),"@elem_name":"button"}});
 			
 			/* Text */
-			[__vnull, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "text", {"content": "Time"});
-			RenderDriver.p(__v2, __v2_childs);
+			[__vnull, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "text", {"content": "Time"});
+			RenderDriver.p(__v1, __v1_childs);
 			
 			/* Element 'div.api_response' */
-			var __v3; var __v3_childs = [];
-			[__v3, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["api_response", this.getCssHash(ctx)].join(" "),"@elem_name":"api_response"}});
+			var __v1; var __v1_childs = [];
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["api_response", this.getCssHash(ctx)].join(" "),"@elem_name":"api_response"}});
 			
 			/* Text */
-			[__vnull, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "text", {"content": model.api_response});
-			RenderDriver.p(__v3, __v3_childs);
+			[__vnull, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "text", {"content": model.api_response});
+			RenderDriver.p(__v1, __v1_childs);
 			RenderDriver.p(__v0, __v0_childs);
 			
 			return __control_childs;
@@ -1019,6 +1019,32 @@ Object.assign(App.Routes,
 		return Promise.resolve(Runtime.Collection.from([container]));
 	},
 	/**
+	 * Route Action
+	 * @return RenderContainer
+	 */
+	UsersPage: async function(ctx, container)
+	{
+		/* Create model */
+		var page_model = new App.UsersPageModel(ctx, Runtime.Dict.from({"crud":new Runtime.Web.CRUD.CrudPageModel(ctx, Runtime.Dict.from({}))}));
+		/* Remote call */
+		var search_params = Runtime.Web.RenderDriver.getCrudSearchParams(ctx, container.request);
+		var answer = await Runtime.Web.RenderDriver.remoteBusCall(ctx, Runtime.Dict.from({"object_name":"App.Users","interface_name":"core.crud","method_name":"search","data":search_params}), container);
+		/* Answer */
+		if (answer.isSuccess(ctx))
+		{
+			page_model = Runtime.rtl.setAttr(ctx, page_model, Runtime.Collection.from(["crud", "table", "rows"]), Runtime.rtl.get(ctx, answer.response, "items"));
+			page_model = Runtime.rtl.setAttr(ctx, page_model, Runtime.Collection.from(["crud", "table", "page"]), Runtime.rtl.get(ctx, answer.response, "page"));
+			page_model = Runtime.rtl.setAttr(ctx, page_model, Runtime.Collection.from(["crud", "table", "pages"]), Runtime.rtl.get(ctx, answer.response, "pages"));
+		}
+		/* Set title */
+		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "title"]), "Users page");
+		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "layout_name"]), "default");
+		/* Set model */
+		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_class"]), "App.UsersPage");
+		container = Runtime.rtl.setAttr(ctx, container, Runtime.Collection.from(["layout", "page_model"]), page_model);
+		return Promise.resolve(Runtime.Collection.from([container]));
+	},
+	/**
 	 * Render chain
 	 * Page not found
 	 * @return RenderContainer
@@ -1088,6 +1114,7 @@ Object.assign(App.Routes,
 			"Route2Page",
 			"Route3Page",
 			"TestPage",
+			"UsersPage",
 		];
 		return Runtime.Collection.from(a);
 	},
@@ -1160,6 +1187,20 @@ Object.assign(App.Routes,
 				"name": "TestPage",
 				"annotations": Collection.from([
 					new Runtime.Web.Route(ctx, Runtime.Dict.from({"uri":"/test/{id}/{name}/","name":"site:test_page"})),
+				]),
+			});
+		}
+		if (field_name == "UsersPage")
+		{
+			var Collection = Runtime.Collection;
+			var Dict = Runtime.Dict;
+			var IntrospectionInfo = Runtime.IntrospectionInfo;
+			return new IntrospectionInfo(ctx, {
+				"kind": IntrospectionInfo.ITEM_METHOD,
+				"class_name": "App.Routes",
+				"name": "UsersPage",
+				"annotations": Collection.from([
+					new Runtime.Web.Route(ctx, Runtime.Dict.from({"uri":"/users/","name":"site:users"})),
 				]),
 			});
 		}
@@ -1282,6 +1323,250 @@ Object.assign(App.TestPage,
 Runtime.rtl.defClass(App.TestPage);
 window["App.TestPage"] = App.TestPage;
 if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = App.TestPage;
+"use strict;"
+if (typeof App == 'undefined') App = {};
+App.UsersPage = function(ctx)
+{
+	Runtime.Web.Component.apply(this, arguments);
+};
+App.UsersPage.prototype = Object.create(Runtime.Web.Component.prototype);
+App.UsersPage.prototype.constructor = App.UsersPage;
+Object.assign(App.UsersPage.prototype,
+{
+	/**
+ * Update component
+ */
+	updateComponent: function(ctx, created)
+	{
+	},
+	assignObject: function(ctx,o)
+	{
+		if (o instanceof App.UsersPage)
+		{
+		}
+		Runtime.Web.Component.prototype.assignObject.call(this,ctx,o);
+	},
+	assignValue: function(ctx,k,v)
+	{
+		Runtime.Web.Component.prototype.assignValue.call(this,ctx,k,v);
+	},
+	takeValue: function(ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		return Runtime.Web.Component.prototype.takeValue.call(this,ctx,k,d);
+	},
+	getClassName: function(ctx)
+	{
+		return "App.UsersPage";
+	},
+});
+Object.assign(App.UsersPage, Runtime.Web.Component);
+Object.assign(App.UsersPage,
+{
+	css: function(ctx, vars)
+	{
+		return "\n";
+	},
+	render: function(ctx, layout, model, params, content)
+	{
+		return (__control) =>
+		{
+			var __vnull = null;
+			var __control_childs = [];
+			
+			var crud_settings = Runtime.Dict.from({"name":Runtime.Dict.from({"api_name":"name","label":"Name","class_name":"Runtime.Web.Input.Input","class_name_table":"Runtime.Web.Input.Label"}),"type":Runtime.Dict.from({"api_name":"type","label":"Type","class_name":"Runtime.Web.Input.Select","class_name_table":"Runtime.Web.Input.SelectText","class_settings":Runtime.Dict.from({"select_value":true,"options":Runtime.Collection.from([Runtime.Dict.from({"id":1,"value":"Type1"}),Runtime.Dict.from({"id":2,"value":"Type2"}),Runtime.Dict.from({"id":3,"value":"Type3"})])})})});
+			
+			var form_fields = Runtime.Collection.from(["name","type"]);
+			
+			var table_fields = Runtime.Collection.from(["number","name","type","edit"]);
+			
+			[__vnull, __control_childs] = RenderDriver.e(__control, __control_childs, "component", {"name": "Runtime.Web.CRUD.CrudPage","attrs": {"@name":["App.UsersPage","crud"],"object_name":"App.Users","crud_settings":crud_settings,"form_fields":form_fields,"table_fields":table_fields}, "layout": layout});
+			
+			return __control_childs;
+		};
+	},
+	components: function(ctx)
+	{
+		return Runtime.Collection.from(["Runtime.Web.CRUD.CrudPage","Runtime.Web.Input.Input","Runtime.Web.Input.Label","Runtime.Web.Input.Select","Runtime.Web.Input.SelectText"]);
+	},
+	/* ======================= Class Init Functions ======================= */
+	getCurrentNamespace: function()
+	{
+		return "App";
+	},
+	getCurrentClassName: function()
+	{
+		return "App.UsersPage";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.Web.Component";
+	},
+	getClassInfo: function(ctx)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "App.UsersPage",
+			"name": "App.UsersPage",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		return Runtime.Collection.from(a);
+	},
+	getFieldInfoByName: function(ctx,field_name)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return null;
+	},
+	getMethodsList: function(ctx)
+	{
+		var a = [
+		];
+		return Runtime.Collection.from(a);
+	},
+	getMethodInfoByName: function(ctx,field_name)
+	{
+		return null;
+	},
+});
+Runtime.rtl.defClass(App.UsersPage);
+window["App.UsersPage"] = App.UsersPage;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = App.UsersPage;
+"use strict;"
+/*!
+ *  Bayrell Runtime Library
+ *
+ *  (c) Copyright 2016-2020 "Ildar Bikmamatov" <support@bayrell.org>
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+if (typeof App == 'undefined') App = {};
+App.UsersPageModel = function(ctx)
+{
+	Runtime.BaseStruct.apply(this, arguments);
+};
+App.UsersPageModel.prototype = Object.create(Runtime.BaseStruct.prototype);
+App.UsersPageModel.prototype.constructor = App.UsersPageModel;
+Object.assign(App.UsersPageModel.prototype,
+{
+	_init: function(ctx)
+	{
+		var defProp = use('Runtime.rtl').defProp;
+		var a = Object.getOwnPropertyNames(this);
+		this.crud = null;
+		Runtime.BaseStruct.prototype._init.call(this,ctx);
+	},
+	assignObject: function(ctx,o)
+	{
+		if (o instanceof App.UsersPageModel)
+		{
+			this.crud = o.crud;
+		}
+		Runtime.BaseStruct.prototype.assignObject.call(this,ctx,o);
+	},
+	assignValue: function(ctx,k,v)
+	{
+		if (k == "crud")this.crud = v;
+		else Runtime.BaseStruct.prototype.assignValue.call(this,ctx,k,v);
+	},
+	takeValue: function(ctx,k,d)
+	{
+		if (d == undefined) d = null;
+		if (k == "crud")return this.crud;
+		return Runtime.BaseStruct.prototype.takeValue.call(this,ctx,k,d);
+	},
+	getClassName: function(ctx)
+	{
+		return "App.UsersPageModel";
+	},
+});
+Object.assign(App.UsersPageModel, Runtime.BaseStruct);
+Object.assign(App.UsersPageModel,
+{
+	/* ======================= Class Init Functions ======================= */
+	getCurrentNamespace: function()
+	{
+		return "App";
+	},
+	getCurrentClassName: function()
+	{
+		return "App.UsersPageModel";
+	},
+	getParentClassName: function()
+	{
+		return "Runtime.BaseStruct";
+	},
+	getClassInfo: function(ctx)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_CLASS,
+			"class_name": "App.UsersPageModel",
+			"name": "App.UsersPageModel",
+			"annotations": Collection.from([
+			]),
+		});
+	},
+	getFieldsList: function(ctx, f)
+	{
+		var a = [];
+		if (f==undefined) f=0;
+		if ((f|3)==3)
+		{
+			a.push("crud");
+		}
+		return Runtime.Collection.from(a);
+	},
+	getFieldInfoByName: function(ctx,field_name)
+	{
+		var Collection = Runtime.Collection;
+		var Dict = Runtime.Dict;
+		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		if (field_name == "crud") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "App.UsersPageModel",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
+		return null;
+	},
+	getMethodsList: function(ctx)
+	{
+		var a = [
+		];
+		return Runtime.Collection.from(a);
+	},
+	getMethodInfoByName: function(ctx,field_name)
+	{
+		return null;
+	},
+});
+Runtime.rtl.defClass(App.UsersPageModel);
+window["App.UsersPageModel"] = App.UsersPageModel;
+if (typeof module != "undefined" && typeof module.exports != "undefined") module.exports = App.UsersPageModel;
 "use strict;"
 if (typeof App == 'undefined') App = {};
 App.ModuleDescription = function(ctx)

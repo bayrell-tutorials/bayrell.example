@@ -2,6 +2,7 @@ namespace App.Api;
 
 use Runtime.Core.Context;
 use Runtime.Core.Entity;
+use App.Api.AppUsersCrud;
 use App.Api.Test1;
 use App.Api.Test2;
 
@@ -45,6 +46,7 @@ static class ModuleDescription
 	pure Collection<Dict> entities() => 
 	[
 		/* Register routes */
+		new Entity{ "value": classof AppUsersCrud },
 		new Entity{ "value": classof Test1 },
 		new Entity{ "value": classof Test2 },
 	];

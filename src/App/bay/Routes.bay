@@ -18,11 +18,15 @@
 
 namespace App;
 
+use Runtime.Core.RemoteCallAnswer;
 use Runtime.Web.Layout;
 use Runtime.Web.LayoutModel;
 use Runtime.Web.RenderContainer;
+use Runtime.Web.RenderDriver;
 use Runtime.Web.Route;
 use Runtime.Web.RouteList;
+use Runtime.Web.CRUD.CrudPageModel;
+use Runtime.Web.Table.TableModel;
 use App.AppLayout;
 use App.IndexPage;
 use App.IndexPageModel;
@@ -32,6 +36,8 @@ use App.Route1;
 use App.Route2;
 use App.Route3;
 use App.TestPage;
+use App.UsersPage;
+use App.UsersPageModel;
 
 
 @RouteList{}
@@ -189,6 +195,55 @@ static class Routes
 		
 		/* Set model */
 		container <= layout <= page_class <= classof TestPage;
+		container <= layout <= page_model <= page_model;
+		
+		return [ container ];
+	}
+	
+	
+	
+	/**
+	 * Route Action
+	 * @return RenderContainer
+	 */
+	@Route{ "uri": "/users/", "name": "site:users" }
+	static async RenderContainer UsersPage(RenderContainer container)
+	{
+		/* Create model */
+		UsersPageModel page_model = new UsersPageModel
+		{
+			"crud": new CrudPageModel
+			{
+			},
+		};
+		
+		/* Remote call */
+		Dict search_params = RenderDriver::getCrudSearchParams(container.request);
+		RemoteCallAnswer answer = await RenderDriver::remoteBusCall
+		(
+			{
+				"object_name": "App.Users",
+				"interface_name": "core.crud",
+				"method_name": "search",
+				"data": search_params,
+			},
+			container
+		);
+		
+		/* Answer */
+		if (answer.isSuccess())
+		{
+			page_model <= crud <= table <= rows <= answer.response["items"];
+			page_model <= crud <= table <= page <= answer.response["page"];
+			page_model <= crud <= table <= pages <= answer.response["pages"];
+		}
+		
+		/* Set title */
+		container <= layout <= title <= "Users page";
+		container <= layout <= layout_name <= "default";
+		
+		/* Set model */
+		container <= layout <= page_class <= classof UsersPage;
 		container <= layout <= page_model <= page_model;
 		
 		return [ container ];

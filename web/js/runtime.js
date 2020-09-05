@@ -341,7 +341,10 @@ Object.assign(Runtime.rtl,
 			return def_val;
 		}
 		if (item == undefined) return def_val;
-		if (item instanceof Runtime.Dict || item instanceof Runtime.Collection)
+		if (item instanceof Runtime.Dict ||
+			item instanceof Runtime.Collection ||
+			item instanceof Runtime.BaseStruct
+		)
 		{
 			return item.get(ctx, key, def_val);
 		}
@@ -1488,7 +1491,7 @@ Object.assign(Runtime.lib,
 	{
 		return (ctx, item1) => 
 		{
-			return (item1 != null) ? (item1.takeValue(ctx, key) == value) : (false);
+			return (item1 != null) ? (item1.get(ctx, key, null) == value) : (false);
 		};
 	},
 	/**
@@ -1498,7 +1501,7 @@ Object.assign(Runtime.lib,
 	{
 		return (ctx, item1) => 
 		{
-			return (item1 != null) ? (item1.takeValue(ctx, key) != value) : (false);
+			return (item1 != null) ? (item1.get(ctx, key, null) != value) : (false);
 		};
 	},
 	/**
@@ -9800,6 +9803,7 @@ Object.assign(Runtime.Core.Message.prototype,
 	},
 	_init: function(ctx)
 	{
+		this.sender = null;
 		this.from = "";
 		this.message_id = "";
 		this.is_cancel = false;
@@ -9811,6 +9815,7 @@ Object.assign(Runtime.Core.Message.prototype,
 	{
 		if (o instanceof Runtime.Core.Message)
 		{
+			this.sender = o.sender;
 			this.from = o.from;
 			this.message_id = o.message_id;
 			this.is_cancel = o.is_cancel;
@@ -9821,7 +9826,8 @@ Object.assign(Runtime.Core.Message.prototype,
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "from")this.from = v;
+		if (k == "sender")this.sender = v;
+		else if (k == "from")this.from = v;
 		else if (k == "message_id")this.message_id = v;
 		else if (k == "is_cancel")this.is_cancel = v;
 		else if (k == "data")this.data = v;
@@ -9831,7 +9837,8 @@ Object.assign(Runtime.Core.Message.prototype,
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "from")return this.from;
+		if (k == "sender")return this.sender;
+		else if (k == "from")return this.from;
 		else if (k == "message_id")return this.message_id;
 		else if (k == "is_cancel")return this.is_cancel;
 		else if (k == "data")return this.data;
@@ -9878,6 +9885,7 @@ Object.assign(Runtime.Core.Message,
 		if (f==undefined) f=0;
 		if ((f|2)==2)
 		{
+			a.push("sender");
 			a.push("from");
 			a.push("message_id");
 			a.push("is_cancel");
@@ -9891,6 +9899,13 @@ Object.assign(Runtime.Core.Message,
 		var Collection = Runtime.Collection;
 		var Dict = Runtime.Dict;
 		var IntrospectionInfo = Runtime.IntrospectionInfo;
+		if (field_name == "sender") return new IntrospectionInfo(ctx, {
+			"kind": IntrospectionInfo.ITEM_FIELD,
+			"class_name": "Runtime.Core.Message",
+			"name": field_name,
+			"annotations": Collection.from([
+			]),
+		});
 		if (field_name == "from") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Core.Message",
@@ -10586,7 +10601,7 @@ Object.assign(Runtime.Core.RemoteCallAnswer,
 	{
 		if (message == undefined) message = "";
 		if (code == undefined) code = 1;
-		return msg.copy(ctx, Runtime.Dict.from({"code":code,"error_message":"","success_message":message,"response":response}));
+		return msg.copy(ctx, Runtime.Dict.from({"code":code,"error_message":"","success_message":message,"response":response,"have_answer":true}));
 	},
 	/**
 	 * Set fail result
@@ -10598,7 +10613,7 @@ Object.assign(Runtime.Core.RemoteCallAnswer,
 		if (error == undefined) error = "";
 		if (code == undefined) code = -1;
 		if (error_name == undefined) error_name = "";
-		return msg.copy(ctx, Runtime.Dict.from({"code":code,"error_message":error,"error_name":error_name,"response":response}));
+		return msg.copy(ctx, Runtime.Dict.from({"code":code,"error_message":error,"error_name":error_name,"response":response,"have_answer":true}));
 	},
 	/**
 	 * Set exception
@@ -10607,7 +10622,7 @@ Object.assign(Runtime.Core.RemoteCallAnswer,
 	 */
 	exception: function(ctx, msg, e)
 	{
-		msg = msg.copy(ctx, Runtime.Dict.from({"code":e.getErrorCode(ctx),"error_message":e.getErrorMessage(ctx),"error_name":e.getClassName(ctx),"response":null}));
+		msg = msg.copy(ctx, Runtime.Dict.from({"code":e.getErrorCode(ctx),"error_message":e.getErrorMessage(ctx),"error_name":e.getClassName(ctx),"response":null,"have_answer":true}));
 		if (e instanceof Runtime.Core.ApiException)
 		{
 			msg = Runtime.rtl.setAttr(ctx, msg, Runtime.Collection.from(["response"]), e.response);
@@ -11168,6 +11183,40 @@ Object.assign(Runtime.Web.Component.prototype,
 		return (this.model_path == null) ? (null) : (Runtime.rtl.attr(ctx, this.controller.layout, this.model_path.concat(ctx, model_path), def_val));
 	},
 	/**
+	 * Call model function
+	 */
+	call: function(ctx, method_name)
+	{
+		if (method_name == undefined) method_name = "";
+		var args = new Runtime.Vector(ctx);
+		for (var i=2; i<arguments.length; i++) args.push(ctx, arguments[i]);
+		/* Result */
+		var res = null;
+		/* Get current model */
+		var model = this.model(ctx);
+		/* Change model by function */
+		if (Runtime.rtl.method_exists(ctx, model, method_name))
+		{
+			var f = Runtime.rtl.method(ctx, model, method_name);
+			res = Runtime.rtl.apply(ctx, f, args);
+		}
+		if (Runtime.rtl.method_exists(ctx, model.getClassName(ctx), method_name))
+		{
+			args.unshift(ctx, model);
+			var f = Runtime.rtl.method(ctx, model.getClassName(ctx), method_name);
+			res = Runtime.rtl.apply(ctx, f, args);
+		}
+		return res;
+	},
+	/**
+	 * Update model
+	 */
+	update: function(ctx, method_name)
+	{
+		if (method_name == undefined) method_name = "";
+		this.updateModel.apply(this, arguments);
+	},
+	/**
 	 * Update model
 	 */
 	updateModel: function(ctx, method_name)
@@ -11211,6 +11260,7 @@ Object.assign(Runtime.Web.Component.prototype,
 	signal: async function(ctx, event)
 	{
 		var msg = new Runtime.Core.Message(ctx, event, this.getObjectName(ctx));
+		msg.sender = this;
 		await ctx.object_manager.handleMessage(ctx, msg);
 	},
 	/**
@@ -11218,18 +11268,7 @@ Object.assign(Runtime.Web.Component.prototype,
 	 */
 	remoteBusCall: async function(ctx, items)
 	{
-		/* Set default params */
-		items = items.copy(ctx, Runtime.Dict.from({"app_name":items.get(ctx, "app_name", "self"),"interface_name":items.get(ctx, "interface_name", "default")}));
-		/* Change api request */
-		var request = new Runtime.Core.RemoteCallRequest(ctx, items);
-		var res = ctx.chain(ctx, Runtime.Web.RenderDriver.API_PREPARE_CHAIN, Runtime.Collection.from([request]));
-		request = Runtime.rtl.get(ctx, res, 0);
-		/* Restore request */
-		request = request.copy(ctx, Runtime.Dict.from({"uri":items.get(ctx, "uri", ""),"app_name":items.get(ctx, "app_name", "self"),"object_name":items.get(ctx, "object_name", ""),"interface_name":items.get(ctx, "interface_name", "default"),"method_name":items.get(ctx, "method_name", "")}));
-		/* Send request */
-		var bus = ctx.getDriver(ctx, "default:external_bus");
-		var answer = await bus.remoteBusCall(ctx, request);
-		return Promise.resolve(answer);
+		return Promise.resolve(await Runtime.Web.RenderDriver.remoteBusCall(ctx, items));
 	},
 	/**
 	 * Change params
@@ -11254,7 +11293,7 @@ Object.assign(Runtime.Web.Component.prototype,
 	/**
 	 * Update component
 	 */
-	update: function(ctx, created)
+	updateComponent: function(ctx, created)
 	{
 		if (created)
 		{
@@ -11398,6 +11437,28 @@ Object.assign(Runtime.Web.Component,
 			return Runtime.rs.join(ctx, "", s);
 		}
 		return Runtime.rtl.toString(ctx, s);
+	},
+	/**
+	 * Join attrs to string
+	 */
+	joinAttrs: function(ctx, attrs)
+	{
+		return (Runtime.rtl.exists(ctx, attrs)) ? (Runtime.rs.join(ctx, " ", attrs.map(ctx, (ctx, k, v) => 
+		{
+			return k + Runtime.rtl.toStr("= '") + Runtime.rtl.toStr(this.escapeAttr(ctx, v)) + Runtime.rtl.toStr("'");
+		}))) : ("");
+	},
+	/**
+	 * Merge attrs
+	 */
+	mergeAttrs: function(ctx, res, attr2)
+	{
+		if (!Runtime.rtl.exists(ctx, attr2))
+		{
+			return res;
+		}
+		return Object.assign(res, attr2.toObject());
+		return res;
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -12329,9 +12390,6 @@ Object.assign(Runtime.Web.LayoutModel.prototype,
 		this.title = "";
 		this.description = "";
 		this.favicon = "";
-		this.page = 0;
-		this.pages = 0;
-		this.count_in_page = 0;
 		this.breadcrumbs = null;
 		this.data = new Runtime.Dict(ctx);
 		this.keep_data = new Runtime.Dict(ctx);
@@ -12361,9 +12419,6 @@ Object.assign(Runtime.Web.LayoutModel.prototype,
 			this.title = o.title;
 			this.description = o.description;
 			this.favicon = o.favicon;
-			this.page = o.page;
-			this.pages = o.pages;
-			this.count_in_page = o.count_in_page;
 			this.breadcrumbs = o.breadcrumbs;
 			this.data = o.data;
 			this.keep_data = o.keep_data;
@@ -12392,9 +12447,6 @@ Object.assign(Runtime.Web.LayoutModel.prototype,
 		else if (k == "title")this.title = v;
 		else if (k == "description")this.description = v;
 		else if (k == "favicon")this.favicon = v;
-		else if (k == "page")this.page = v;
-		else if (k == "pages")this.pages = v;
-		else if (k == "count_in_page")this.count_in_page = v;
 		else if (k == "breadcrumbs")this.breadcrumbs = v;
 		else if (k == "data")this.data = v;
 		else if (k == "keep_data")this.keep_data = v;
@@ -12423,9 +12475,6 @@ Object.assign(Runtime.Web.LayoutModel.prototype,
 		else if (k == "title")return this.title;
 		else if (k == "description")return this.description;
 		else if (k == "favicon")return this.favicon;
-		else if (k == "page")return this.page;
-		else if (k == "pages")return this.pages;
-		else if (k == "count_in_page")return this.count_in_page;
 		else if (k == "breadcrumbs")return this.breadcrumbs;
 		else if (k == "data")return this.data;
 		else if (k == "keep_data")return this.keep_data;
@@ -12491,9 +12540,6 @@ Object.assign(Runtime.Web.LayoutModel,
 			a.push("title");
 			a.push("description");
 			a.push("favicon");
-			a.push("page");
-			a.push("pages");
-			a.push("count_in_page");
 			a.push("breadcrumbs");
 			a.push("data");
 			a.push("keep_data");
@@ -12627,27 +12673,6 @@ Object.assign(Runtime.Web.LayoutModel,
 			]),
 		});
 		if (field_name == "favicon") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Web.LayoutModel",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "page") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Web.LayoutModel",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "pages") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Runtime.Web.LayoutModel",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "count_in_page") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Runtime.Web.LayoutModel",
 			"name": field_name,
@@ -13380,7 +13405,12 @@ Object.assign(Runtime.Web.RenderController.prototype,
 					this.setReference(ctx, path_id, value, elem);
 					continue;
 				}
-				if (key == "value" || key == "@bind")
+				if (key == "@name")
+				{
+					value = this.getBindModelValue(ctx, path_id, value);
+					this.setReference(ctx, path_id, value, elem);
+				}
+				if (key == "value" || key == "@bind" || key == "@name")
 				{
 					if (elem.tagName == "INPUT" || elem.tagName == "SELECT" || elem.tagName == "TEXTAREA")
 					{
@@ -13404,7 +13434,7 @@ Object.assign(Runtime.Web.RenderController.prototype,
 			for (var i=elem.attributes.length - 1; i>=0; i--)
 			{
 				var attr = elem.attributes[i];
-				if (attrs[attr.name] == undefined && attr.name != "data-path")
+				if (attrs[attr.name] == undefined /*&& attr.name != "data-path"*/)
 				{
 					elem.removeAttribute(attr.name);
 				}
@@ -13415,7 +13445,7 @@ Object.assign(Runtime.Web.RenderController.prototype,
 		this.bindEvents(ctx, control, elem, attrs, is_new_elem);
 		
 		/* Set data-path attribute */
-		elem.setAttribute("data-path", path_id);
+		/*elem.setAttribute("data-path", path_id);*/
 	},
 	/**
 	 * Bind element events
@@ -14026,6 +14056,7 @@ Object.assign(Runtime.Web.RenderDriver,
 			try
 			{
 				var msg = new Runtime.Core.Message(ctx, event, path_id);
+				msg.sender = event.target;
 				await ctx.object_manager.handleMessage(ctx, msg);
 			}
 			catch (e)
@@ -14385,6 +14416,41 @@ Object.assign(Runtime.Web.RenderDriver,
 		w = elem.clientWidth;
 		h = elem.clientHeight;
 		return Runtime.Dict.from({"x":x,"y":y,"w":w,"h":h});
+	},
+	/**
+	 * Remote bus call
+	 * @param Dict items
+	 * @return RemoteCallAnswer
+	 */
+	remoteBusCall: async function(ctx, items, container)
+	{
+		if (container == undefined) container = null;
+		/* Set default params */
+		items = items.copy(ctx, Runtime.Dict.from({"app_name":items.get(ctx, "app_name", "self"),"interface_name":items.get(ctx, "interface_name", "default")}));
+		/* Change api request */
+		var request = new Runtime.Core.RemoteCallRequest(ctx, items);
+		var res = ctx.chain(ctx, Runtime.Web.RenderDriver.API_PREPARE_CHAIN, Runtime.Collection.from([request,container]));
+		request = Runtime.rtl.get(ctx, res, 0);
+		/* Restore request */
+		request = request.copy(ctx, Runtime.Dict.from({"uri":items.get(ctx, "uri", ""),"app_name":items.get(ctx, "app_name", "self"),"object_name":items.get(ctx, "object_name", ""),"interface_name":items.get(ctx, "interface_name", "default"),"method_name":items.get(ctx, "method_name", "")}));
+		/* Send request */
+		var bus = ctx.getDriver(ctx, "default:external_bus");
+		var answer = await bus.remoteBusCall(ctx, request);
+		return Promise.resolve(answer);
+	},
+	/**
+	 * Crud search
+	 */
+	getCrudSearchParams: function(ctx, request)
+	{
+		var data = new Runtime.Map(ctx);
+		if (Runtime.rtl.exists(ctx, request.query))
+		{
+			var page = request.query.get(ctx, "page", "0");
+			data.set(ctx, "page", page);
+			data.set(ctx, "limit", 100);
+		}
+		return data.toDict(ctx);
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -14799,6 +14865,10 @@ Object.assign(Runtime.Web.RenderDriver,
 			{
 				model_path = controller.getBindModelPath(ctx, path_id, attrs["@bind"]);
 			}
+			if (attrs != null && attrs["@name"] != undefined)
+			{
+				model_path = controller.getBindModelPath(ctx, path_id, attrs["@name"]);
+			}
 			
 			/* Get model */
 			if (model_path != null)
@@ -14818,6 +14888,10 @@ Object.assign(Runtime.Web.RenderDriver,
 			if (attrs != null && attrs["@ref"] != undefined)
 			{
 				controller.setReference(ctx, component.path_id, attrs["@ref"], component);
+			}
+			if (attrs != null && attrs["@name"] != undefined)
+			{
+				controller.setReference(ctx, component.path_id, attrs["@name"], component);
 			}
 			
 			/* Create new control */
@@ -14860,7 +14934,7 @@ Object.assign(Runtime.Web.RenderDriver,
 			
 			controller.updateComponent(ctx, component, created);
 			controller.bindEvents(ctx, new_control, component, attrs, created);
-			component.update(ctx, created);
+			component.updateComponent(ctx, created);
 		}
 		
 		else if (type == 'element')

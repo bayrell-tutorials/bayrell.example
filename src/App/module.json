@@ -11,7 +11,8 @@
 		"Route3",
 		"Routes",
 		"TestPage",
-		"ModuleDescription",
-		"main"
+		"UsersPage",
+		"UsersPageModel",
+		"ModuleDescription"
 	]
 }

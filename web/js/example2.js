@@ -271,31 +271,31 @@ Object.assign(Example2.IndexPage,
 			RenderDriver.p(__v1, __v1_childs);
 			
 			/* Element 'div.list' */
-			var __v2; var __v2_childs = [];
-			[__v2, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["list", this.getCssHash(ctx)].join(" "),"@elem_name":"list"}});
+			var __v1; var __v1_childs = [];
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["list", this.getCssHash(ctx)].join(" "),"@elem_name":"list"}});
 			
 			for (var i = 0;i < model.items.count(ctx);i++)
 			{
 				var item = Runtime.rtl.get(ctx, model.items, i);
 				
 				/* Element 'div.item' */
-				var __v3; var __v3_childs = [];
-				[__v3, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "element", {"name": "div","attrs": {"data-index":i,"@event:Runtime.Web.Events.MouseClickEvent":["Example2.IndexPage","onItemClick"],"class":["item", ((model.selected_id == item.id) ? ("active") : ("")), this.getCssHash(ctx)].join(" "),"@elem_name":"item"}});
+				var __v2; var __v2_childs = [];
+				[__v2, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "element", {"name": "div","attrs": {"data-index":i,"@event:Runtime.Web.Events.MouseClickEvent":["Example2.IndexPage","onItemClick"],"class":["item", ((model.selected_id == item.id) ? ("active") : ("")), this.getCssHash(ctx)].join(" "),"@elem_name":"item"}});
 				
 				/* Element 'div.item-content' */
-				var __v4; var __v4_childs = [];
-				[__v4, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "element", {"name": "div","attrs": {"class":["item-content", this.getCssHash(ctx)].join(" "),"@elem_name":"item-content"}});
+				var __v3; var __v3_childs = [];
+				[__v3, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "element", {"name": "div","attrs": {"class":["item-content", this.getCssHash(ctx)].join(" "),"@elem_name":"item-content"}});
 				
 				/* Text */
-				[__vnull, __v4_childs] = RenderDriver.e(__v4, __v4_childs, "text", {"content": item.name});
-				RenderDriver.p(__v4, __v4_childs);
+				[__vnull, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "text", {"content": item.name});
+				RenderDriver.p(__v3, __v3_childs);
 				
 				/* Element 'div.rm-button' */
-				var __v5; var __v5_childs = [];
-				[__v5, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "element", {"name": "div","attrs": {"class":["rm-button", this.getCssHash(ctx)].join(" "),"@elem_name":"rm-button"}});
+				var __v3; var __v3_childs = [];
+				[__v3, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "element", {"name": "div","attrs": {"class":["rm-button", this.getCssHash(ctx)].join(" "),"@elem_name":"rm-button"}});
 				
 				/* Component 'Button' */
-				[__vnull, __v5_childs] = RenderDriver.e(__v5, __v5_childs, "component", {"name": "Runtime.Web.Button.Button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["Example2.IndexPage","onRemoveClick"],"@tag":i}, "layout": layout, "content": (__control) =>
+				[__vnull, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "component", {"name": "Runtime.Web.Button.Button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["Example2.IndexPage","onRemoveClick"],"@tag":i}, "layout": layout, "content": (__control) =>
 				{
 					var __vnull = null;
 					var __control_childs = [];
@@ -305,43 +305,43 @@ Object.assign(Example2.IndexPage,
 					
 					return __control_childs;
 				}});
-				RenderDriver.p(__v5, __v5_childs);
 				RenderDriver.p(__v3, __v3_childs);
+				RenderDriver.p(__v2, __v2_childs);
 			}
-			RenderDriver.p(__v2, __v2_childs);
+			RenderDriver.p(__v1, __v1_childs);
 			
 			/* Element 'div.info' */
-			var __v6; var __v6_childs = [];
-			[__v6, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["info", this.getCssHash(ctx)].join(" "),"@elem_name":"info"}});
+			var __v1; var __v1_childs = [];
+			[__v1, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "element", {"name": "div","attrs": {"class":["info", this.getCssHash(ctx)].join(" "),"@elem_name":"info"}});
 			
 			if (model.edit_item != null)
 			{
 				/* Element 'div.field' */
-				var __v7; var __v7_childs = [];
-				[__v7, __v6_childs] = RenderDriver.e(__v6, __v6_childs, "element", {"name": "div","attrs": {"class":["field", this.getCssHash(ctx)].join(" "),"@elem_name":"field"}});
+				var __v2; var __v2_childs = [];
+				[__v2, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "element", {"name": "div","attrs": {"class":["field", this.getCssHash(ctx)].join(" "),"@elem_name":"field"}});
 				
 				/* Element 'div.field_label' */
-				var __v8; var __v8_childs = [];
-				[__v8, __v7_childs] = RenderDriver.e(__v7, __v7_childs, "element", {"name": "div","attrs": {"class":["field_label", this.getCssHash(ctx)].join(" "),"@elem_name":"field_label"}});
+				var __v3; var __v3_childs = [];
+				[__v3, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "element", {"name": "div","attrs": {"class":["field_label", this.getCssHash(ctx)].join(" "),"@elem_name":"field_label"}});
 				
 				/* Text */
-				[__vnull, __v8_childs] = RenderDriver.e(__v8, __v8_childs, "text", {"content": "Name"});
-				RenderDriver.p(__v8, __v8_childs);
+				[__vnull, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "text", {"content": "Name"});
+				RenderDriver.p(__v3, __v3_childs);
 				
 				/* Element 'div.field_edit' */
-				var __v9; var __v9_childs = [];
-				[__v9, __v7_childs] = RenderDriver.e(__v7, __v7_childs, "element", {"name": "div","attrs": {"class":["field_edit", this.getCssHash(ctx)].join(" "),"@elem_name":"field_edit"}});
+				var __v3; var __v3_childs = [];
+				[__v3, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "element", {"name": "div","attrs": {"class":["field_edit", this.getCssHash(ctx)].join(" "),"@elem_name":"field_edit"}});
 				
-				[__vnull, __v9_childs] = RenderDriver.e(__v9, __v9_childs, "element", {"name": "input","attrs": {"field_name":"name","@event:Runtime.Web.Events.ChangeEvent":["Example2.IndexPage","onInputChange"],"value":Runtime.rtl.attr(ctx, model, ["edit_item", "name"]),"attrs":this.json_encode(ctx, Runtime.Dict.from({"field_name":"name"})),"class":["input", this.getCssHash(ctx)].join(" "),"@elem_name":"input"}});
-				RenderDriver.p(__v9, __v9_childs);
-				RenderDriver.p(__v7, __v7_childs);
+				[__vnull, __v3_childs] = RenderDriver.e(__v3, __v3_childs, "element", {"name": "input","attrs": {"field_name":"name","@event:Runtime.Web.Events.ChangeEvent":["Example2.IndexPage","onInputChange"],"value":Runtime.rtl.attr(ctx, model, ["edit_item", "name"]),"attrs":this.json_encode(ctx, Runtime.Dict.from({"field_name":"name"})),"class":["input", this.getCssHash(ctx)].join(" "),"@elem_name":"input"}});
+				RenderDriver.p(__v3, __v3_childs);
+				RenderDriver.p(__v2, __v2_childs);
 				
 				/* Element 'div.info_buttons' */
-				var __v10; var __v10_childs = [];
-				[__v10, __v6_childs] = RenderDriver.e(__v6, __v6_childs, "element", {"name": "div","attrs": {"class":["info_buttons", this.getCssHash(ctx)].join(" "),"@elem_name":"info_buttons"}});
+				var __v2; var __v2_childs = [];
+				[__v2, __v1_childs] = RenderDriver.e(__v1, __v1_childs, "element", {"name": "div","attrs": {"class":["info_buttons", this.getCssHash(ctx)].join(" "),"@elem_name":"info_buttons"}});
 				
 				/* Component 'Button' */
-				[__vnull, __v10_childs] = RenderDriver.e(__v10, __v10_childs, "component", {"name": "Runtime.Web.Button.Button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["Example2.IndexPage","onSaveClick"]}, "layout": layout, "content": (__control) =>
+				[__vnull, __v2_childs] = RenderDriver.e(__v2, __v2_childs, "component", {"name": "Runtime.Web.Button.Button","attrs": {"@event:Runtime.Web.Events.MouseClickEvent":["Example2.IndexPage","onSaveClick"]}, "layout": layout, "content": (__control) =>
 				{
 					var __vnull = null;
 					var __control_childs = [];
@@ -351,17 +351,17 @@ Object.assign(Example2.IndexPage,
 					
 					return __control_childs;
 				}});
-				RenderDriver.p(__v10, __v10_childs);
+				RenderDriver.p(__v2, __v2_childs);
 			}
-			RenderDriver.p(__v6, __v6_childs);
+			RenderDriver.p(__v1, __v1_childs);
 			RenderDriver.p(__v0, __v0_childs);
 			
 			/* Element 'div.dialogs' */
-			var __v11; var __v11_childs = [];
-			[__v11, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialogs", this.getCssHash(ctx)].join(" "),"@elem_name":"dialogs"}});
+			var __v0; var __v0_childs = [];
+			[__v0, __control_childs] = RenderDriver.e(__control, __control_childs, "element", {"name": "div","attrs": {"class":["dialogs", this.getCssHash(ctx)].join(" "),"@elem_name":"dialogs"}});
 			
-			[__vnull, __v11_childs] = RenderDriver.e(__v11, __v11_childs, "component", {"name": "Runtime.Web.Dialog.Dialog","attrs": {"@bind":["Example2.IndexPage","dialog"],"@ref":["Example2.IndexPage","dialog"],"style":"promt","@event:Runtime.Web.Dialog.DialogEvent":["Example2.IndexPage","onDialogEvent"]}, "layout": layout});
-			RenderDriver.p(__v11, __v11_childs);
+			[__vnull, __v0_childs] = RenderDriver.e(__v0, __v0_childs, "component", {"name": "Runtime.Web.Dialog.Dialog","attrs": {"@bind":["Example2.IndexPage","dialog"],"@ref":["Example2.IndexPage","dialog"],"style":"promt","@event:Runtime.Web.Dialog.DialogEvent":["Example2.IndexPage","onDialogEvent"]}, "layout": layout});
+			RenderDriver.p(__v0, __v0_childs);
 			
 			return __control_childs;
 		};

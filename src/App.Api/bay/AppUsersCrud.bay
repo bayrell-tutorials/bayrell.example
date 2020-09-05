@@ -1,0 +1,138 @@
+namespace App.Api;
+
+use Runtime.rtl;
+use Runtime.Core.RemoteCallAnswer;
+use Runtime.Core.RemoteCallRequest;
+use Runtime.Web.Backend.ApiList;
+use Runtime.Web.Backend.ApiMethod;
+use Runtime.Web.ORM.QueryBuilder;
+use Runtime.Web.CRUD.CrudApi;
+
+
+@ApiList{ "object_name": "App.Users", "interface_name": "core.crud" }
+static class AppUsersCrud extends CrudApi
+{
+	
+	/**
+	 * Returns crud table name
+	 */
+	string getTableName() => "users";
+	
+	
+	
+	/**
+	 * Returns table field value
+	 */
+	Collection<Collection<string>> getDefaultSearchOrder() =>
+	[ 
+		["id", "desc"]
+	];
+	
+	
+	
+	/**
+	 * Process item from database
+	 */
+	async Dict fromDatabase(Dict item)
+	{
+		return item;
+	}
+	
+	
+	
+	/**
+	 * Process item to database
+	 */
+	async Dict toDatabase(Dict item)
+	{
+		return item;
+	}
+	
+	
+	
+	/**
+	 * Process items
+	 */
+	async Collection<Dict> processItems(Collection<Dict> items)
+	{
+		items = await parent::processItems(items);
+		return items;
+	}
+	
+	
+	
+	/**
+	 * Process item
+	 */
+	async Collection<Dict> processItem(Collection<Dict> item)
+	{
+		item = await parent::processItem(item);
+		return item;
+	}
+	
+	
+	
+	/**
+	 * Validate
+	 */
+	list<bool, RemoteCallAnswer> validate(RemoteCallAnswer answer)
+	{
+		return [true, answer];
+	}
+	
+	
+	
+	/**
+	 * Build query
+	 */
+	QueryBuilder buildSearchQuery()
+	{
+		QueryBuilder q = parent::buildSearchQuery();
+		return q;
+	}
+	
+	
+	
+	/**
+	 * Search api
+	 */
+	@ApiMethod{ "method_name": "search" }
+	static async list searchAction(RemoteCallRequest request, RemoteCallAnswer answer)
+	{
+		return await parent::searchAction(request, answer);
+	}
+	
+	
+	
+	/**
+	 * Add
+	 */
+	@ApiMethod{ "method_name": "add" }
+	static async list addAction(RemoteCallRequest request, RemoteCallAnswer answer)
+	{
+		return await parent::addAction(request, answer);
+	}
+	
+	
+	
+	/**
+	 * Update
+	 */
+	@ApiMethod{ "method_name": "update" }
+	static async list updateAction(RemoteCallRequest request, RemoteCallAnswer answer)
+	{
+		return await parent::updateAction(request, answer);
+	}
+	
+	
+	
+	/**
+	 * Delete
+	 */
+	@ApiMethod{ "method_name": "delete" }
+	static async list deleteAction(RemoteCallRequest request, RemoteCallAnswer answer)
+	{
+		return await parent::deleteAction(request, answer);
+	}
+	
+}

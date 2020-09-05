@@ -22,6 +22,7 @@
 <input id='frontend_storage' type='hidden' value={ frontend_storage } />
 
 <script src={ "/js/runtime.js?_=" ~ model.f_inc }></script>
+<script src={ "/js/components.js?_=" ~ model.f_inc }></script>
 <script src={ "/js/app.js?_=" ~ model.f_inc }></script>
 
 <script>
